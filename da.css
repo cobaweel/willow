@@ -1,0 +1,11 @@
+* { 
+    margin: 0px; 
+    padding: 0px; 
+}
+
+pre { 
+    border: 1px solid grey; 
+    padding: 0.5em; 
+    width: 30em; height: 40em;
+    overflow: auto;
+}

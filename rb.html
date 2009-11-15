@@ -1,0 +1,86 @@
+<style type="text/css">
+  img { margin: 0pt; padding: 0pt; }
+  body { background: #eeffee; }
+  table {text-align: center; }
+  td { border: 5px solid black; 
+       padding: 1em; background:white;
+       vertical-align:top;}
+  input { margin: 10px; }
+  .box { padding: 4px; 
+         border: 4px solid lightgrey; cursor:pointer;}
+  .box td { height: 24px; width: 24px; border: 0px;
+            padding: 0px; margin: 0px; 
+            background-image:url(rb0.png); }
+  .box td.on { background-image:url(rb1.png); }
+  .mouse { border: 4px solid grey; }
+  table.on { border: 4px solid red; }
+  .box { -moz-opacity : 50%; }
+</style>
+
+<div id="title">
+  <table>
+    <td>
+      <h1>Welcome to the experiment.</h1>
+      <p>Please wait until the experimenter tells you to start the
+	experiment. Then click the button.</p>
+      <input id="start" value="Start" type="submit" />
+    </td>
+  </table>
+</div>
+
+<div class="hidden" id="exp">
+  <table>
+    <td class="balls">
+      <h3>
+	<span class="ab_incentive"></span> cents if you draw a red ball
+      </h3>
+      <hr />
+      <h4>pick either</h4>
+      <table class="clickable bait box" id="A">
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+      </table>
+      <h4>or</h4>
+      <table class="clickable bait box" id="B">
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+      </table>
+    </td>
+    <td width="200">
+      <p id="time" />
+      <img id="spin" class="hidden" src="spin.gif" />
+      <p>earnings: $<span id="score">0.00</span></p>
+    </td>
+    <td class="balls">
+      <h3>
+	<span class="cd_incentive"></span> cents if you draw a red
+	ball
+      </h3>
+      <hr />
+      <h4>pick either</h4>
+      <table class="clickable bait box" id="C">
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+      </table>
+      <h4>or</h4>
+      <table class="clickable bait box" id="D">
+	<tr><td /><td /><td /><td /><td /><td /><td /><td /><td /><td /></tr>
+      </table>
+    </td>
+  </table>
+</div>
