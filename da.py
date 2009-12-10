@@ -3,97 +3,30 @@ from willow import willow
 # Read the configuration file
 cfg = willow.config("da.cfg")
 N = cfg["subjects"]
-R = cfg["rounds"]
-LENGTH = cfg["length"]
 
-# The monitor client
-def monitor(client, board, log):
-  # Show the monitor interface
-  client.add(open("da.html"))
-  client.add("Monitor","h1")
-
-  # Wait for all subjects to connect, then notify them all
-  subjects = set()
-  while not subjects == set(range(1,N+1)):
-    _, new_subject = board.get(("login", None))
-    client.add("Subject %d logged in.\n" % new_subject, "#status")
-    subjects.add(new_subject)
-  for n in range(N+1):
-    board.put(("start",n))
-
-  # Run R rounds of the double auction    
-  for r in range(R):
-    # Tell everyone the round starts now, and after LENGTH seconds,
-    # tell everyone the round ends.
-    for n in range(N+1):
-      board.put(("status", n, "Round %d has begun.\n" % r))
-      board.put(("end", n, r), LENGTH)
-    while True:
-      event, x, y = board.get(("order", None, None),
-                              ("book", client.number, None),
-                              ("status",client.number, None),
-                              ("end", client.number, None))
-      if event == "end":
-        break
-      elif event == "status":
-        client.add(y,"#status")
-      elif event == "order":
-        for n in range(N+1):
-          board.put(("book", n, "Subject %r has bid %d.\n" % (x,y)))
-      elif event == "book":
-        client.add(y,"#book")
-    client.add("Round %d has ended.\n" % r, "#status")
-
-# The subject clients        
-def subject(client, board, log):
-  # Notify the monitor that we have connected
-  board.put(("login", client.number))
-
-  # Show the subject interface, with bid or ask button as appropriate
-  client.add(open("da.html"))
-  client.add("Subject %d" % client.number,"h1")
-  if client.number % 2:
-    client.show("#bid")
+def session(number, net, board, log):
+  net.add(number, open("da.html"))  
+  if number > 0:
+    net.set(number, "Subject %d" % number, "title")
+    board.put(("on",))
   else:
-    client.show("#ask")
-    
-  # Wait for the start signal
-  board.get(("start",client.number))
-  client.show("#input")
-
-  # Run R rounds of the double auction
-  for r in range(R):
-    while True:
-      event, _, y = board.get(("click", client.number, None),
-                              ("status", client.number, None),
-                              ("book", client.number, None),
-                              ("end", client.number, None))
-      if event == "click":
-        client.data("#amount")
-        _, _, amount = board.get(("data", client.number, None))
-        try:
+    net.set(0, "Monitor", "title")
+    for _ in range(1, N+1): board.get(("on",))
+    for n in range(1, N+1): net.show(n, "." + cfg["roles"][n])
+    for r in range(1, cfg["rounds"]+1):
+      net.add(range(N+1), "Round %d has begun.\n" % r, "#msg")
+      board.put(("end", 0, 0), cfg["length"])
+      while True:
+        event, subject, amount = board.get(("click", None, None),
+                                           ("end", 0, 0))
+        if event == "end":
+          break
+        elif event == "click":
+          net.data(subject, "#amount")
+          _, _, amount = board.get(("data", subject, None))
           amount = int(amount)
-          board.put(("order", client.number, amount))
-        except:
-          pass
-      elif event == "book" and y == "":
-        client.set("","#book")          
-      elif event == "book":
-        client.add(y,"#book")
-      elif event == "status":
-        client.add(y,"#status")          
-      elif event == "end":
-        client.set("","#book")
-        break
-    client.add("Round %d has ended.\n" % r, "#status")
-
-# The first client that connects becomes the monitor, the rest are
-# subjects
-def session(client, board, log):
-  if client.number == 0:
-    monitor(client, board, log)
-  else:
-    subject(client, board, log)
+          net.add(range(N+1), "%d has bid %d.\n" % (subject, amount), "#msg")
+      net.add(range(N+1), "Round %d has ended.\n" % r, "#msg")
 
 willow.run(session)        
 

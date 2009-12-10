@@ -9,19 +9,22 @@ $(document).ready(function(){
 
    // Notify server whenever a button is clicked
    function decorate(elt) {
-     elt.find("input[type=submit]").click(function (e) {
-       var rep = {"action": "click", "argument": e.target.id, "id": id };
-       $.post("willow", JSON.stringify(rep));
-     });
-     elt.find(".clickable").click(function (e) {
-       var arg = $(e.target).closest(".clickable").get(0).id;
-       var rep = {"action": "click", "argument": arg, "id": id };
-       $.post("willow", JSON.stringify(rep));
-     });
-     elt.find(".bait").bind("mouseenter mouseleave", function(e) {
-       $(e.target).closest(".bait").toggleClass("mouse");
-     });
+	   elt.find("input[type=submit]").unbind().click(function (e) {
+	     var rep = {"action": "click", "argument": e.target.id, "id": id };
+	     $.post("willow", JSON.stringify(rep));
+	   });
+	   elt.find(".clickable").unbind().click(function (e) {
+	     var arg = $(e.target).closest(".clickable").get(0).id;
+	     var rep = {"action": "click", "argument": arg, "id": id };
+	     $.post("willow", JSON.stringify(rep));
+	   });
+	   elt.find(".bait").unbind().bind("mouseenter mouseleave", function(e) {
+	     $(e.target).closest(".bait").toggleClass("mouse");
+	   });
+
    }
+
+
 
    // Process command from the server and ask for another one
    function receive_update(cmds) {
@@ -30,21 +33,21 @@ $(document).ready(function(){
 	 var cmd = cmds[i];
 	 switch(cmd.action) {
 	 case "add":
-	   $(cmd.selector).append(cmd.argument);
-	   decorate($(cmd.selector).children());
+	   decorate($(cmd.selector).append(cmd.argument));
 	   break;
 	 case "push":
-	   $(cmd.selector).addClass(cmd.argument); break;
+	   decorate($(cmd.selector).addClass(cmd.argument)); break;
 	 case "pop":
-	   $(cmd.selector).removeClass(cmd.argument); break;
+	   decorate($(cmd.selector).removeClass(cmd.argument)); break;
 	 case "set":
-	   $(cmd.selector).html(cmd.argument); break;
+	   decorate($(cmd.selector).html(cmd.argument)); break;
 	 case "hide":
 	   $(cmd.selector).hide(); break;
 	 case "show":
 	   $(cmd.selector).show(); break;
 	 case "data":
 	   var arg = $(cmd.selector).attr("value");
+	   if (!arg) arg = "";
 	   var rep = {"action": "data", "argument": arg, "id": id };
 	   $.post("willow", JSON.stringify(rep));
 	   break;

@@ -3,6 +3,39 @@ import SocketServer, threading, sys, cgi, re, csv, os, os.path
 
 WEBROOT = os.path.dirname(__file__)
 
+class Log():
+  """A Log object can be used to record log messages into a log file,
+  which is in CSV format and automatically gets a name based on the
+  date and time the session starts."""
+  def __init__(self):
+    self.fn = time.strftime("log/%Y-%m-%d-%H-%M-%S.csv")
+    self.fd = open(self.fn,"w")
+    self.csv = csv.writer(self.fd)
+    self.fn2 = time.strftime("log/%Y-%m-%d-%H-%M-%S.txt")
+    self.fd2 = open(self.fn2,"w")
+    self.lock = threading.Lock()
+
+  def write(self, *msg):
+    """Write a record into the CSV log file, with the UNIX timestamp
+    as the first field, and *msg as the subsequent fields."""
+    self.lock.acquire()
+    self.csv.writerow([str(int(time.time()))] + list(msg))
+    sys.stderr.write("%s  \t%r\n" % ("LOG", msg))
+    self.fd2.write("%s  \t%r\n" % ("LOG", msg))
+    self.fd2.flush()
+    self.lock.release()
+
+  def trace(self, tag, obj):
+    """Show a trace message on stderr and in the trace file. For
+    internal use by the willow library."""
+    msg = str(obj)
+    self.lock.acquire()
+    sys.stderr.write("%s  \t%s\n" % (tag,msg[0:65]))
+    for i in range(65,len(msg),65):
+      sys.stderr.write("\t%s\n" % msg[i:i+65])
+    self.fd2.write("%s  \t%r\n" % (tag, obj))
+    self.lock.release()
+
 class Board():
   """A Board is a thread-safe tuple space. You can post tuples on it,
   and remove tuples from it, with or without wildcard matching and
@@ -52,104 +85,92 @@ class Board():
     self.log.trace("GOT",found)
     return found
 
+  def grab(self, *queries):
+    """To remove e.g. a tuple that matches either (x,y) or (p,q), you
+    call b.gets((x,y),(p,q)). You can still use wildcards."""
+    assert type(queries)==tuple, "Type mismatch."    
+    self.log.trace("GRAB",queries)
+    self.cv.acquire()
+    key = self.__find(*queries)
+    if key:
+      found = self.space.pop(key)
+    else:
+      found = None
+    self.cv.release()
+    self.log.trace("GRUB",found)
+    return found
+
+
 class Client():
   """A Client object corresponds to an instance of willow.html being
   viewed remotely."""
 
-  number = -1
-  """Number of the client."""
-
-  ip = ""
-  """IP address of the client."""
-
-  def __init__(self, number, ip, log):
+  def __init__(self, number, ip):
     self.number = number                # Number identifying client
     self.ip = ip                        # IP address of client    
     self.queue = Queue.Queue()          # Queue for AJAX messages
     self.flushing = True
     self.holding = []
-    self.log = log
 
-  def __action(self, action, selector, argument=None):
-    try: argument = argument.read()
-    except AttributeError: pass
-    self.holding += [{"action":   "%s" % action,
-                      "selector": "%s" % selector,
-                      "argument": "%s" % argument}]
-    if self.flushing:
-      self.flush()
 
-  def hold(self):
-    self.flushing = False
+class Net():
+  def __init__(self):
+    self.clients = dict()
 
-  def flush(self):
-    self.log.trace("FLUSH", self.holding)
-    self.queue.put(self.holding)
-    self.holding = []
-    self.flushing = True
+  def action(self, number, action, selector, argument=None):
+    if type(number) == int: number = [number]
+    for n in number:
+      try: argument = argument.read()
+      except AttributeError: pass
+      self.clients[n].holding += [{"action":   "%s" % action,
+                                   "selector": "%s" % selector,
+                                   "argument": "%s" % argument}]
+      if self.clients[n].flushing:
+        self.flush(n)
 
-  def add(self, argument, selector="#base"):
+  def hold(self, number):
+    if type(number) == int: number = [number]
+    for n in number:
+      self.clients[n].flushing = False
+
+  def flush(self, number):
+    if type(number) == int: number = [number]
+    for n in number:
+      self.clients[n].queue.put(self.clients[n].holding)
+      self.clients[n].holding = []
+      self.clients[n].flushing = True
+      
+  def add(self, number, argument, selector="body"):
     """Add some HTML to each element referenced by the selector."""
-    self.__action("add", selector, argument)
+    self.action(number, "add", selector, argument)
 
-  def set(self, argument, selector="#base"):
+  def set(self, number, argument, selector="body"):
     """Set the contents of each element referenced by the selector."""
-    self.__action("set", selector, argument)
+    self.action(number, "set", selector, argument)
 
-  def push(self, argument, selector="#base"):
+  def push(self, number, argument, selector="body"):
     """Push a class on each element referenced by the selector."""
-    self.__action("push", selector, argument)
+    self.action(number, "push", selector, argument)
 
-  def pop(self, argument, selector="#base"):
+  def pop(self, number, argument, selector="body"):
     """Pop a class from each element referenced by the selector."""
-    self.__action("pop", selector, argument)
+    self.action(number, "pop", selector, argument)
 
-  def hide(self, selector="#base"):
+  def hide(self, number, selector="body"):
     """Hide each element referenced by the selector."""
-    self.__action("hide", selector)
+    self.action(number, "hide", selector)
 
-  def show(self, selector="#base"):
+  def show(self, number, selector="body"):
     """Show each element referenced by the selector. This works both
     on elements previously hidden using the client.hide() method and
     on items automatically hidden because they are of class 'hidden'."""
-    self.__action("show", selector)
+    self.action(number, "show", selector)
 
-  def data(self, selector="#base"):
+  def data(self, number, selector="body"):
     """Request that the 'value' attribute of each element referenced
     by the selector be posted on the board."""
-    self.__action("data", selector)
+    self.action(number, "data", selector)
 
-class Log():
-  """A Log object can be used to record log messages into a log file,
-  which is in CSV format and automatically gets a name based on the
-  date and time the session starts."""
-  def __init__(self):
-    self.fn = time.strftime("log/%Y-%m-%d-%H-%M-%S.csv")
-    self.fd = open(self.fn,"w")
-    self.csv = csv.writer(self.fd)
-    self.fn2 = time.strftime("log/%Y-%m-%d-%H-%M-%S.txt")
-    self.fd2 = open(self.fn2,"w")
-    self.lock = threading.Lock()
-
-  def write(self, *msg):
-    """Write a record into the CSV log file, with the UNIX timestamp
-    as the first field, and *msg as the subsequent fields."""
-    self.lock.acquire()
-    self.csv.writerow([str(int(time.time()))] + list(msg))
-    sys.stderr.write("%s  \t%r\n" % ("LOG", msg))
-    self.fd2.write("%s  \t%r\n" % ("LOG", msg))
-    self.lock.release()
-
-  def trace(self, tag, obj):
-    """Show a trace message on stderr and in the trace file. For
-    internal use by the willow library."""
-    msg = str(obj)
-    self.lock.acquire()
-    sys.stderr.write("%s  \t%s\n" % (tag,msg[0:65]))
-    for i in range(65,len(msg),65):
-      sys.stderr.write("\t%s\n" % msg[i:i+65])
-    self.fd2.write("%s  \t%r\n" % (tag, obj))
-    self.lock.release()
 
 def run(session, port=8000):
   """Run a web server using given session function on given TCP
@@ -164,6 +185,7 @@ def run(session, port=8000):
   clients = {}
   clients_lock = threading.Lock()
   board = Board(log)
+  net = Net()
 
   class MyRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def log_message(self, fmt, *arg): pass
@@ -197,10 +219,11 @@ def run(session, port=8000):
         clients_lock.acquire()
         number = len(clients)
         ip, _ = self.client_address
-        client = Client(number, ip, log)
+        client = Client(number, ip)
         clients[request_id] = client
+        net.clients[number] = client
         clients_lock.release()
-        t = threading.Thread(target=session, args=(client,board, log))
+        t = threading.Thread(target=session, args=(number,net,board,log))
         t.daemon = True
         t.start()                
       if request_obj["action"] == "update":

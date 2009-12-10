@@ -7,17 +7,17 @@ def colors(fmt, n, k):
 
 cfg = willow.config("rb.cfg")
 
-def session(client, board, log):
-  client.add(open("rb.html"))
-  board.get(("click", client.number, None))
-  client.hold()
-  client.hide("#title")
-  client.set(cfg['ab_incentive'],".ab_incentive")
-  client.set(cfg['cd_incentive'],".cd_incentive")
-  client.show("#exp")
+def session(number, net, board, log):
+  net.add(number, open("rb.html"))
+  board.get(("click", number, None))
+  net.hold(number)
+  net.hide(number, "#title")
+  net.set(number, cfg['ab_incentive'],".ab_incentive")
+  net.set(number, cfg['cd_incentive'],".cd_incentive")
+  net.show(number, "#exp")
   score = 0
-  client.set("0.00", "#score")
-  client.flush()
+  net.set(number, "0.00", "#score")
+  net.flush(number)
   for _ in range(cfg['rounds']):
     d = random.choice((1,2,3,4))
     c = 10 * d + random.choice((-2,-1,0,1,2))
@@ -27,39 +27,39 @@ def session(client, board, log):
              colors("#B td:eq(%d)",  10, b)+","+
              colors("#C td:eq(%d)", 100, c)+","+
              colors("#D td:eq(%d)",  10, d))
-    client.hold()
-    client.hide("#spin")
-    client.pop("on",".on")
-    client.push("on",white)
-    client.flush()
+    net.hold(number)
+    net.hide(number, "#spin")
+    net.pop(number, "on",".on")
+    net.push(number, "on",white)
+    net.flush(number)
     time = 5
     ab = "."
     cd = "."
-    for t in range(1,6): board.put(("timer", client.number, 0), t)
+    for t in range(1,6): board.put(("timer", number, 0), t)
     while time > 0:
-      client.set("%d seconds left" % time,"#time")
-      _, _, arg = board.get(("click", client.number, None),
-                            ("timer", client.number, 0))
-      client.hold()
+      net.set(number, "%d seconds left" % time,"#time")
+      _, _, arg = board.get(("click", number, None),
+                            ("timer", number, 0))
+      net.hold(number)
       if arg == "A":
-        client.push("on", "#A")
-        client.pop("on", "#B")
+        net.push(number, "on", "#A")
+        net.pop(number, "on", "#B")
         ab = "A"
       elif arg == "B":
-        client.push("on", "#B")
-        client.pop("on", "#A")
+        net.push(number, "on", "#B")
+        net.pop(number, "on", "#A")
         ab = "B"
       elif arg == "C":
-        client.push("on", "#C")
-        client.pop("on", "#D")
+        net.push(number, "on", "#C")
+        net.pop(number, "on", "#D")
         cd = "C"
       elif arg == "D":
-        client.push("on", "#D")
-        client.pop("on", "#C")
+        net.push(number, "on", "#D")
+        net.pop(number, "on", "#C")
         cd = "D"
       else:
         time -= 1
-      client.flush()
+      net.flush(number)
     ab_score = -1
     cd_score = -1
     if ab == "A":
@@ -86,15 +86,15 @@ def session(client, board, log):
         cd_score = 1
       else:
         cd_score = 0
-    log.write(client.number,a,b,c,d,ab,cd,ab_score,cd_score,score)
-    client.hold()
-    client.set("%.2f" % (score/100.0), "#score")
-    client.set("", "#time")
-    client.pop("on",".on")
-    client.show("#spin")
-    client.flush()
-    board.put(("timer", client.number, 0), 2)
-    board.get(("timer", client.number, 0))
+    log.write(number,a,b,c,d,ab,cd,ab_score,cd_score,score)
+    net.hold(number)
+    net.set(number, "%.2f" % (score/100.0), "#score")
+    net.set(number, "", "#time")
+    net.pop(number, "on",".on")
+    net.show(number, "#spin")
+    net.flush(number)
+    board.put(("timer", number, 0), 2)
+    board.get(("timer", number, 0))
 
 
 willow.run(session,8000)

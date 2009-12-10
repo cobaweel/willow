@@ -1,38 +1,38 @@
 from willow import willow
 
-def session(client, board, log):
-  if client.number == 0:
-    client.add(open("ultimatum0.html"))
+def session(number, net, board, log):
+  if number == 0:
+    net.add(0, open("ultimatum0.html"))
     _, _, bid = board.get(("click", 0, None))
     bid = int(bid)
     board.put(("bid", bid))
-    client.show("#wait")
-    client.add(bid, "#offer")
+    net.show(0, "#wait")
+    net.add(0, bid, "#offer")
     _, accept = board.get(("accept", None))
     if accept:
-      client.show("#accept,#pay")
-      client.add(10-bid, "#payoff")
+      net.show(0, "#accept,#pay")
+      net.add(0, 10-bid, "#payoff")
     else:
-      client.show("#reject,#pay")
-      client.add(0,"#payoff")
+      net.show(0, "#reject,#pay")
+      net.add(0, 0,"#payoff")
     log.write("bid", bid)
     log.write("reaction", accept)
-  elif client.number == 1:
-    client.add(open("ultimatum1.html"))
+  elif number == 1:
+    net.add(1, open("ultimatum1.html"))
     _, bid = board.get(("bid", None))
-    client.show("#offer")
-    client.add(bid, "#bid")
+    net.show(1, "#offer")
+    net.add(1, bid, "#bid")
     _, _, response = board.get(("click", 1, None))
     if response == "accept":
-      client.show("#pay")
-      client.add(10-bid,"#payoff")
+      net.show(1, "#pay")
+      net.add(1, 10-bid,"#payoff")
       board.put(("accept",  True))
     else:
-      client.show("#pay")
-      client.add(0, "#payoff")
+      net.show(1, "#pay")
+      net.add(1, 0, "#payoff")
       board.put(("accept",  False))
   else:
-    client.add("<h1>Experiment is full.</h1>")
+    net.add(number, "<h1>Experiment is full.</h1>")
 
 willow.run(session)
 

@@ -1,19 +1,19 @@
 from willow import willow
 
-def session(client, board, log):
-  if client.number == 0:
-    client.add("<h1>About to send some greetings...</h1>")
-    client.add("<p>Please enter your name.</p>")
-    client.add("<input id='bid' type='text' />")
-    client.add("<input id='submit' type='submit' />")
+def session(number, net, board, log):
+  if number == 0:
+    net.add(number, "<h1>About to send some greetings...</h1>")
+    net.add(number, "<p>Please enter your name.</p>")
+    net.add(number, "<input id='bid' type='text' />")
+    net.add(number, "<input id='submit' type='submit' />")
     _, _, _ = board.get(("click", 0, "submit"))
-    client.data("#bid")
-    client.add("<p>Greetings have been sent!</p><hr>")
+    net.data(number, "#bid")
+    net.add(number, "<p>Greetings have been sent!</p><hr>")
   else:
-    client.add("<h1>Waiting for some greetings...</h1>")
+    net.add(number, "<h1>Waiting for some greetings...</h1>")
     _, _, name = board.get(("data", 0, None))
     log.write("name",name)
-    client.add("<p>Greetings from %s.</p><hr>" % name)
+    net.add(number, "<p>Greetings from %s.</p><hr>" % name)
 
 willow.run(session)        
  

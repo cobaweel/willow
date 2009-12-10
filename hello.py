@@ -1,7 +1,7 @@
 from willow import willow
 
-def session(client, board, log):
-  client.add("<h1>Hello, world.</h1>")
+def session(number, net, board, log):
+  net.add(number, "<h1>Hello, world.</h1>")
 
 willow.run(session)        
  
