@@ -6,7 +6,7 @@ all: $(TARGETS)
 	asciidoc $<
 
 %.pdf: %.xml
-	docbook2pdf $<
+	dblatex -T db2latex $<
 
 %.xml: %.txt
 	asciidoc -b docbook $<

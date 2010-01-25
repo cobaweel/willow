@@ -1,192 +1,259 @@
-import json, BaseHTTPServer, SimpleHTTPServer, time, Queue, mimetypes
-import SocketServer, threading, sys, cgi, re, csv, os, os.path
+# Willow, a Python framework for experimental economics. Copyright (c)
+# 2009, George Mason University All rights reserved.  Redistribution
+# and use in source and binary forms, with or without modification,
+# are permitted provided that the following conditions are met:
+# Redistributions of source code must retain the above copyright
+# notice, this list of conditions and the following disclaimer.
+# Redistributions in binary form must reproduce the above copyright
+# notice, this list of conditions and the following disclaimer in the
+# documentation and/or other materials provided with the distribution.
+# Neither the name of the George Mason University nor the names of its
+# contributors may be used to endorse or promote products derived from
+# this software without specific prior written permission. THIS
+# SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+# IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+# FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+# COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+# ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+import json, BaseHTTPServer, time, Queue, mimetypes, SocketServer
+import threading, sys, csv, os, os.path
+
+__all__ = ('log', 'put', 'get', 'grab', 'me', 'hold', 'flush', 'add',
+           'set', 'push', 'pop', 'hide', 'show', 'peek', 'run', 'config')
+
+# The user may write records to a CSV file, which is automatically
+# named based on the time the library is loaded, using the thread-safe
+# log() function.  The library may write records to a trace file,
+# which is automatically named based on the time the library is
+# loaded, using the thread-safe trace() function.
+
+log_fn1  = time.strftime("log/%Y-%m-%d-%H-%M-%S.csv")
+log_fd1  = open(log_fn1,"w")
+log_csv  = csv.writer(log_fd1)
+log_lock = threading.Lock()
+log_fn2  = time.strftime("log/%Y-%m-%d-%H-%M-%S.txt")
+log_fd2  = open(log_fn2,"w")
+
+def log(*msg):
+  log_lock.acquire()
+  log_csv.writerow([str(int(time.time()))] + list(msg))
+  log_fd2.write("%s  \t%r\n" % ("LOG", msg))
+  log_fd2.flush()
+  log_lock.release()
+  trace("LOG",msg, True)
+
+def trace(tag, obj, d=False):
+  assert type(tag) == str
+  def de(s): 
+    if type(s) == unicode:
+      return str(s)
+    else:
+      return s
+  if type(obj) == tuple and d:
+    obj = tuple(map(de,obj))
+  msg = str(obj) + " "
+  out = ""
+  for line in msg.splitlines():
+    for i in range(0,len(line),70):
+      out += "        " + line[i:i+70] + "\n"
+  log_lock.acquire()
+  sys.stderr.write(("%s %d" % (tag, me())).ljust(8) + out[8:])
+  log_fd2.write("%s  \t%r\n" % (tag, obj))
+  log_lock.release()
+
+
+# A tuple space is exposed to the user for communication between
+# threads. Tuples can be inserted with put (with an optional delay),
+# and removed with get (blocking) or grab (nonblocking, returns None
+# on failure). Both get() and grab() accept a list of patterns and
+# will only remove tuples that match the pattern, with None used as a
+# wildcard. The JavaScript UI engine can also post tuples.
+
+board_space   = dict()
+board_counter = 0
+board_cv      = threading.Condition()
+
+def find(*queries):
+  for key, candidate in board_space.iteritems():
+    for query in queries:
+      assert type(query)==tuple, "the board can only contain tuples"
+      if ( len(query) == len(candidate) and
+           all(map( (lambda q,c: q in (None,c)) , query, candidate )) ):
+          return key
+  return None
+
+def put(item, delay=0):
+  assert type(item)==tuple, "the board can only contain tuples"
+  if delay < 0:
+    raise Exception, "time travel not yet implemented" 
+  elif delay > 0:
+    def thunk(): put(item)
+    threading.Timer(delay, thunk).start()
+  else:
+    board_cv.acquire()
+    global board_counter
+    board_counter += 1
+    board_space[board_counter] = item
+    board_cv.notifyAll()
+    board_cv.release()
+    trace("PUT",item,True)
+
+def get(*queries):
+  trace("GET",queries)
+  board_cv.acquire()
+  key = find(*queries)
+  while not key:
+    board_cv.wait()
+    key = find(*queries)
+  found = board_space.pop(key)
+  board_cv.release()
+  trace("GOT",found,True)
+  return found
+
+def grab(*queries):
+  trace("GRAB",queries)
+  board_cv.acquire()
+  key = find(*queries)
+  if key:
+    found = board_space.pop(key)
+  else:
+    found = None
+  board_cv.release()
+  trace("GRUB",found,True)
+  return found
+
+
+# Each client has two identifiers: (1) a "uuid" assigned by the
+# JavaScript part of Willow based on the time and a pseudorandom
+# number; and (2) a sequential assigned client ID "number", also used
+# as the thread name for the associated thread, and retrievable with
+# the me() function. The user only ever uses the number; the UUID is
+# needed purely to avoid Byzantine Generals. We maintain two
+# dictionaries, indexed by the two identifiers, that hold _Client
+# objects. These objects hold the queues used to buffer communication
+# between the clients and their associated session threads.
+
+class _Client(): pass
+clients_by_uuid   = dict()
+clients_by_number = dict()
+clients_lock      = threading.Lock()
+
+def _new_client(session, uuid):
+  clients_lock.acquire()
+  number     = len(clients_by_number)
+  t          = threading.Thread(target=session, name=("%d" % number))
+  c          = _Client()
+  c.queue    = Queue.Queue()
+  c.flushing = True
+  c.number   = number
+  c.holding  = []
+  clients_by_uuid[uuid]     = c
+  clients_by_number[number] = c
+  t.daemon   = True
+  t.start()
+  clients_lock.release()
+  return c
+
+def me():
+  name = threading.current_thread().name
+  try:
+    number = int(name)
+  except ValueError:
+    raise Exception, "must be called from a session thread"
+  return int(threading.current_thread().name)
+
+
+# The user can stop immediate processing of UI actions and redirect
+# them onto a queue with hold(), then flush the queue and turn
+# immediate processing back on with flush(). This is optional, but may
+# come in handy if performance is lacking. By default, these operate
+# on the client associated with the current thread, but a different
+# client or even a list of client numbers, can be provided
+# instead.
+
+def hold(number=None):
+  if number == None: number = me()
+  if type(number) == int: number = [number]
+  for n in number:
+    assert type(n) == int
+    clients_by_number[n].flushing = False
+
+def flush(number=None):
+  if number == None: number = me()  
+  if type(number) == int: number = [number]
+  for n in number:
+    assert type(n) == int
+    client = clients_by_number[n]
+    client.queue.put(client.holding)
+    client.holding = []
+    client.flushing = True
+
+
+# A number of UI actions are available to the user. Each of these
+# pushes a JSON object onto one or more client queues, which will be
+# sent to the client when a POST request come into the web server. By
+# default, these operate on the client associated with the current
+# thread, but a different client number, or even a list of client
+# numbers, can be provided instead. If the 'argument' is a file
+# descriptor open for reading, the contents of the file will be
+# passed.
+
+def action(action, selector, argument, number):
+  if number == None: number = me()
+  if type(number) == int: number = [number]
+  for n in number:
+    assert type(n) == int
+    try: argument = argument.read()
+    except AttributeError: pass
+    client = clients_by_number[n]
+    client.holding += [{"action":   "%s" % action,
+                             "selector": "%s" % selector,
+                             "argument": "%s" % argument}]
+    if client.flushing:
+      flush(n)
+
+def add(argument, selector="body", number=None):
+  action("add", selector, argument, number)
+
+def set(argument, selector="body", number=None):
+  action("set", selector, argument, number)
+
+def push(argument, selector="body", number=None):
+  action("push", selector, argument, number)
+
+def pop(argument, selector="body", number=None):
+  action("pop", selector, argument, number)
+
+def hide(selector="body", number=None):
+  action("hide", selector, None, number)
+
+def show(selector="body", number=None):
+  action("show", selector, None, number)
+
+def peek(selector="body", number=None):
+  action("peek", selector, None, number)
+
+
+# A worse-is-better configuration API in one line
+
+def config(fn): return json.load(open(fn))
+
+
+# Run a web server. GET requests are simply served from the directory
+# that willow.py is in, or if they are not present there, from the
+# current directory. POST requests are where the magic happens.
+
 
 WEBROOT = os.path.dirname(__file__)
-
-class Log():
-  """A Log object can be used to record log messages into a log file,
-  which is in CSV format and automatically gets a name based on the
-  date and time the session starts."""
-  def __init__(self):
-    self.fn = time.strftime("log/%Y-%m-%d-%H-%M-%S.csv")
-    self.fd = open(self.fn,"w")
-    self.csv = csv.writer(self.fd)
-    self.fn2 = time.strftime("log/%Y-%m-%d-%H-%M-%S.txt")
-    self.fd2 = open(self.fn2,"w")
-    self.lock = threading.Lock()
-
-  def write(self, *msg):
-    """Write a record into the CSV log file, with the UNIX timestamp
-    as the first field, and *msg as the subsequent fields."""
-    self.lock.acquire()
-    self.csv.writerow([str(int(time.time()))] + list(msg))
-    sys.stderr.write("%s  \t%r\n" % ("LOG", msg))
-    self.fd2.write("%s  \t%r\n" % ("LOG", msg))
-    self.fd2.flush()
-    self.lock.release()
-
-  def trace(self, tag, obj):
-    """Show a trace message on stderr and in the trace file. For
-    internal use by the willow library."""
-    msg = str(obj)
-    self.lock.acquire()
-    sys.stderr.write("%s  \t%s\n" % (tag,msg[0:65]))
-    for i in range(65,len(msg),65):
-      sys.stderr.write("\t%s\n" % msg[i:i+65])
-    self.fd2.write("%s  \t%r\n" % (tag, obj))
-    self.lock.release()
-
-class Board():
-  """A Board is a thread-safe tuple space. You can post tuples on it,
-  and remove tuples from it, with or without wildcard matching and
-  with or without blocking."""
-
-  def __init__(self, log):
-    self.space = dict()
-    self.counter = 0
-    self.cv = threading.Condition()
-    self.log = log
-
-  def __find(self, *queries):
-    for key, candidate in self.space.iteritems():
-      for query in queries:
-        assert type(query)==tuple, "Type mismatch."
-        if (len(query) == len(candidate) and
-            all(map((lambda q,c: q in set([None,c])), query, candidate))):
-          return key
-    return None
-
-  def put(self, item, delay=0):
-    """To add a tuple (x,y,z) to a board b, just call b.put(x,y,z)."""
-    assert type(item)==tuple and type(delay)==int, "Type mismatch."
-    if delay > 0:
-      def thunk(): self.put(item)
-      threading.Timer(delay, thunk).start()
-    else:
-      self.cv.acquire()
-      self.counter += 1
-      self.space[self.counter] = item
-      self.cv.notifyAll()
-      self.cv.release()
-      self.log.trace("PUT",item)
-
-  def get(self, *queries):
-    """To remove e.g. a tuple that matches either (x,y) or (p,q), you
-    call b.gets((x,y),(p,q)). You can still use wildcards."""
-    assert type(queries)==tuple, "Type mismatch."    
-    self.log.trace("GET",queries)
-    self.cv.acquire()
-    key = self.__find(*queries)
-    while not key:
-      self.cv.wait()
-      key = self.__find(*queries)
-    found = self.space.pop(key)
-    self.cv.release()
-    self.log.trace("GOT",found)
-    return found
-
-  def grab(self, *queries):
-    """To remove e.g. a tuple that matches either (x,y) or (p,q), you
-    call b.gets((x,y),(p,q)). You can still use wildcards."""
-    assert type(queries)==tuple, "Type mismatch."    
-    self.log.trace("GRAB",queries)
-    self.cv.acquire()
-    key = self.__find(*queries)
-    if key:
-      found = self.space.pop(key)
-    else:
-      found = None
-    self.cv.release()
-    self.log.trace("GRUB",found)
-    return found
-
-
-class Client():
-  """A Client object corresponds to an instance of willow.html being
-  viewed remotely."""
-
-  def __init__(self, number, ip):
-    self.number = number                # Number identifying client
-    self.ip = ip                        # IP address of client    
-    self.queue = Queue.Queue()          # Queue for AJAX messages
-    self.flushing = True
-    self.holding = []
-
-
-class Net():
-  def __init__(self):
-    self.clients = dict()
-
-  def action(self, number, action, selector, argument=None):
-    if type(number) == int: number = [number]
-    for n in number:
-      try: argument = argument.read()
-      except AttributeError: pass
-      self.clients[n].holding += [{"action":   "%s" % action,
-                                   "selector": "%s" % selector,
-                                   "argument": "%s" % argument}]
-      if self.clients[n].flushing:
-        self.flush(n)
-
-  def hold(self, number):
-    if type(number) == int: number = [number]
-    for n in number:
-      self.clients[n].flushing = False
-
-  def flush(self, number):
-    if type(number) == int: number = [number]
-    for n in number:
-      self.clients[n].queue.put(self.clients[n].holding)
-      self.clients[n].holding = []
-      self.clients[n].flushing = True
-      
-  def add(self, number, argument, selector="body"):
-    """Add some HTML to each element referenced by the selector."""
-    self.action(number, "add", selector, argument)
-
-  def set(self, number, argument, selector="body"):
-    """Set the contents of each element referenced by the selector."""
-    self.action(number, "set", selector, argument)
-
-  def push(self, number, argument, selector="body"):
-    """Push a class on each element referenced by the selector."""
-    self.action(number, "push", selector, argument)
-
-  def pop(self, number, argument, selector="body"):
-    """Pop a class from each element referenced by the selector."""
-    self.action(number, "pop", selector, argument)
-
-  def hide(self, number, selector="body"):
-    """Hide each element referenced by the selector."""
-    self.action(number, "hide", selector)
-
-  def show(self, number, selector="body"):
-    """Show each element referenced by the selector. This works both
-    on elements previously hidden using the client.hide() method and
-    on items automatically hidden because they are of class 'hidden'."""
-    self.action(number, "show", selector)
-
-  def data(self, number, selector="body"):
-    """Request that the 'value' attribute of each element referenced
-    by the selector be posted on the board."""
-    self.action(number, "data", selector)
-
-
 def run(session, port=8000):
-  """Run a web server using given session function on given TCP
-  port. Use port numbers over 1024 to avoid the need for
-  administrative privileges on the server machine. The session
-  function must accept two arguments: the first is a Client object,
-  and the second is a Board object. The Client object is different for
-  each session thread; the Board object is the same for each session
-  thread."""
-
-  log = Log()
-  clients = {}
-  clients_lock = threading.Lock()
-  board = Board(log)
-  net = Net()
-
   class MyRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def log_message(self, fmt, *arg): pass
     def do_GET(self):
@@ -211,30 +278,23 @@ def run(session, port=8000):
       self.end_headers()
       request_str = self.rfile.read(int(self.headers["Content-length"]))
       request_obj = json.loads(request_str)
-      log.trace("RECV", request_obj)
-      request_id = request_obj["id"]
       try:
-        client = clients[request_id]
+        client = clients_by_uuid[request_obj["id"]]
       except KeyError:
-        clients_lock.acquire()
-        number = len(clients)
-        ip, _ = self.client_address
-        client = Client(number, ip)
-        clients[request_id] = client
-        net.clients[number] = client
-        clients_lock.release()
-        t = threading.Thread(target=session, args=(number,net,board,log))
-        t.daemon = True
-        t.start()                
+        client = _new_client(session, request_obj["id"])
+      threading.current_thread().name = str(client.number)
       if request_obj["action"] == "update":
         reply_obj = client.queue.get()
         while not client.queue.empty():
           reply_obj += client.queue.get()
         reply_str = json.dumps(reply_obj)
-        log.trace("SEND", reply_obj)
+        for obj in reply_obj:
+          trace(obj["action"].upper(),
+                "%s ==> %s" % (obj["argument"].strip(),
+                               obj["selector"].strip()))
         self.wfile.write(reply_str)
       else:
-        board.put((request_obj["action"], client.number, request_obj["argument"]))
+        put((request_obj["action"], client.number, request_obj["argument"]))
 
   class MyHTTPServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer):
     daemon_threads = True
@@ -242,41 +302,3 @@ def run(session, port=8000):
 
   MyHTTPServer(('', port), MyRequestHandler).serve_forever()
 
-def sleep(x):
-  """Sleep x seconds, where x can be a floating point value."""
-  time.sleep(x)
-  
-def escape(s):
-  """Turn s into a string safe for inclusion in HTML;
-  e.g. escape('<>')=='&lt;&gt;'.""" 
-  return cgi.escape(s)
-
-def config(fn):
-  """Reads a configuration file in JSON format."""
-  return json.load(open(fn))
-
-# Willow, a Python framework for experimental economics
-# Copyright (c) 2009, George Mason University
-# All rights reserved.
-
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are
-# met: Redistributions of source code must retain the above copyright
-# notice, this list of conditions and the following disclaimer.
-# Redistributions in binary form must reproduce the above copyright
-# notice, this list of conditions and the following disclaimer in the
-# documentation and/or other materials provided with the distribution.
-# Neither the name of the George Mason University nor the names of its
-# contributors may be used to endorse or promote products derived from
-# this software without specific prior written permission. THIS SOFTWARE
-# IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
-# EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-# PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-# PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-# NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

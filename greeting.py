@@ -1,22 +1,3 @@
-from willow import willow
-
-def session(number, net, board, log):
-  if number == 0:
-    net.add(number, "<h1>About to send some greetings...</h1>")
-    net.add(number, "<p>Please enter your name.</p>")
-    net.add(number, "<input id='bid' type='text' />")
-    net.add(number, "<input id='submit' type='submit' />")
-    _, _, _ = board.get(("click", 0, "submit"))
-    net.data(number, "#bid")
-    net.add(number, "<p>Greetings have been sent!</p><hr>")
-  else:
-    net.add(number, "<h1>Waiting for some greetings...</h1>")
-    _, _, name = board.get(("data", 0, None))
-    log.write("name",name)
-    net.add(number, "<p>Greetings from %s.</p><hr>" % name)
-
-willow.run(session)        
- 
 # Willow, a Python framework for experimental economics
 # Copyright (c) 2009, George Mason University
 # All rights reserved.
@@ -42,3 +23,23 @@ willow.run(session)
 # LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+from willow.willow import *
+
+def session():
+  if me() == 0:
+    add("<h1>About to send some greetings...</h1>")
+    add("<p>Please enter your name.</p>")
+    add("<input id='bid' type='text' />")
+    add("<input id='submit' type='submit' />")
+    _, _, _ = get(("click", 0, "submit"))
+    peek("#bid")
+    add("<p>Greetings have been sent!</p><hr>")
+  else:
+    add("<h1>Waiting for some greetings...</h1>")
+    _, _, name = get(("poke", 0, None))
+    log("name", name)
+    add("<p>Greetings from %s.</p><hr>" % name)
+
+run(session)        
+ 

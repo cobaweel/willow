@@ -1,40 +1,40 @@
-from willow import willow
+from willow.willow import *
 
-def session(number, net, board, log):
-  if number == 0:
-    net.add(0, open("ultimatum0.html"))
-    _, _, bid = board.get(("click", 0, None))
+def session():
+  if me() == 0:
+    add(open("ultimatum0.html"))
+    _, _, bid = get(("click", 0, None))
     bid = int(bid)
-    board.put(("bid", bid))
-    net.show(0, "#wait")
-    net.add(0, bid, "#offer")
-    _, accept = board.get(("accept", None))
+    put(("bid", bid))
+    show("#wait")
+    add(bid, "#offer")
+    _, accept = get(("accept", None))
     if accept:
-      net.show(0, "#accept,#pay")
-      net.add(0, 10-bid, "#payoff")
+      show("#accept,#pay")
+      add(10 - bid, "#payoff")
     else:
-      net.show(0, "#reject,#pay")
-      net.add(0, 0,"#payoff")
-    log.write("bid", bid)
-    log.write("reaction", accept)
-  elif number == 1:
-    net.add(1, open("ultimatum1.html"))
-    _, bid = board.get(("bid", None))
-    net.show(1, "#offer")
-    net.add(1, bid, "#bid")
-    _, _, response = board.get(("click", 1, None))
+      show("#reject,#pay")
+      add(0, "#payoff")
+    log("bid", bid)
+    log("reaction", accept)
+  elif me() == 1:
+    add(open("ultimatum1.html"))
+    _, bid = get(("bid", None))
+    show("#offer")
+    add(bid, "#bid")
+    _, _, response = get(("click", 1, None))
     if response == "accept":
-      net.show(1, "#pay")
-      net.add(1, 10-bid,"#payoff")
-      board.put(("accept",  True))
+      show("#pay")
+      add(10-bid,"#payoff")
+      put(("accept",  True))
     else:
-      net.show(1, "#pay")
-      net.add(1, 0, "#payoff")
-      board.put(("accept",  False))
+      show("#pay")
+      add(0, "#payoff")
+      put(("accept",  False))
   else:
-    net.add(number, "<h1>Experiment is full.</h1>")
+    add("<h1>Experiment is full.</h1>")
 
-willow.run(session)
+run(session)
 
 # Willow, a Python framework for experimental economics
 # Copyright (c) 2009, George Mason University

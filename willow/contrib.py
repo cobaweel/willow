@@ -23,10 +23,15 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-from willow.willow import *
+from willow import *
 
-def session():
-  add("<h1>Hello, world.</h1>")
-
-run(session)        
- 
+def button(id, text, selector="body", number=None):
+    text = str(text)
+    if text[0] == '\n':
+        html = "<br>"
+        text = text[1:]
+    else:
+        html = ""
+    html += "<input type='submit' id='%s' value='%s'>" % (id,text)
+    add(html, selector, number)
+        

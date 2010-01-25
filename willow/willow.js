@@ -45,10 +45,10 @@ $(document).ready(function(){
 	   $(cmd.selector).hide(); break;
 	 case "show":
 	   $(cmd.selector).show(); break;
-	 case "data":
+	 case "peek":
 	   var arg = $(cmd.selector).attr("value");
 	   if (!arg) arg = "";
-	   var rep = {"action": "data", "argument": arg, "id": id };
+	   var rep = {"action": "poke", "argument": arg, "id": id };
 	   $.post("willow", JSON.stringify(rep));
 	   break;
 	 }

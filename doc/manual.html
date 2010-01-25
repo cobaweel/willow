@@ -374,14 +374,21 @@ in some other language, you can try</p></div>
 <div class="ilist"><ul>
 <li>
 <p>
-Mark Pilgrim, <em>Dive into Python</em> (<a href="http://diveintopython.org">http://diveintopython.org</a>)
+Mark Pilgrim, <em>Dive into Python</em>
 </p>
+<div class="literalblock">
+<div class="content">
+<pre><tt>http://diveintopython.org</tt></pre>
+</div></div>
 </li>
 <li>
 <p>
 Guido van Rossum et al., <em>The Python Tutorial</em>
-  (<a href="http://docs.python.org/tutorial/">http://docs.python.org/tutorial/</a>)
 </p>
+<div class="literalblock">
+<div class="content">
+<pre><tt>http://docs.python.org/tutorial/</tt></pre>
+</div></div>
 </li>
 </ul></div>
 <div class="para"><p>If you want to learn both the craft of computer programming and the
@@ -392,14 +399,20 @@ Python is an excellent first language. Some free resources include:</p></div>
 <p>
 Jeffrey Elkner, Allen B. Downey, and Chris Meyers, <em>How to Think
   Like a Computer Scientist</em>
-  (<a href="http://openbookproject.net/thinkCSpy/">http://openbookproject.net/thinkCSpy/</a>)
 </p>
+<div class="literalblock">
+<div class="content">
+<pre><tt>http://openbookproject.net/thinkCSpy/</tt></pre>
+</div></div>
 </li>
 <li>
 <p>
 Swaroop C. H., <em>A Byte of Python</em>
-  (<a href="http://www.swaroopch.com/notes/Python">http://www.swaroopch.com/notes/Python</a>)
 </p>
+<div class="literalblock">
+<div class="content">
+<pre><tt>http://www.swaroopch.com/notes/Python</tt></pre>
+</div></div>
 </li>
 </ul></div>
 </div>
@@ -415,15 +428,11 @@ routines for commonly performed experiments. After all, it is
 precisely because our experiments are different from what has gone
 before that we bother with them. Rather, Willow is a generic toolkit
 that makes a lot of the things we do in experimental economics easy.</p></div>
-<div class="para"><p>A running Willow program consists of server and a number of
-clients. The clients are web browsers and the server is a Python
-program created using the <tt>willow</tt> library. Inside the server, there
-is one <em>session thread</em> corresponding to each client; session threads
-are created automatically as clients connect to the server. Each
-session thread is capable of manipulating the contents of the web page
-displayed on its corresponding client browser, receiving input from
-that client browser, and of posting and reading <em>notes</em> on a common
-<em>board</em> that the session threads use to communicate with one another.</p></div>
+<div class="para"><p>To use a Willow program, you need only install your program on a
+single "monitor" computer. The computers used by your research
+subjects will simply run a web browser, which connects to a web server
+that runs on the monitor computer. The user interface for the subjects
+will be displayed inside the browser window.</p></div>
 </div>
 <h2 id="_installing_willow">Installing Willow</h2>
 <div class="sectionbody">
@@ -436,16 +445,17 @@ Python 2.6 on your computer, get it from
 <a href="http://www.python.org/download/releases/2.6.3/">http://www.python.org/download/releases/2.6.3/</a> and then come back. If
 you are not sure whether you have Python 2.6 on your computer, just
 move on to the next section of the manual. If things don't work,
-you'll notice soon enough, and you can go back and install Python.</p></div>
+you'll notice soon enough, and you can go back and install Python. Do
+not use Python version 3. It will not work.</p></div>
 </div>
 <h2 id="_using_willow">Using Willow</h2>
 <div class="sectionbody">
-<div class="para"><p>Willow works very similarly on different operating systems, but from
-here on I am going to assume that you use Windows. In the Willow
-folder, you will find a file named <tt>hello.py</tt>. You need to run this
-file by double-clicking on it. Once the <tt>hello.py</tt> program is running,
-fire up a web browser and point it to <tt>http://localhost:8000</tt>. You
-should see a page that looks like so:</p></div>
+<div class="para"><p>In the Willow folder, you will find a file named <tt>hello.py</tt>. You need
+to run this file. On Windows and most Linux distributions, you can
+double click on it. You can also run the command <tt>python hello.py</tt>
+from the command line. Once the <tt>hello.py</tt> program is running, fire up
+a web browser and point it to <tt>http://localhost:8000</tt>. You should see
+a page that looks like so:</p></div>
 <div class="sidebarblock">
 <div class="sidebar-content">
 <div class="para"><p>Hello World.</p></div>
@@ -460,32 +470,149 @@ in it:</p></div>
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-weight: bold"><span style="color: #000080">from</span></span> willow <span style="font-weight: bold"><span style="color: #000080">import</span></span> willow
+<pre><tt><span style="font-weight: bold"><span style="color: #000080">from</span></span> willow<span style="color: #990000">.</span>willow <span style="font-weight: bold"><span style="color: #000080">import</span></span> <span style="color: #990000">*</span>
 
-<span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">session</span></span><span style="color: #990000">(</span>client<span style="color: #990000">,</span> board<span style="color: #990000">,</span> log<span style="color: #990000">):</span>
-  client<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;h1&gt;Hello, world.&lt;/h1&gt;"</span><span style="color: #990000">)</span>
+<span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">session</span></span><span style="color: #990000">():</span>
+  <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;h1&gt;Hello, world.&lt;/h1&gt;"</span><span style="color: #990000">)</span>
 
-willow<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">run</span></span><span style="color: #990000">(</span>session<span style="color: #990000">)</span>
+<span style="font-weight: bold"><span style="color: #000000">run</span></span><span style="color: #990000">(</span>session<span style="color: #990000">)</span>
 </tt></pre></div></div>
 <div class="para"><p>See here the code of a very simple but working Willow program. You can
 run it using the <tt>Run &gt; Run Module</tt> menu option or by pressing
 <tt>F5</tt>. Again, you now need to point a web browser to
 <tt>http://localhost:8000</tt>.</p></div>
+<div class="para"><p>If you see an error message like "address already in use," you are
+probably trying to run two instances of Willow simultaneously. You
+should stop the first one first (just close the window).</p></div>
+<div class="para"><p>Now, let us look at the above code. Most of it is boilerplate, but the
+good news is that this is all the boilerplate you need. The first line
+imports the willow library. It assumes that <tt>willow.py</tt> is in a
+subdirectory <tt>willow</tt> of the directory in which <tt>hello.py</tt> is; this is
+how things are set up for the sample programs, and if you put your own
+programs in the same place, it will just work. The next two lines
+define a session function, and the last line instructs Willow to start
+the web server, using the session function that has just been defined.</p></div>
+<div class="para"><p>Together, these four lines define a web server that you can connect to
+from a browser. If the browser is running on the same machine as the
+server, you can use <tt>http://localhost:8000</tt> as a URL. If it is running
+somewhere else, you must find out the IP address of the server. (If
+you don't know it, there is a whole chapter further down in the manual
+about how to figure it out.) If the IP address is, say,
+123.123.123.123, then you can reach your Willow server using
+<tt>http://123.123.123.123:8000</tt>. The <tt>:8000</tt> part is called the port
+number; you can specify a different port number as an extra argument
+to <tt>run</tt> (e.g. <tt>run(session, 8001)</tt>) if you insist on a port different
+from 8000.</p></div>
+<div class="para"><p>Once the web server is running, for each client that connects to it,
+the session function will be called once. It will keep running until
+it returns. Each session function runs in its own thread. This means
+that several "copies" of the session function are running
+simultaneously.</p></div>
+<div class="para"><p>In this case, we want to simply display the text "Hello world." in the
+web browser of every client that connects, so we have a very simple
+session function that does nothing but <tt>add("&lt;h1&gt;Hello,
+world.&lt;/h1&gt;")</tt>. The <tt>add()</tt> function adds an HTML snippet to the web
+page being displayed in the client's browser.</p></div>
+</div>
+<h2 id="_a_digression_on_your_ip_address">A digression on your IP address</h2>
+<div class="sectionbody">
+<div class="para"><p>You need the IP address of your monitor computer in order for your
+client computers to connect to it. It would be convenient if Willow
+could display the right IP address for you to use, but unfortunately,
+this is easier said than done, since a computer can have multiple IP
+addresses at the same time: IP version 4 and IP version 6, on the
+wireless network, on the ethernet network, on the "loopback" network,
+and so on.</p></div>
+<h3 id="_how_to_find_your_ip_address_on_linux">How to find your IP address on Linux</h3><div style="clear:left"></div>
+<div class="para"><p>On Linux on my computer, I use the <tt>ifconfig</tt> command at the command
+line. When I enter</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>$ ifconfig</tt></pre>
+</div></div>
+<div class="para"><p>the computer responds</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>$ ifconfig
+eth1      Link encap:Ethernet  HWaddr 00:23:ae:1e:9e:ac
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+          Interrupt:17
+
+eth2      Link encap:Ethernet  HWaddr 00:24:2b:c6:a4:76
+          inet addr:10.143.91.80  Bcast:10.143.91.255  Mask:255.255.254.0
+          inet6 addr: fe80::224:2bff:fec6:a476/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:10076 errors:0 dropped:0 overruns:0 frame:7868
+          TX packets:10906 errors:20 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:1571308 (1.5 MB)  TX bytes:1341157 (1.3 MB)
+          Interrupt:17 Base address:0xc000
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:85540 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:85540 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:41237280 (41.2 MB)  TX bytes:41237280 (41.2 MB)
+$</tt></pre>
+</div></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="./images/icons/warning.png" alt="Warning" />
+<img src="./images/icons/tip.png" alt="Tip" />
 </td>
-<td class="content">There is a slight probability that, while you are
-programming, you will encounter an "Address already in use" error
-message. If you are not in fact already running another instance of
-Willow or some other programm trying to be a server on port 8000, this
-is a bug. In technical terms, Willow sets the <tt>SO_REUSEADDR</tt> flag and
-should therefore not be vulnerable to TCP connections that linger in
-the <tt>TIME_WAIT</tt> state. If you run into this problem anyway, please (a)
-wait 5 minutes and try again, and (b) file a bug report.</td>
+<td class="content">In this and many other software manuals, <tt>$</tt> is used to indicate
+the Linux/UNIX prompt. On your computer, it may be different. <tt>%</tt> is a
+popular choice, too, for example.</td>
 </tr></table>
 </div>
+<div class="para"><p>There is much information here, but we only need a little. First,
+notice that this computer has three network interfaces, called <tt>eth1</tt>,
+<tt>eth2</tt> and <tt>lo</tt>. <tt>lo</tt> is the loopback device; it does not correspond
+to any actual hardware, but it is rather a contraption that the
+operating system uses so that you can make connections to your own
+machine at address <tt>127.0.0.1</tt> even when the network is down. The
+other two network devices are actual network cards that are in the
+computer; as it happens, <tt>eth1</tt> is a wired Ethernet network, and
+<tt>eth2</tt> is a wireless 802.11g network. According to the information
+above, the computer has IP address 10.143.91.80 on <tt>eth2</tt>, and it has
+no IP address on <tt>eth1</tt>, which makes sense, because the wired
+connection was not plugged when I executed the command. In the output
+above you can also see IP v6 addresses (labeled <tt>inet6 addr</tt>), but
+those are not commonly used.</p></div>
+<h3 id="_how_to_find_your_ip_address_on_windows">How to find your IP address on Windows</h3><div style="clear:left"></div>
+<div class="para"><p>BLABLABLA</p></div>
+</div>
+<h2 id="_a_digression_on_html_the_hypertext_markup_language">A digression on HTML, the hypertext markup language</h2>
+<div class="sectionbody">
+<div class="para"><p>In order to use Willow, it is necessary that you understand some HTML,
+because HTML is the language of web pages, and the user interface for
+a Willow program is made up of web pages. This manual will not go into
+detail about HTML, but here is a summary of some of the most common
+HTML tags:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 2.11.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">&lt;h1&gt;</span></span>This is a level 1 heading.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/h1&gt;</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;h2&gt;</span></span>This is a level 2 heading.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/h2&gt;</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;h3&gt;</span></span>This is a level 3 heading.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/h3&gt;</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;p&gt;</span></span>This is a paragraph, with <span style="font-weight: bold"><span style="color: #0000FF">&lt;b&gt;</span></span>bold<span style="font-weight: bold"><span style="color: #0000FF">&lt;/b&gt;</span></span> and <span style="font-weight: bold"><span style="color: #0000FF">&lt;i&gt;</span></span>italics<span style="font-weight: bold"><span style="color: #0000FF">&lt;/i&gt;</span></span>.
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;li&gt;</span></span>This is a bulleted list item.
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;input</span></span> <span style="color: #009900">type</span><span style="color: #990000">=</span><span style="color: #FF0000">"submit"</span> <span style="color: #009900">id</span><span style="color: #990000">=</span><span style="color: #FF0000">"foo"</span> <span style="color: #009900">value</span><span style="color: #990000">=</span><span style="color: #FF0000">"This is a button"</span><span style="font-weight: bold"><span style="color: #0000FF">&gt;</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;input</span></span> <span style="color: #009900">type</span><span style="color: #990000">=</span><span style="color: #FF0000">"text"</span> <span style="color: #009900">id</span><span style="color: #990000">=</span><span style="color: #FF0000">"foo"</span> <span style="color: #009900">value</span><span style="color: #990000">=</span><span style="color: #FF0000">"This is a text box"</span><span style="font-weight: bold"><span style="color: #0000FF">&gt;</span></span>
+</tt></pre></div></div>
+</div>
+<h2 id="_a_more_complicated_willow_example">A more complicated Willow example</h2>
+<div class="sectionbody">
+<div class="para"><p>BLABLABLA</p></div>
 </div>
 <h2 id="_api_documentation">API documentation</h2>
 <div class="sectionbody">
@@ -494,6 +621,142 @@ wait 5 minutes and try again, and (b) file a bug report.</td>
 <td class="icon">
 <img src="./images/icons/note.png" alt="Note" />
 </td>
+<td class="content">The <tt>selector</tt> argument can take any CSS selector. The CSS
+selector mini-language is rather rich, but the most typical cases are
+things like <tt>p</tt> (to get at all <tt>&lt;p&gt;</tt> elements), <tt>#a</tt>, (to get at the
+first element with <tt>id="a"</tt>), and <tt>.a</tt> (to get at all elements with
+<tt>class="a"</tt>). For more information, consult any book or web page on
+CSS. Whenever <tt>selector</tt> is omitted, the selector "<tt>body</tt>" is implied,
+which means you are referring to the entire body of the HTML document.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/note.png" alt="Note" />
+</td>
+<td class="content">By specifying an integer, or a sequence of integers, for
+<tt>number</tt>, you can operate directly on clients other than the one
+associated by default with the current session thread.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/note.png" alt="Note" />
+</td>
+<td class="content">Whenever <tt>argument</tt> is a file descriptor that can be read from,
+the contents of the file are automatically substituted.</td>
+</tr></table>
+</div>
+<div class="vlist"><dl>
+<dt>
+<tt>me()</tt>
+</dt>
+<dd>
+<p>
+  Returns the number of the current client.
+</p>
+</dd>
+<dt>
+<tt>set(argument, [selector], [number])</tt>
+</dt>
+<dd>
+<p>
+  Set the content of the HTML element(s) referred to by <tt>selector</tt> on
+  to be <tt>argument</tt>.
+</p>
+</dd>
+<dt>
+<tt>add(argument, [selector], [number])</tt>
+</dt>
+<dd>
+<p>
+  Add <tt>argument</tt> to the content of the HTML element(s) referred to by
+  <tt>selector</tt>.
+</p>
+</dd>
+<dt>
+<tt>push(argument, [selector], [number])</tt>
+</dt>
+<dd>
+<p>
+  Add the CSS style <tt>argument</tt> to the HTML element(s) referred to by
+  <tt>selector</tt>.
+</p>
+</dd>
+<dt>
+<tt>pop(argument, [selector], [number])</tt>
+</dt>
+<dd>
+<p>
+  Add the CSS style <tt>argument</tt> to the HTML element(s) referred to by
+  <tt>selector</tt>.
+</p>
+</dd>
+<dt>
+<tt>hide([selector], [number])</tt>
+</dt>
+<dd>
+<p>
+  Hide the HTML element(s) referred to by <tt>selector</tt>.
+</p>
+</dd>
+<dt>
+<tt>show([selector], [number])</tt>
+</dt>
+<dd>
+<p>
+  Show the HTML element(s) referred to by <tt>selector</tt>, if previously
+  hidden.
+</p>
+</dd>
+<dt>
+<tt>peek([selector], [number])</tt>
+</dt>
+<dd>
+<p>
+  Request the contents of the HTML element(s) referred to by
+  <tt>selector</tt> to be posted. Intended to be used with <tt>&lt;input&gt;</tt>
+  elements.
+</p>
+</dd>
+<dt>
+<tt>hold([number])</tt>
+</dt>
+<dd>
+<p>
+  Stop executing subsequent <tt>set</tt>, <tt>add</tt>, <tt>push</tt>, <tt>pop</tt>, <tt>hide</tt>,
+  <tt>show</tt>, and <tt>peek</tt> immediately, but instead stuff them in a buffer
+  where they sit until <tt>flush()</tt> is called.
+</p>
+</dd>
+<dt>
+<tt>flush([number])</tt>
+</dt>
+<dd>
+<p>
+  Execute all <tt>set</tt>, <tt>add</tt>, <tt>push</tt>, <tt>pop</tt>, <tt>hide</tt>, <tt>show</tt>, and <tt>peek</tt>
+  actions that were held in a buffer since <tt>hold()</tt> was called, and
+  from here on out resume executing such actions immediately without
+  buffering.
+</p>
+</dd>
+<dt>
+<tt>put(tuple, [delay])</tt>
+</dt>
+<dd>
+<p>
+  After an optional <tt>delay</tt> in seconds, post the tuple onto the
+  communication board.
+</p>
+</dd>
+</dl></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/warning.png" alt="Warning" />
+</td>
 <td class="content">In Python, the value <tt>x</tt> is the same as <tt>(x)</tt>, but it is not the
     same as the one-element tuple containing it, which is written
     <tt>(x,)</tt>.</td>
@@ -501,201 +764,78 @@ wait 5 minutes and try again, and (b) file a bug report.</td>
 </div>
 <div class="vlist"><dl>
 <dt>
-<tt>willow.run(session, [port])</tt>
+<tt>get(*queries)</tt>
+</dt>
+<dd>
+<p>
+  Block until a tuple becomes present on the board that matches at
+  least one of the queries, then return it. A tuple on the board
+  matches a query whenever the tuple on the board and the query have
+  the same length, and each element of the query is either <tt>None</tt> or
+  identical to the corresponding element in the tuple on the board.
+</p>
+</dd>
+<dt>
+<tt>grab(*queries)</tt>
+</dt>
+<dd>
+<p>
+  If a tuple is present on the board that matches at least one of the
+  queries return it; otherwise return <tt>None</tt>.
+</p>
+</dd>
+<dt>
+<tt>run(session, [port])</tt>
 </dt>
 <dd>
 <p>
   This starts the Willow web server on the specified port (or port
   8000 if you leave the second argument out). The web server will
   create a thread for each client that connects, and each thread will
-  run the <tt>session</tt> function. Three parameters are passed to the
-  <tt>session</tt> function: a <tt>Client</tt> object, a <tt>Board</tt> object, and a <tt>Log</tt>
-  object. The <tt>Board</tt> and <tt>Log</tt> objects are the same for all threads
-  in a given web server instance, but the <tt>Client</tt> objects are
-  different for each thread. The web server will search for requested
-  files in the current directory, among other places, so you can for
-  instance include images in your pages.
+  run the <tt>session</tt> function. Within each thread, the <tt>me()</tt> function
+  will return a different value, and <tt>add</tt>, <tt>set</tt>, etc. will by
+  default operate on a different client. The web server will search
+  for requested files in the current directory, among other places, so
+  you can for instance include images in your pages.
 </p>
 </dd>
 <dt>
-<tt>willow.config(filename)</tt>
+<tt>config(filename)</tt>
 </dt>
 <dd>
 <p>
-  Reads a configuration file in JSON format and returns a
-  corresponding Python object. For instance, if you have a file
-  <tt>protocol.txt</tt> containing the text <tt>{ "rounds" : 12, "subjects" :
-  4}</tt> then <tt>cfg = willow.config("protocol.txt")</tt> will set the variable
-  <tt>cfg</tt> to the python dictionary <tt>{u'rounds': 12, u'subjects':
-  4}</tt>. The letter <tt>u</tt> appears in front of the strings because JSON
-  strings are Unicode, not ASCII, but you do not need to worry; to get
-  the value of the <tt>rounds</tt> parameter, simply use
-  <tt>cfg[<em>rounds</em>]</tt>. JSON is a very simple data file format that is
-  widely used in interactive web programming; for documentation, see
-  the JSON web site (<a href="http://json.org/">http://json.org/</a>).
-</p>
-</dd>
-<dt>
-<tt>class Client</tt>
-</dt>
-<dd>
-<p>
-  The <tt>Client</tt> class represents a browser window on the user's
-  end. Whenever a method takes a <tt>selector</tt> argument, that argument
-  can specify a subset of the HTML nodes in the document using an
-  arbitrary jQuery selector (<a href="http://docs.jquery.com/Selectors">http://docs.jquery.com/Selectors</a>). The
-  most common selectors are of the form <tt>"#bid"</tt>, which selects the
-  one element with <tt>id</tt> set to <tt>"bid"</tt>, and the form <tt>".entry"</tt>, which
-  selects all elements that have <tt>entry</tt> among their styles.
-</p>
-<div class="vlist"><dl>
-<dt>
-<tt>client.add(argument, [selector])</tt>
-</dt>
-<dd>
-<p>
-    Add some HTML to the specified elements, or the base element if
-    none is specified. In particular, <tt>argument</tt> can either be a
-    string, or an object (such as a file descriptor) that has a
-    <tt>read()</tt> method that yields a string. The typical ways of using it
-    are <tt>client.add("&lt;p&gt;foo&lt;/p&gt;")</tt>, which would add the HTML code
-    <tt>&lt;p&gt;foo&lt;/p&gt;</tt> to the base element, and
-    <tt>client.add(open("template.html"))</tt>, which would add the contents
-    of <tt>template.html</tt> to the base element.
-</p>
-</dd>
-<dt>
-<tt>client.push(classname, [selector])</tt>
-</dt>
-<dd>
-<p>
-    Add a CSS class to the specified elements, or the base element if
-    none is specified. Example: <tt>client.push("selected","#option3")</tt>
-    adds the <tt>selected</tt> class to the element with id <tt>option3</tt>.
-</p>
-</dd>
-<dt>
-<tt>client.pop(classname, [selector])</tt>
-</dt>
-<dd>
-<p>
-    Remove a CSS class from the specified elements, or the base
-    element if none is specified.
-</p>
-</dd>
-<dt>
-<tt>client.clear([selector])</tt>
-</dt>
-<dd>
-<p>
-    Clear the content of specified elements, or of the base element if
-    none is specified.
-</p>
-</dd>
-<dt>
-<tt>client.hide([selector])</tt>
-</dt>
-<dd>
-<p>
-    Hide the specified elements, or the base element if
-    none is specified.
-</p>
-</dd>
-<dt>
-<tt>client.show([selector])</tt>
-</dt>
-<dd>
-<p>
-    Show the specified elements. This works both on elements
-    previously hidden using the <tt>client.hide()</tt> method and on items
-    automatically hidden because they are of class <tt>hidden</tt>.
-</p>
-</dd>
-<dt>
-<tt>client.data([selector])</tt>
-</dt>
-<dd>
-<p>
-    Request that the <tt>value</tt> attributes of the specified elements be
-    posted on the board as tuples of the form <tt>("data",id,?)</tt>, where
-    <tt>id</tt> is the client number, and <tt>?</tt> is the requested data.
-</p>
-</dd>
-<dt>
-<tt>client.hold()</tt>
-</dt>
-<dd>
-<p>
-    Request that all subsequent actions pertaining to this client be
-    buffered until <tt>client.flush()</tt> is called. (Idempotent.)
-</p>
-</dd>
-<dt>
-<tt>client.flush()</tt>
-</dt>
-<dd>
-<p>
-    Request that all buffered actions be processed. (Idempotent.) When
-    the <tt>hold</tt> and <tt>flush</tt> operations are used to group together a
-    number of actions, the actions will be delivered to the client in
-    a single AJAX message, which is considerably faster.
+  Reads a configuration file in JSON format (<a href="http://json.org/">http://json.org/</a>) and
+  returns a corresponding Python object. For instance, if you have a
+  file <tt>protocol.txt</tt> containing the text <tt>{ "rounds" : 12, "subjects"
+  : 4}</tt> then <tt>cfg = willow.config("protocol.txt")</tt> will set the
+  variable <tt>cfg</tt> to the python dictionary <tt>{u'rounds': 12,
+  u'subjects': 4}</tt>.
 </p>
 </dd>
 </dl></div>
-</dd>
-<dt>
-<tt>class Board</tt>
-</dt>
-<dd>
-<p>
-  The <tt>Board</tt> is an object used for communication and synchronization
-  between threads. Threads can post notes on the board, and take notes
-  off the board.
-</p>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/warning.png" alt="Warning" />
+</td>
+<td class="content">The letter <tt>u</tt> appears in front of the strings that come out
+  of <tt>config</tt> because JSON strings are Unicode, not ASCII, but you do
+  not need to worry; to get the value of the <tt>rounds</tt> parameter,
+  simply use <tt>cfg["rounds"]</tt>.</td>
+</tr></table>
+</div>
 <div class="vlist"><dl>
 <dt>
-<tt>board.put(x, [delay])</tt>
+<tt>log(x,y,&#8230;)</tt>
 </dt>
 <dd>
 <p>
-    Add the tuple <tt>x</tt> to the board, with an optional delay in seconds.
+  Write (x,y,&#8230;) to the log file as a record. A new log file is
+  created in the <tt>log</tt> folder whenever the Willow library is loaded,
+  and it bears a name based on the date and time when it was
+  created. The log files are in CSV format and can be opened with a
+  text editor or a spreadsheet program.
 </p>
-</dd>
-<dt>
-<tt>board.get(x,y,&#8230;)</tt>
-</dt>
-<dd>
-<p>
-    Wait until the tuples <tt>x</tt>, or the tuple <tt>y</tt>, etc., appears on the
-    board, <em>then remove it from the board.</em> Returns the tuple
-    retrieved. If one or more of the elements in a tuple <tt>board.get()</tt>
-    are <tt>None</tt>, those will act as wildcards. For instance,
-    <tt>board.get(("foo",None))</tt> will wait until a tuple shows up on the
-    board that has two elements, the first of which is <tt>"foo"</tt>, and
-    the second of which may be anything. Similarly,
-    <tt>board.get((None,None,None))</tt> matches <em>any</em> three-element tuple.
-</p>
-</dd>
-</dl></div>
-</dd>
-<dt>
-<tt>class Log</tt>
-</dt>
-<dd>
-<div class="vlist"><dl>
-<dt>
-<tt>log.write(x,y,&#8230;)</tt>
-</dt>
-<dd>
-<p>
-    Write (x,y,&#8230;) to the log file as a record. A new log file is
-    created each time <tt>willow.run()</tt> is invoked, and it bears a name
-    based on the date and time when it was created. The log files are
-    in CSV format and can be opened with a text editor or a
-    spreadsheet program.
-</p>
-</dd>
-</dl></div>
 </dd>
 </dl></div>
 </div>
@@ -709,7 +849,7 @@ wait 5 minutes and try again, and (b) file a bug report.</td>
 <dd>
 <p>
         Any element that has class <tt>hidden</tt> turned on will start out
-        hidden. You can call <tt>client.show()</tt> on it to make it
+        hidden. You can call <tt>show()</tt> on it to make it
         appear. Example: <tt>&lt;p&gt;At the moment, you can&lt;span
         class="hidden"&gt;not&lt;/span&gt; trade widgets.&lt;/p&gt;</tt>
 </p>
@@ -727,9 +867,76 @@ wait 5 minutes and try again, and (b) file a bug report.</td>
 </dd>
 </dl></div>
 </div>
+<h2 id="_kiosk_mode_browsing">Kiosk mode browsing</h2>
+<div class="sectionbody">
+<div class="para"><p>In order to prevent subjects from fiddling around with the web browser
+used to display a user interface to them, you can use a "kiosk mode"
+web browser. While several web browsers have kiosk modes, I have found
+that Google Chrome is the most convenient. On Linux, you simply use
+the command line <tt>google-chrome &#8212;kiosk</tt> instead of just
+<tt>google-chrome</tt>, and you get a full-screen browser without any
+extraneous bits of user interface that subjects might accidentally
+click on.</p></div>
+</div>
+<h2 id="_architecture">Architecture</h2>
+<div class="sectionbody">
+<div class="para"><p>In this section, I will describe some of the nuts and bolts of
+Willow. It is not usually necessary to understand this, but it may be
+helpful for those seeking to extend Willow or satisfy their curiosity.</p></div>
+<div class="para"><p>The core of willow is made up of <tt>willow/willow.py</tt> and
+<tt>willow/willow.js</tt> (which is included by <tt>willow/index.html</tt>). In
+<tt>willow.py</tt>, the function <tt>run</tt> is defined, which starts a web
+server. This web server serves GET requests in pretty much the normal
+way, but it does something special using POST requests. In particular,
+it expects POST requests to be Ajax calls ("<tt>XMLHttpRequest</tt>") from
+<tt>willow.js</tt>. In fact, each running instance of <tt>willow.js</tt> (and there
+is one per client) will always have one such request outstanding; when
+a response comes in, a new one is generated immediately. This means
+that the web server always has a way of talking to the client: it can
+respond to the outstanding POST request. In order to keep track of the
+outstanding POST requests, the web server is multithreaded; each
+request gets its own thread. The web server threads, in their turn,
+decide what to reply to a POST request by looking on a queue.</p></div>
+<div class="para"><p>For each client, there is a separate queue. Each client generates, in
+JavaScript, a UUID, which it submits when it first connects, and which
+the web server can use to map a POST request to the correct queue. The
+reason that we do not use the sequential client numbers for this
+purpose is that the way the protocol works implies that the first
+contact is made by the client, and the clients have no way of doing
+the communication required to make sure their client IDs are
+sequential before they are actually talking to the server. UUIDs, on
+the other hand, which are hashes of the wall clock time and a random
+number, can be generated in a decentralized way. Once clients connect,
+they are also assigned a sequential client number, which is exposed to
+the user.</p></div>
+<div class="para"><p>The web server does not busy itself with putting things on the
+queues. That is what session threads are for. One session thread is
+started each time a client connects for the first time. The session
+thread is configurable; in fact, in runs whatever <tt>session</tt> function
+is passed to <tt>run()</tt>. Each session thread is assigned a name which is
+the sequential client number, and the queues are made indexable by
+these numbers as well. (Note that this means we have two different
+tables pointing to the same queues, one indexed by UUID, and one by
+client number.)</p></div>
+<div class="para"><p>It is these <tt>session</tt> functions that put things onto the queues. Each
+session function has access to each of the queues, indexed by client
+number, but it typically uses functions that automatically fill in the
+client number that the particular session thread is associated
+with. This is accomplished, of course, by looking at the thread name
+of the current thread.</p></div>
+<div class="para"><p>Last, we come to the tuple space. This is largely a convenience, and
+could be used independently of the rest of Willow, but it has proven
+to be a convenient way of doing IPC between the threads without
+needing to understand overly complicated concurrency primitives.</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="architecture.png" alt="architecture.png"/>
+</div>
+</div>
+</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2009-11-05 01:27:11 EDT
+Last updated 2010-01-24 19:43:01 EDT
 </div>
 </div>
 </body>
