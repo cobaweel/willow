@@ -1,3 +1,3 @@
 
-    Please check the manual willow.html file under doc/
+    Please check the manual doc/manual.html
 
