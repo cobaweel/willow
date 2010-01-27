@@ -3,103 +3,107 @@ from willow.contrib import *
 import random
 
 def button(id, text, selector="body", number=None):
-    html = ("<br><input class='wide' type='submit' id='%s' value='%s'>" % 
+    html = ("<input class='small' type='submit' id='%s' value='%s'>" % 
             (id,text))
     add(html, selector, number)
-
-def smallbutton(id, text, selector="body", number=None):
-    html = ("<input class='small' type='submit' id='%s' value='%s'>" % 
+def brbutton(id, text, selector="body", number=None):
+    html = ("<br><input type='submit' class='wide' id='%s' value='%s'>" % 
             (id,text))
     add(html, selector, number)
 
 
 def session():
   number = me()            # Client ID for this thread
-  
-  #
-  # Get clients to connect
-  #
   add(open("rt.html"),"head")
 
+  
+  # Log clients on
+  clients = 0
   if number == 0:
-    clients = 0         # Number of clients connected
-    subjects = 0        # Number of clients in use after nixing
-    button("start","Click when clients are all logged on.")
-    add("<br>")
-    while True:
-      event, subject, _ = get(("click", 0, "start"),
+    brbutton("start","start")
+    initializing = True
+    while initializing:
+      event, subject, n = get(("click", 0, "start"),
                               ("logon", None, None))
       if event == "click":
-        break
-      elif event == "logon":
+        initializing = False
+      else:
         clients += 1
+        add("%d " % clients)
+        put(("assign",subject,clients))
   else:
-    add("%d " % number, number=(0,number))
-    put(("logon", None, None))
+    brbutton("start","login")
+    get(("click", me(), "start"))
+    put(("logon", me(), None))
+    _,_,new = get(("assign",me(),None))
+    number = new
+    set(number)
 
-
-  #
-  # Use an even number of clients based on subject turn-out
-  #
+  # Nix superfluous clients
 
   if number == 0:
     options = []
-    for i in range(0, 2 * (clients / 2) + 1, 2):
-      button(i, "Click if %d subjects showed up" % i)
+    for i in range(0, clients+1):
+      brbutton(i, "Use %d" % i)
       options += [("click", 0, "%d" % i)]
-    _, _, show_ups = get(*options)
-    subjects = int(show_ups)
-    for client in range(1, subjects+1): put(("nix",client,False))
-    for client in range(subjects+1, clients+1): put(("nix",client,True))
+    _, _, use = get(*options)
+    for client in range(1, int(use)+1):         put(("nix",client,False))
+    for client in range(int(use)+1, clients+1): put(("nix",client,True))
+    clients = int(use)
   else:
     _, _, nix = get(("nix",number,None))
     if nix:
       set("X")
       return
 
-  def trust(senders, receivers):
+  def trust_0(senders, receivers):
+    for _ in senders+receivers: put(("positions",senders,receivers))
+    for _ in senders+receivers: get(("ping",))
+
+  def trust_n(number, header):
+    set(header)
+    _, senders, receivers = get(("positions",None,None))      
     if number in senders:
-      n = senders.index(number)
-      sender = number
-      receiver = receivers[n]
-      set("You have $10.<br>How much do you want to send?<p>")
+      sender, receiver = number, receivers[senders.index(number)]
+      set("<p>You have $10.<br>How much do you want to send?<p>")
       while grab(("click", number, None)): pass
-      for i in range(0,11): smallbutton(i,"$%d"%i)
+      for i in range(0,11): button(i,"$%d"%i)
       _, _, send = get(("click", number, None))
       send = int(send)
       add("<p>Wait...")
-      put(("send",n,send))
-      _, _, back = get(("back",n,None))
+      put(("send",receiver,send))
+      _, _, back = get(("back",sender,None))
       add("""<p>You sent: $%d.
              <br>You kept: $10 &minus; $%d = $%d.
-             <br>The receiver received: 2 &times; $%d = $%d.
+             <br>The receiver received: 3 &times; $%d = $%d.
              <br>The receiver returned: $%d.
              <br>You earned $%d + $%d = $%d.""" %
           (send,send,10-send,send,2*send,back,10-send,back,10-send+back))
+      log("TRUST",sender,receiver,send,back)
     elif number in receivers:
-      n = receivers.index(number)
-      receiver = number
-      sender = senders[n]
+      sender, receiver = senders[receivers.index(number)], number
       set("Wait...")
-      _, _, send = get(("send", n, None))
-      set("""<p>The sender sent: $%d.
-             <br>You received: 2 &times; $%d = $%d.
-             <br>How much do you return?<p>""" % (send,send,2*send))
+      _, _, send = get(("send", receiver, None))
+      set("""<h2>%s</h2><p>The sender sent: $%d.
+             <br>You received: 3 &times; $%d = $%d.
+             <br>How much do you return?<p>""" % (header,send,send,2*send))
       while grab(("click", number, None)): pass
-      for i in range(0,2*send+1): smallbutton(i,"$%d"%i)
+      for i in range(0,2*send+1): button(i,"$%d"%i)
       _, _, back = get(("click", number, None))
       back = int(back)
-      put(("back",n,back))
+      put(("back",sender,back))
       add("""<p>You returned: $%d.
              <br>You earned: $%d &minus; $%d = $%d.""" %
-          (back, 2*send, back, 2*send-back))
-    if number > 0:
-      while grab(("click", number, "ok")): pass
-      button("ok","Proceed...")
-      get(("click",number,"ok"))
+          (back, 3*send, back, 3*send-back))
+    while grab(("click", number, "ok")): pass
+    brbutton("ok","Proceed...")
+    get(("click",number,"ok"))
+    set("Wait...")
+    put(("ping",))
 
-  for _ in range(3):
-    trust([1],[2])
-
+  if number == 0:
+      trust_0([1],[2])
+  else:
+      trust_n(number,"Round 1")
 
 run(session)
