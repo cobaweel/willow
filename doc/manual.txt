@@ -285,24 +285,36 @@ the contents of the file are automatically substituted.
 
   Returns the number of the current client.
 
-+set(argument, [selector], [number])+::
++url()+::
+
+  Returns the pathname part of the URL used to first load the current
+  client. For instance, if the client was loaded as
+  +http://localhost:8000/+, this returns "+/+", and if the client was
+  loaded as +http://localhost:8000/3+, this returns "+/3+".
+
++set(content, [selector], [number])+::
 
   Set the content of the HTML element(s) referred to by +selector+ on
-  to be +argument+.
+  to be +content+.
 
-+add(argument, [selector], [number])+::
++add(content, [selector], [number])+::
 
-  Add +argument+ to the content of the HTML element(s) referred to by
+  Add +content+ to the content of the HTML element(s) referred to by
   +selector+.
 
-+push(argument, [selector], [number])+::
++tweak(value, attribute, [selector], [number])+::
 
-  Add the CSS style +argument+ to the HTML element(s) referred to by
+  Change the value of attribute +attribute+ to be +value+ in HTML
+  element(s) referred to by +selector+.
+
++push(style, [selector], [number])+::
+
+  Add the CSS style +style+ to the HTML element(s) referred to by
   +selector+.
 
-+pop(argument, [selector], [number])+::
++pop(style, [selector], [number])+::
 
-  Add the CSS style +argument+ to the HTML element(s) referred to by
+  Remove the CSS style +style+ from HTML element(s) referred to by
   +selector+.
 
 +hide([selector], [number])+::
@@ -317,8 +329,8 @@ the contents of the file are automatically substituted.
 +peek([selector], [number])+::
 
   Request the contents of the HTML element(s) referred to by
-  +selector+ to be posted. Intended to be used with +<input>+
-  elements.
+  +selector+ to be posted as +("peek",number,contents)+. Intended to
+  be used with +<input type='text'>+ elements.
 
 +hold([number])+::
 
@@ -479,3 +491,132 @@ to be a convenient way of doing IPC between the threads without
 needing to understand overly complicated concurrency primitives.
 
 image::architecture.png[]
+
+Twig
+----
+
+Twig is an extension to Willow. It is a repository of code that shows
+up over and over in experimental interface programs: code for logging
+in terminals in a certain order, for doing surveys, etc. All of Twig
+is written on top of Willow, and there is nothing in it that you
+couldn't do yourself using Willow and some Python standard library
+functions. If a Twig functions doesn't fit your needs, you can always
+write your own (and maybe look at the Twig source code for
+inspiration.)
+
+To use Twig in your code, you have to add an additional import line to
+the beginning of your file:
+
+----------------------------------------------------------------------
+from willow.twig import *
+----------------------------------------------------------------------
+
+Twig internally uses tuples and HTML +id+s that start with +__+ (two
+underscores). If you plan to use Twig, you should avoid using any
+tuples or HTML +id+s that start with two underscore, so as not to
+interfere with Twig.
+
+Twig is still under development, and as of right now, the interface to
+Twig functions is likely change from one Willow version to the
+next. (The interface to Willow functions may also change, but I try to
+avoid that, and make mention of it in the manual.)
+
++assemble()+
+~~~~~~~~~~~~
+
+Willow offers only a very basic mechanism for identifying clients: the
+numbers returned by +me()+, which are assigned to clients in the order
+in which they first connect. If you have a program launcher in your
+lab that automatically launches clients on a number of terminals
+around the room, you can end up with these client numbers being
+distributed around the room in strange ways, based on which machines
+are the fastest to connect. In practice, you may want to have a more
+stable mapping between terminals and client identifiers. That is where
++assemble()+ comes in.
+
+The way you typically call +assemble()+ is at the beginning of your
+session function, like so:
+
+----------------------------------------------------------------------
+def session():
+    number, numbers = assemble()
+    
+    # ... your code ...
+
+run(session)
+----------------------------------------------------------------------
+
+Now, when you connect a bunch of clients, you will see a button
+labeled "0" on the first ("monitor") client, and buttons labeled "Log
+in" on all other ("subject") clients. As you click these "Log in"
+buttons on the subject clients, they will each be assigned a
+number. These numbers are independent from the numbers returned by
++me()+, and they are assigned, starting with 1, in the order in which
+the "Log in" buttons are clicked.
+
+When you have pressed all the "Log in" buttons, you can go back to the
+monitor client, and you will see that by now, it has a sequence of
+buttons with labels like:
+
+* 0
+* 0, 1
+* 0, 1, 2
+* 0, 1, 2, 3
+
+These buttons allow you to decide which of the subjectclients to
+actually use. This is particularly useful when you want to set up an
+experiment that may have a different number of participants based on
+actual turnout: you can set up the lab with, say, 12 logged in
+machines, and if only 10 students turn out, you click the button
+labeled "0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10+. 
+
+Once one of the buttons on the monitor is clicked, the +assemble()+
+function returns a tuple of two elements. The first is the subject ID
+newly associated with the current thread, or, if the subject is not
+included on the button clicked on the monitor, +None+. The second is a
+list of all the subject IDs, including +0+ (which refers to the
+monitor).
+
+One further feature of +assemble()+ is revealed when you use
+non-standard URLs to load the subject clients. For instance, if your
+Willow instance is running on a machine with IP address +1.2.3.4+, you
+would normally use +http://1.2.3.4:8000/+ to connect, but you could
+also use +http://1.2.3.4:8000/42+. In that case, the subject
+identifier will be assigned not sequentially but according to the
+number at the end of the URL. This is useful if you have a centralized
+program launcher facility in your lab that is able to open different
+web pages on different terminals. In that case, you can simply
+configure the program launcher to open +http://1.2.3.4:8000/1+ on the
+first machine, +http://1.2.3.4:8000/2+ on the second machine, etc.,
+and you will be assured that subject IDs are assigned in a
+predetermined way.
+
+Here's an example of how to use +assemble()+:
+
+----------------------------------------------------------------------
+def session():
+    number, numbers = assemble()
+    if number == 0:
+       set("MONITOR<p>Using Subject IDs %r" % numbers)
+    else:
+       set("<p>This client has Subject ID %d" % number)
+
+run(session)
+----------------------------------------------------------------------
+
++survey(title, number, questions, [selector])+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This is used for surveys. A typical use would be:
+
+----------------------------------------------------------------------
+
+MYSURVEY = [
+  ("Do you like chocolate?", ("Yes", "No"))
+]
+
+if me() > 0:
+  survey("FOOD", me(), MYSURVEY)
+
+----------------------------------------------------------------------
+

@@ -2,20 +2,15 @@ $(document).ready(function(){
    // Generate a unique ID for this instance
    var id = (new UUID()).id;
 
-   // Warn user if they try to leave the page
-   window.onbeforeunload = function () {
-     return "Are you sure you want to leave the experiment?";
-   };
-
    // Notify server whenever a button is clicked
    function decorate(elt) {
 	   elt.find("input[type=submit]").unbind().click(function (e) {
-	     var rep = {"action": "click", "argument": e.target.id, "id": id };
+	     var rep = {"action": "click", "arg1": e.target.id, "id": id };
 	     $.post("willow", JSON.stringify(rep));
 	   });
 	   elt.find(".clickable").unbind().click(function (e) {
 	     var arg = $(e.target).closest(".clickable").get(0).id;
-	     var rep = {"action": "click", "argument": arg, "id": id };
+	     var rep = {"action": "click", "arg1": arg, "id": id };
 	     $.post("willow", JSON.stringify(rep));
 	   });
 	   elt.find(".bait").unbind().bind("mouseenter mouseleave", function(e) {
@@ -24,8 +19,6 @@ $(document).ready(function(){
 
    }
 
-
-
    // Process command from the server and ask for another one
    function receive_update(cmds) {
      if (cmds) {
@@ -33,14 +26,16 @@ $(document).ready(function(){
 	 var cmd = cmds[i];
 	 switch(cmd.action) {
 	 case "add":
-	   decorate($(cmd.selector).append(cmd.argument));
+	   decorate($(cmd.selector).append(cmd.arg1));
 	   break;
-	 case "push":
-	   decorate($(cmd.selector).addClass(cmd.argument)); break;
-	 case "pop":
-	   decorate($(cmd.selector).removeClass(cmd.argument)); break;
 	 case "set":
-	   decorate($(cmd.selector).html(cmd.argument)); break;
+	   decorate($(cmd.selector).html(cmd.arg1)); break;
+	 case "tweak":
+	   decorate($(cmd.selector).attr(cmd.arg2, cmd.arg1)); break;
+	 case "push":
+	   decorate($(cmd.selector).addClass(cmd.arg1)); break;
+	 case "pop":
+	   decorate($(cmd.selector).removeClass(cmd.arg1)); break;
 	 case "hide":
 	   $(cmd.selector).hide(); break;
 	 case "show":
@@ -48,13 +43,14 @@ $(document).ready(function(){
 	 case "peek":
 	   var arg = $(cmd.selector).attr("value");
 	   if (!arg) arg = "";
-	   var rep = {"action": "poke", "argument": arg, "id": id };
+	   var rep = {"action": "peek", "arg1": arg, "id": id };
 	   $.post("willow", JSON.stringify(rep));
 	   break;
 	 }
        }
      }
-     var cmd = {"id": id, "action": "update"};
+     var url = window.location.pathname;
+     var cmd = {"id": id, "action": "update", "url":url};
      $.post("willow", JSON.stringify(cmd), receive_update, "json");
     }
    receive_update(null);

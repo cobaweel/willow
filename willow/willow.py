@@ -26,8 +26,9 @@
 import json, BaseHTTPServer, time, Queue, mimetypes, SocketServer
 import threading, sys, csv, os, os.path
 
-__all__ = ('log', 'put', 'get', 'grab', 'me', 'hold', 'flush', 'add',
-           'set', 'push', 'pop', 'hide', 'show', 'peek', 'run', 'config')
+__all__ = ('log', 'put', 'get', 'tweak', 'grab', 'me', 'hold', 'flush',
+           'add', 'set', 'push', 'pop', 'hide', 'show', 'peek', 'run',
+           'config', 'url')
 
 # The user may write records to a CSV file, which is automatically
 # named based on the time the library is loaded, using the thread-safe
@@ -63,10 +64,10 @@ def trace(tag, obj, d=False):
   out = ""
   for line in msg.splitlines():
     for i in range(0,len(line),70):
-      out += "        " + line[i:i+70] + "\n"
+      out += "         " + line[i:i+70] + "\n"
   log_lock.acquire()
-  sys.stderr.write(("%s %d" % (tag, me())).ljust(8) + out[8:])
-  log_fd2.write("%s  \t%r\n" % (tag, obj))
+  sys.stderr.write(("%s %d" % (tag, me())).ljust(9) + out[9:])
+  log_fd2.write("%s\t%d\t%r\n" % (tag, me(), obj))
   log_lock.release()
 
 
@@ -146,7 +147,7 @@ clients_by_uuid   = dict()
 clients_by_number = dict()
 clients_lock      = threading.Lock()
 
-def _new_client(session, uuid):
+def _new_client(session, uuid, url):
   clients_lock.acquire()
   number     = len(clients_by_number)
   t          = threading.Thread(target=session, name=("%d" % number))
@@ -154,6 +155,7 @@ def _new_client(session, uuid):
   c.queue    = Queue.Queue()
   c.flushing = True
   c.number   = number
+  c.url      = url
   c.holding  = []
   clients_by_uuid[uuid]     = c
   clients_by_number[number] = c
@@ -169,6 +171,9 @@ def me():
   except ValueError:
     raise Exception, "must be called from a session thread"
   return int(threading.current_thread().name)
+
+def url():
+  return clients_by_number[me()].url
 
 
 # The user can stop immediate processing of UI actions and redirect
@@ -206,40 +211,44 @@ def flush(number=None):
 # descriptor open for reading, the contents of the file will be
 # passed.
 
-def action(action, selector, argument, number):
+def action(action, number, selector, arg1, arg2):
   if number == None: number = me()
   if type(number) == int: number = [number]
   for n in number:
     assert type(n) == int
-    try: argument = argument.read()
+    try: arg1 = arg1.read()
     except AttributeError: pass
     client = clients_by_number[n]
     client.holding += [{"action":   "%s" % action,
-                             "selector": "%s" % selector,
-                             "argument": "%s" % argument}]
+                        "selector": "%s" % selector,
+                        "arg1": "%s" % arg1,
+                        "arg2": "%s" % arg2}]
     if client.flushing:
       flush(n)
 
-def add(argument, selector="body", number=None):
-  action("add", selector, argument, number)
+def add(arg1, selector="body", number=None):
+  action("add", number, selector, arg1, "")
 
-def set(argument, selector="body", number=None):
-  action("set", selector, argument, number)
+def set(arg1, selector="body", number=None):
+  action("set", number, selector, arg1, "")
 
-def push(argument, selector="body", number=None):
-  action("push", selector, argument, number)
+def tweak(arg1, arg2, selector, number=None):
+  action("tweak", number, selector, arg1, arg2)
 
-def pop(argument, selector="body", number=None):
-  action("pop", selector, argument, number)
+def push(arg1, selector="body", number=None):
+  action("push", number, selector, arg1, "")
+
+def pop(arg1, selector="body", number=None):
+  action("pop", number, selector, arg1, "")
 
 def hide(selector="body", number=None):
-  action("hide", selector, None, number)
+  action("hide", number, selector, "", "")
 
 def show(selector="body", number=None):
-  action("show", selector, None, number)
+  action("show", number, selector, "", "")
 
 def peek(selector="body", number=None):
-  action("peek", selector, None, number)
+  action("peek", number, selector, "", "")
 
 
 # A worse-is-better configuration API in one line
@@ -258,19 +267,16 @@ def run(session, port=8000):
     def log_message(self, fmt, *arg): pass
     def do_GET(self):
       path = os.path.basename(self.path)
-      fn = None
-      if path in ['','/']: fn = WEBROOT +"/index.html"
-      if path in os.listdir(os.curdir): fn = os.curdir + self.path
-      if path in os.listdir(WEBROOT): fn = WEBROOT + self.path
-      if fn:
-        self.send_response(200)
-        self.send_header("Content-type", mimetypes.guess_type(fn))
-        self.end_headers()
-        self.wfile.write(open(fn).read())
+      if path in os.listdir(os.curdir):
+        fn = os.curdir + self.path
+      elif path in os.listdir(WEBROOT):
+        fn = WEBROOT + self.path
       else:
-        self.send_response(404)
-        self.end_headers()
-        self.wfile.write("<h1>File %r not found</h1>" % path)
+        fn = WEBROOT + "/index.html"
+      self.send_response(200)
+      self.send_header("Content-type", mimetypes.guess_type(fn))
+      self.end_headers()
+      self.wfile.write(open(fn).read())
         
     def do_POST(self):
       self.send_response(200)
@@ -281,7 +287,7 @@ def run(session, port=8000):
       try:
         client = clients_by_uuid[request_obj["id"]]
       except KeyError:
-        client = _new_client(session, request_obj["id"])
+        client = _new_client(session, request_obj["id"], request_obj["url"])
       threading.current_thread().name = str(client.number)
       if request_obj["action"] == "update":
         reply_obj = client.queue.get()
@@ -290,11 +296,12 @@ def run(session, port=8000):
         reply_str = json.dumps(reply_obj)
         for obj in reply_obj:
           trace(obj["action"].upper(),
-                "%s ==> %s" % (obj["argument"].strip(),
-                               obj["selector"].strip()))
+                "%s ==> %s %s" % (obj["arg1"].strip(),
+                                  obj["selector"].strip(),
+                                  (obj["arg2"] or "").strip()))
         self.wfile.write(reply_str)
       else:
-        put((request_obj["action"], client.number, request_obj["argument"]))
+        put((request_obj["action"], client.number, request_obj["arg1"]))
 
   class MyHTTPServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer):
     daemon_threads = True
