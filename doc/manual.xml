@@ -87,6 +87,31 @@ that runs on the monitor computer. The user interface for the subjects
 will be displayed inside the browser window.</simpara>
 
 </section>
+<section id="_screenshots">
+<title>Screenshots</title>
+<simpara>Willow is a versatile program, and you can use it for many different
+interfaces; but you might just be curious what a Willow interface can
+look like. Here are some examples taken from the first study that
+used Willow at the Center for the Study of Neuroeconomics at George
+Mason University.</simpara>
+
+<informalfigure>
+<mediaobject>
+  <imageobject>
+  <imagedata fileref="screen1.png"/>
+  </imageobject>
+  <textobject><phrase>screen1.png</phrase></textobject>
+</mediaobject>
+</informalfigure>
+<informalfigure>
+<mediaobject>
+  <imageobject>
+  <imagedata fileref="screen2.png"/>
+  </imageobject>
+  <textobject><phrase>screen2.png</phrase></textobject>
+</mediaobject>
+</informalfigure>
+</section>
 <section id="_installing_willow">
 <title>Installing Willow</title>
 <simpara>To install Willow, you extract the zip file to a convenient
@@ -104,12 +129,12 @@ not use Python version 3. It will not work.</simpara>
 </section>
 <section id="_using_willow">
 <title>Using Willow</title>
-<simpara>Willow works very similarly on different operating systems, but from
-here on I am going to assume that you use Windows. In the Willow
-folder, you will find a file named <literal>hello.py</literal>. You need to run this
-file by double-clicking on it. Once the <literal>hello.py</literal> program is running,
-fire up a web browser and point it to <literal>http://localhost:8000</literal>. You
-should see a page that looks like so:</simpara>
+<simpara>In the Willow folder, you will find a file named <literal>hello.py</literal>. You need
+to run this file. On Windows and most Linux distributions, you can
+double click on it. You can also run the command <literal>python hello.py</literal>
+from the command line. Once the <literal>hello.py</literal> program is running, fire up
+a web browser and point it to <literal>http://localhost:8000</literal>. You should see
+a page that looks like so:</simpara>
 
 <sidebar>
 <simpara>Hello World.</simpara>
@@ -150,12 +175,14 @@ the web server, using the session function that has just been defined.</simpara>
 <simpara>Together, these four lines define a web server that you can connect to
 from a browser. If the browser is running on the same machine as the
 server, you can use <literal>http://localhost:8000</literal> as a URL. If it is running
-somewhere else, you must find out the IP address of the server. If the
-IP address is, say, 123.123.123.123, then you can reach your Willow
-server using <literal>http://123.123.123.123:8000</literal>. The <literal>:8000</literal> part is called
-the port number; you can specify a different port number as an extra
-argument to <literal>run</literal> (e.g. <literal>run(session, 8001)</literal>) if you insist on a port
-different from 8000.</simpara>
+somewhere else, you must find out the IP address of the server. (If
+you don't know it, there is a whole chapter further down in the manual
+about how to figure it out.) If the IP address is, say,
+123.123.123.123, then you can reach your Willow server using
+<literal>http://123.123.123.123:8000</literal>. The <literal>:8000</literal> part is called the port
+number; you can specify a different port number as an extra argument
+to <literal>run</literal> (e.g. <literal>run(session, 8001)</literal>) if you insist on a port different
+from 8000.</simpara>
 
 <simpara>Once the web server is running, for each client that connects to it,
 the session function will be called once. It will keep running until
@@ -169,6 +196,77 @@ session function that does nothing but <literal>add("&lt;h1&gt;Hello,
 world.&lt;/h1&gt;")</literal>. The <literal>add()</literal> function adds an HTML snippet to the web
 page being displayed in the client's browser.</simpara>
 
+</section>
+<section id="_a_digression_on_your_ip_address">
+<title>A digression on your IP address</title>
+<simpara>You need the IP address of your monitor computer in order for your
+client computers to connect to it. It would be convenient if Willow
+could display the right IP address for you to use, but unfortunately,
+this is easier said than done, since a computer can have multiple IP
+addresses at the same time: IP version 4 and IP version 6, on the
+wireless network, on the ethernet network, on the "loopback" network,
+and so on.</simpara>
+
+<section id="_how_to_find_your_ip_address_on_linux">
+<title>How to find your IP address on Linux</title>
+<simpara>On Linux on my computer, I use the <literal>ifconfig</literal> command at the command
+line. When I enter</simpara>
+
+<screen>$ ifconfig</screen>
+<simpara>the computer responds</simpara>
+
+<screen>$ ifconfig
+eth1      Link encap:Ethernet  HWaddr 00:23:ae:1e:9e:ac
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+          Interrupt:17
+
+eth2      Link encap:Ethernet  HWaddr 00:24:2b:c6:a4:76
+          inet addr:10.143.91.80  Bcast:10.143.91.255  Mask:255.255.254.0
+          inet6 addr: fe80::224:2bff:fec6:a476/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:10076 errors:0 dropped:0 overruns:0 frame:7868
+          TX packets:10906 errors:20 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:1571308 (1.5 MB)  TX bytes:1341157 (1.3 MB)
+          Interrupt:17 Base address:0xc000
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:85540 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:85540 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:41237280 (41.2 MB)  TX bytes:41237280 (41.2 MB)
+$</screen>
+<tip><simpara>In this and many other software manuals, <literal>$</literal> is used to indicate
+the Linux/UNIX prompt. On your computer, it may be different. <literal>%</literal> is a
+popular choice, too, for example.</simpara></tip>
+<simpara>There is much information here, but we only need a little. First,
+notice that this computer has three network interfaces, called <literal>eth1</literal>,
+<literal>eth2</literal> and <literal>lo</literal>. <literal>lo</literal> is the loopback device; it does not correspond
+to any actual hardware, but it is rather a contraption that the
+operating system uses so that you can make connections to your own
+machine at address <literal>127.0.0.1</literal> even when the network is down. The
+other two network devices are actual network cards that are in the
+computer; as it happens, <literal>eth1</literal> is a wired Ethernet network, and
+<literal>eth2</literal> is a wireless 802.11g network. According to the information
+above, the computer has IP address 10.143.91.80 on <literal>eth2</literal>, and it has
+no IP address on <literal>eth1</literal>, which makes sense, because the wired
+connection was not plugged when I executed the command. In the output
+above you can also see IP v6 addresses (labeled <literal>inet6 addr</literal>), but
+those are not commonly used.</simpara>
+
+</section>
+<section id="_how_to_find_your_ip_address_on_windows">
+<title>How to find your IP address on Windows</title>
+<simpara>BLABLABLA</simpara>
+
+</section>
 </section>
 <section id="_a_digression_on_html_the_hypertext_markup_language">
 <title>A digression on HTML, the hypertext markup language</title>
@@ -195,9 +293,13 @@ HTML tags:</simpara>
 </section>
 <section id="_api_documentation">
 <title>API documentation</title>
-<note><simpara>Whenever <literal>selector</literal> is omitted, the selector "<literal>body</literal>" is
-implied, which means you are referring to the entire body of the HTML
-document.</simpara></note>
+<note><simpara>The <literal>selector</literal> argument can take any CSS selector. The CSS
+selector mini-language is rather rich, but the most typical cases are
+things like <literal>p</literal> (to get at all <literal>&lt;p&gt;</literal> elements), <literal>#a</literal>, (to get at the
+first element with <literal>id="a"</literal>), and <literal>.a</literal> (to get at all elements with
+<literal>class="a"</literal>). For more information, consult any book or web page on
+CSS. Whenever <literal>selector</literal> is omitted, the selector "<literal>body</literal>" is implied,
+which means you are referring to the entire body of the HTML document.</simpara></note>
 <note><simpara>By specifying an integer, or a sequence of integers, for
 <literal>number</literal>, you can operate directly on clients other than the one
 associated by default with the current session thread.</simpara></note>
@@ -216,44 +318,68 @@ the contents of the file are automatically substituted.</simpara></note>
 </varlistentry>
 <varlistentry>
 <term>
-<literal>set(argument, [selector], [number])</literal>
+<literal>url()</literal>
+</term>
+<listitem>
+<simpara>
+  Returns the pathname part of the URL used to first load the current
+  client. For instance, if the client was loaded as
+  <literal>http://localhost:8000/</literal>, this returns "<literal>/</literal>", and if the client was
+  loaded as <literal>http://localhost:8000/3</literal>, this returns "<literal>/3</literal>".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<literal>set(content, [selector], [number])</literal>
 </term>
 <listitem>
 <simpara>
   Set the content of the HTML element(s) referred to by <literal>selector</literal> on
-  to be <literal>argument</literal>.
+  to be <literal>content</literal>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<literal>add(argument, [selector], [number])</literal>
+<literal>add(content, [selector], [number])</literal>
 </term>
 <listitem>
 <simpara>
-  Add <literal>argument</literal> to the content of the HTML element(s) referred to by
+  Add <literal>content</literal> to the content of the HTML element(s) referred to by
   <literal>selector</literal>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<literal>push(argument, [selector], [number])</literal>
+<literal>tweak(value, attribute, [selector], [number])</literal>
 </term>
 <listitem>
 <simpara>
-  Add the CSS style <literal>argument</literal> to the HTML element(s) referred to by
+  Change the value of attribute <literal>attribute</literal> to be <literal>value</literal> in HTML
+  element(s) referred to by <literal>selector</literal>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<literal>push(style, [selector], [number])</literal>
+</term>
+<listitem>
+<simpara>
+  Add the CSS style <literal>style</literal> to the HTML element(s) referred to by
   <literal>selector</literal>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<literal>pop(argument, [selector], [number])</literal>
+<literal>pop(style, [selector], [number])</literal>
 </term>
 <listitem>
 <simpara>
-  Add the CSS style <literal>argument</literal> to the HTML element(s) referred to by
+  Remove the CSS style <literal>style</literal> from HTML element(s) referred to by
   <literal>selector</literal>.
 </simpara>
 </listitem>
@@ -286,8 +412,8 @@ the contents of the file are automatically substituted.</simpara></note>
 <listitem>
 <simpara>
   Request the contents of the HTML element(s) referred to by
-  <literal>selector</literal> to be posted. Intended to be used with <literal>&lt;input&gt;</literal>
-  elements.
+  <literal>selector</literal> to be posted as <literal>("peek",number,contents)</literal>. Intended to
+  be used with <literal>&lt;input type=<emphasis>text</emphasis>&gt;</literal> elements.
 </simpara>
 </listitem>
 </varlistentry>
@@ -520,5 +646,137 @@ needing to understand overly complicated concurrency primitives.</simpara>
   <textobject><phrase>architecture.png</phrase></textobject>
 </mediaobject>
 </informalfigure>
+</section>
+<section id="_twig">
+<title>Twig</title>
+<simpara>Twig is an extension to Willow. It is a repository of code that shows
+up over and over in experimental interface programs: code for logging
+in terminals in a certain order, for doing surveys, etc. All of Twig
+is written on top of Willow, and there is nothing in it that you
+couldn't do yourself using Willow and some Python standard library
+functions. If a Twig functions doesn't fit your needs, you can always
+write your own (and maybe look at the Twig source code for
+inspiration.)</simpara>
+
+<simpara>To use Twig in your code, you have to add an additional import line to
+the beginning of your file:</simpara>
+
+<screen>from willow.twig import *</screen>
+<simpara>Twig internally uses tuples and HTML <literal>id+s that start with +__</literal> (two
+underscores). If you plan to use Twig, you should avoid using any
+tuples or HTML +id+s that start with two underscore, so as not to
+interfere with Twig.</simpara>
+
+<simpara>Twig is still under development, and as of right now, the interface to
+Twig functions is likely change from one Willow version to the
+next. (The interface to Willow functions may also change, but I try to
+avoid that, and make mention of it in the manual.)</simpara>
+
+<section id="_literal_assemble_literal">
+<title><literal>assemble()</literal></title>
+<simpara>Willow offers only a very basic mechanism for identifying clients: the
+numbers returned by <literal>me()</literal>, which are assigned to clients in the order
+in which they first connect. If you have a program launcher in your
+lab that automatically launches clients on a number of terminals
+around the room, you can end up with these client numbers being
+distributed around the room in strange ways, based on which machines
+are the fastest to connect. In practice, you may want to have a more
+stable mapping between terminals and client identifiers. That is where
+<literal>assemble()</literal> comes in.</simpara>
+
+<simpara>The way you typically call <literal>assemble()</literal> is at the beginning of your
+session function, like so:</simpara>
+
+<screen>def session():
+    number, numbers = assemble()
+
+    # ... your code ...
+
+run(session)</screen>
+<simpara>Now, when you connect a bunch of clients, you will see a button
+labeled "0" on the first ("monitor") client, and buttons labeled "Log
+in" on all other ("subject") clients. As you click these "Log in"
+buttons on the subject clients, they will each be assigned a
+number. These numbers are independent from the numbers returned by
+<literal>me()</literal>, and they are assigned, starting with 1, in the order in which
+the "Log in" buttons are clicked.</simpara>
+
+<simpara>When you have pressed all the "Log in" buttons, you can go back to the
+monitor client, and you will see that by now, it has a sequence of
+buttons with labels like:</simpara>
+
+<itemizedlist>
+<listitem>
+<simpara>
+0
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+0, 1
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+0, 1, 2
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+0, 1, 2, 3
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>These buttons allow you to decide which of the subjectclients to
+actually use. This is particularly useful when you want to set up an
+experiment that may have a different number of participants based on
+actual turnout: you can set up the lab with, say, 12 logged in
+machines, and if only 10 students turn out, you click the button
+labeled "0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10+.</simpara>
+
+<simpara>Once one of the buttons on the monitor is clicked, the <literal>assemble()</literal>
+function returns a tuple of two elements. The first is the subject ID
+newly associated with the current thread, or, if the subject is not
+included on the button clicked on the monitor, <literal>None</literal>. The second is a
+list of all the subject IDs, including <literal>0</literal> (which refers to the
+monitor).</simpara>
+
+<simpara>One further feature of <literal>assemble()</literal> is revealed when you use
+non-standard URLs to load the subject clients. For instance, if your
+Willow instance is running on a machine with IP address <literal>1.2.3.4</literal>, you
+would normally use <literal>http://1.2.3.4:8000/</literal> to connect, but you could
+also use <literal>http://1.2.3.4:8000/42</literal>. In that case, the subject
+identifier will be assigned not sequentially but according to the
+number at the end of the URL. This is useful if you have a centralized
+program launcher facility in your lab that is able to open different
+web pages on different terminals. In that case, you can simply
+configure the program launcher to open <literal>http://1.2.3.4:8000/1</literal> on the
+first machine, <literal>http://1.2.3.4:8000/2</literal> on the second machine, etc.,
+and you will be assured that subject IDs are assigned in a
+predetermined way.</simpara>
+
+<simpara>Here's an example of how to use <literal>assemble()</literal>:</simpara>
+
+<screen>def session():
+    number, numbers = assemble()
+    if number == 0:
+       set("MONITOR&lt;p&gt;Using Subject IDs %r" % numbers)
+    else:
+       set("&lt;p&gt;This client has Subject ID %d" % number)
+
+run(session)</screen>
+</section>
+<section id="_literal_survey_title_number_questions_selector_literal">
+<title><literal>survey(title, number, questions, [selector])</literal></title>
+<simpara>This is used for surveys. A typical use would be:</simpara>
+
+<screen>
+MYSURVEY = [
+  ("Do you like chocolate?", ("Yes", "No"))
+]
+
+if me() &gt; 0:
+  survey("FOOD", me(), MYSURVEY)</screen>
+</section>
 </section>
 </article>

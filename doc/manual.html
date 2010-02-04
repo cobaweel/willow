@@ -434,6 +434,24 @@ subjects will simply run a web browser, which connects to a web server
 that runs on the monitor computer. The user interface for the subjects
 will be displayed inside the browser window.</p></div>
 </div>
+<h2 id="_screenshots">Screenshots</h2>
+<div class="sectionbody">
+<div class="para"><p>Willow is a versatile program, and you can use it for many different
+interfaces; but you might just be curious what a Willow interface can
+look like. Here are some examples taken from the first study that
+used Willow at the Center for the Study of Neuroeconomics at George
+Mason University.</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="screen1.png" alt="screen1.png"/>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="screen2.png" alt="screen2.png"/>
+</div>
+</div>
+</div>
 <h2 id="_installing_willow">Installing Willow</h2>
 <div class="sectionbody">
 <div class="para"><p>To install Willow, you extract the zip file to a convenient
@@ -466,17 +484,7 @@ comes with Python. To do so, right-click <tt>hello.py</tt> and select "Edit
 with IDLE". This will pop up an editor window with the <tt>hello.py</tt> code
 in it:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 2.11.1
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-weight: bold"><span style="color: #000080">from</span></span> willow<span style="color: #990000">.</span>willow <span style="font-weight: bold"><span style="color: #000080">import</span></span> <span style="color: #990000">*</span>
-
-<span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">session</span></span><span style="color: #990000">():</span>
-  <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;h1&gt;Hello, world.&lt;/h1&gt;"</span><span style="color: #990000">)</span>
-
-<span style="font-weight: bold"><span style="color: #000000">run</span></span><span style="color: #990000">(</span>session<span style="color: #990000">)</span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 <div class="para"><p>See here the code of a very simple but working Willow program. You can
 run it using the <tt>Run &gt; Run Module</tt> menu option or by pressing
 <tt>F5</tt>. Again, you now need to point a web browser to
@@ -597,18 +605,7 @@ a Willow program is made up of web pages. This manual will not go into
 detail about HTML, but here is a summary of some of the most common
 HTML tags:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 2.11.1
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">&lt;h1&gt;</span></span>This is a level 1 heading.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/h1&gt;</span></span>
-<span style="font-weight: bold"><span style="color: #0000FF">&lt;h2&gt;</span></span>This is a level 2 heading.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/h2&gt;</span></span>
-<span style="font-weight: bold"><span style="color: #0000FF">&lt;h3&gt;</span></span>This is a level 3 heading.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/h3&gt;</span></span>
-<span style="font-weight: bold"><span style="color: #0000FF">&lt;p&gt;</span></span>This is a paragraph, with <span style="font-weight: bold"><span style="color: #0000FF">&lt;b&gt;</span></span>bold<span style="font-weight: bold"><span style="color: #0000FF">&lt;/b&gt;</span></span> and <span style="font-weight: bold"><span style="color: #0000FF">&lt;i&gt;</span></span>italics<span style="font-weight: bold"><span style="color: #0000FF">&lt;/i&gt;</span></span>.
-<span style="font-weight: bold"><span style="color: #0000FF">&lt;li&gt;</span></span>This is a bulleted list item.
-<span style="font-weight: bold"><span style="color: #0000FF">&lt;input</span></span> <span style="color: #009900">type</span><span style="color: #990000">=</span><span style="color: #FF0000">"submit"</span> <span style="color: #009900">id</span><span style="color: #990000">=</span><span style="color: #FF0000">"foo"</span> <span style="color: #009900">value</span><span style="color: #990000">=</span><span style="color: #FF0000">"This is a button"</span><span style="font-weight: bold"><span style="color: #0000FF">&gt;</span></span>
-<span style="font-weight: bold"><span style="color: #0000FF">&lt;input</span></span> <span style="color: #009900">type</span><span style="color: #990000">=</span><span style="color: #FF0000">"text"</span> <span style="color: #009900">id</span><span style="color: #990000">=</span><span style="color: #FF0000">"foo"</span> <span style="color: #009900">value</span><span style="color: #990000">=</span><span style="color: #FF0000">"This is a text box"</span><span style="font-weight: bold"><span style="color: #0000FF">&gt;</span></span>
-</tt></pre></div></div>
+<div class="content"></div></div>
 </div>
 <h2 id="_a_more_complicated_willow_example">A more complicated Willow example</h2>
 <div class="sectionbody">
@@ -659,38 +656,58 @@ the contents of the file are automatically substituted.</td>
 </p>
 </dd>
 <dt>
-<tt>set(argument, [selector], [number])</tt>
+<tt>url()</tt>
+</dt>
+<dd>
+<p>
+  Returns the pathname part of the URL used to first load the current
+  client. For instance, if the client was loaded as
+  <tt>http://localhost:8000/</tt>, this returns "<tt>/</tt>", and if the client was
+  loaded as <tt>http://localhost:8000/3</tt>, this returns "<tt>/3</tt>".
+</p>
+</dd>
+<dt>
+<tt>set(content, [selector], [number])</tt>
 </dt>
 <dd>
 <p>
   Set the content of the HTML element(s) referred to by <tt>selector</tt> on
-  to be <tt>argument</tt>.
+  to be <tt>content</tt>.
 </p>
 </dd>
 <dt>
-<tt>add(argument, [selector], [number])</tt>
+<tt>add(content, [selector], [number])</tt>
 </dt>
 <dd>
 <p>
-  Add <tt>argument</tt> to the content of the HTML element(s) referred to by
+  Add <tt>content</tt> to the content of the HTML element(s) referred to by
   <tt>selector</tt>.
 </p>
 </dd>
 <dt>
-<tt>push(argument, [selector], [number])</tt>
+<tt>tweak(value, attribute, [selector], [number])</tt>
 </dt>
 <dd>
 <p>
-  Add the CSS style <tt>argument</tt> to the HTML element(s) referred to by
+  Change the value of attribute <tt>attribute</tt> to be <tt>value</tt> in HTML
+  element(s) referred to by <tt>selector</tt>.
+</p>
+</dd>
+<dt>
+<tt>push(style, [selector], [number])</tt>
+</dt>
+<dd>
+<p>
+  Add the CSS style <tt>style</tt> to the HTML element(s) referred to by
   <tt>selector</tt>.
 </p>
 </dd>
 <dt>
-<tt>pop(argument, [selector], [number])</tt>
+<tt>pop(style, [selector], [number])</tt>
 </dt>
 <dd>
 <p>
-  Add the CSS style <tt>argument</tt> to the HTML element(s) referred to by
+  Remove the CSS style <tt>style</tt> from HTML element(s) referred to by
   <tt>selector</tt>.
 </p>
 </dd>
@@ -717,8 +734,8 @@ the contents of the file are automatically substituted.</td>
 <dd>
 <p>
   Request the contents of the HTML element(s) referred to by
-  <tt>selector</tt> to be posted. Intended to be used with <tt>&lt;input&gt;</tt>
-  elements.
+  <tt>selector</tt> to be posted as <tt>("peek",number,contents)</tt>. Intended to
+  be used with <tt>&lt;input type=<em>text</em>&gt;</tt> elements.
 </p>
 </dd>
 <dt>
@@ -934,9 +951,136 @@ needing to understand overly complicated concurrency primitives.</p></div>
 </div>
 </div>
 </div>
+<h2 id="_twig">Twig</h2>
+<div class="sectionbody">
+<div class="para"><p>Twig is an extension to Willow. It is a repository of code that shows
+up over and over in experimental interface programs: code for logging
+in terminals in a certain order, for doing surveys, etc. All of Twig
+is written on top of Willow, and there is nothing in it that you
+couldn't do yourself using Willow and some Python standard library
+functions. If a Twig functions doesn't fit your needs, you can always
+write your own (and maybe look at the Twig source code for
+inspiration.)</p></div>
+<div class="para"><p>To use Twig in your code, you have to add an additional import line to
+the beginning of your file:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>from willow.twig import *</tt></pre>
+</div></div>
+<div class="para"><p>Twig internally uses tuples and HTML <tt>id+s that start with +__</tt> (two
+underscores). If you plan to use Twig, you should avoid using any
+tuples or HTML +id+s that start with two underscore, so as not to
+interfere with Twig.</p></div>
+<div class="para"><p>Twig is still under development, and as of right now, the interface to
+Twig functions is likely change from one Willow version to the
+next. (The interface to Willow functions may also change, but I try to
+avoid that, and make mention of it in the manual.)</p></div>
+<h3 id="_tt_assemble_tt"><tt>assemble()</tt></h3><div style="clear:left"></div>
+<div class="para"><p>Willow offers only a very basic mechanism for identifying clients: the
+numbers returned by <tt>me()</tt>, which are assigned to clients in the order
+in which they first connect. If you have a program launcher in your
+lab that automatically launches clients on a number of terminals
+around the room, you can end up with these client numbers being
+distributed around the room in strange ways, based on which machines
+are the fastest to connect. In practice, you may want to have a more
+stable mapping between terminals and client identifiers. That is where
+<tt>assemble()</tt> comes in.</p></div>
+<div class="para"><p>The way you typically call <tt>assemble()</tt> is at the beginning of your
+session function, like so:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>def session():
+    number, numbers = assemble()
+
+    # ... your code ...
+
+run(session)</tt></pre>
+</div></div>
+<div class="para"><p>Now, when you connect a bunch of clients, you will see a button
+labeled "0" on the first ("monitor") client, and buttons labeled "Log
+in" on all other ("subject") clients. As you click these "Log in"
+buttons on the subject clients, they will each be assigned a
+number. These numbers are independent from the numbers returned by
+<tt>me()</tt>, and they are assigned, starting with 1, in the order in which
+the "Log in" buttons are clicked.</p></div>
+<div class="para"><p>When you have pressed all the "Log in" buttons, you can go back to the
+monitor client, and you will see that by now, it has a sequence of
+buttons with labels like:</p></div>
+<div class="ilist"><ul>
+<li>
+<p>
+0
+</p>
+</li>
+<li>
+<p>
+0, 1
+</p>
+</li>
+<li>
+<p>
+0, 1, 2
+</p>
+</li>
+<li>
+<p>
+0, 1, 2, 3
+</p>
+</li>
+</ul></div>
+<div class="para"><p>These buttons allow you to decide which of the subjectclients to
+actually use. This is particularly useful when you want to set up an
+experiment that may have a different number of participants based on
+actual turnout: you can set up the lab with, say, 12 logged in
+machines, and if only 10 students turn out, you click the button
+labeled "0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10+.</p></div>
+<div class="para"><p>Once one of the buttons on the monitor is clicked, the <tt>assemble()</tt>
+function returns a tuple of two elements. The first is the subject ID
+newly associated with the current thread, or, if the subject is not
+included on the button clicked on the monitor, <tt>None</tt>. The second is a
+list of all the subject IDs, including <tt>0</tt> (which refers to the
+monitor).</p></div>
+<div class="para"><p>One further feature of <tt>assemble()</tt> is revealed when you use
+non-standard URLs to load the subject clients. For instance, if your
+Willow instance is running on a machine with IP address <tt>1.2.3.4</tt>, you
+would normally use <tt>http://1.2.3.4:8000/</tt> to connect, but you could
+also use <tt>http://1.2.3.4:8000/42</tt>. In that case, the subject
+identifier will be assigned not sequentially but according to the
+number at the end of the URL. This is useful if you have a centralized
+program launcher facility in your lab that is able to open different
+web pages on different terminals. In that case, you can simply
+configure the program launcher to open <tt>http://1.2.3.4:8000/1</tt> on the
+first machine, <tt>http://1.2.3.4:8000/2</tt> on the second machine, etc.,
+and you will be assured that subject IDs are assigned in a
+predetermined way.</p></div>
+<div class="para"><p>Here's an example of how to use <tt>assemble()</tt>:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>def session():
+    number, numbers = assemble()
+    if number == 0:
+       set("MONITOR&lt;p&gt;Using Subject IDs %r" % numbers)
+    else:
+       set("&lt;p&gt;This client has Subject ID %d" % number)
+
+run(session)</tt></pre>
+</div></div>
+<h3 id="_tt_survey_title_number_questions_selector_tt"><tt>survey(title, number, questions, [selector])</tt></h3><div style="clear:left"></div>
+<div class="para"><p>This is used for surveys. A typical use would be:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>
+MYSURVEY = [
+  ("Do you like chocolate?", ("Yes", "No"))
+]
+
+if me() &gt; 0:
+  survey("FOOD", me(), MYSURVEY)</tt></pre>
+</div></div>
+</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2010-01-24 19:43:01 EDT
+Last updated 2010-02-04 06:41:54 EDT
 </div>
 </div>
 </body>

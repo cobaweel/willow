@@ -2,16 +2,26 @@ from willow.willow import *
 from willow.twig import *
 import random,datetime
 
-ROUNDS = 0                # How many rounds of CG and PD
-PIES = 1                  # How many pies of RP
-T3 = True                 # Survey on/off
-T4 = True                 # Pie charts on/off
+ROUNDS = 10              # How many rounds of CG and PD
+PIES = 20                # How many pies of RP
+T3 = False               # Survey on/off
+T4 = True                # Pie charts on/off
 
 def session():
+  if me()==0:
+    add(open("cc0.html"),"head")
+  else:
+    add(open("cc.html"),"head")
   number, numbers = assemble()
   if number == None: return
 
   # Assignment ###############################################################
+  # Here, we do subject matching. Each subject is in a 2-person
+  # group_1 for the first game and a possibly different 2-persion
+  # group_2 for the second game, in both cases in the same role
+  # (player 0 or player 1). The assignments are logged, displayed in a
+  # table for the monitor, and conveyed to the subject threads.
+
   if number == 0:
     set("<h2>"+datetime.datetime.now().ctime())
     add("<h2>Assignment")
@@ -28,7 +38,6 @@ def session():
       assignments += [[subject, role, group_1, group_2]]
     table(assignments)
   else:
-    add(open("cc.html"),"head")
     _, _, role, group_1, group_2 = get(("assign", number, None, None, None))
     cash1 = 0
     cash2 = 0
@@ -45,9 +54,9 @@ def session():
   else:
     for round in range(1,ROUNDS+1):
       get(("ping",))
-      set("""<h2>Task 1 round %d of %d.</h2><li>If you choose <b>blue</b> and
-      the other person chooses <b>blue</b> you earn <b>$0.50</b>.<li>If you
-      choose <b>blue</b> and the other person chooses <b>green</b> you earn
+      set("""<h2>Task 1 round %d of %d.</h2><li>If you choose <b><b>blue</b></b> and
+      the other person chooses <b><b>blue</b></b> you earn <b>$0.50</b>.<li>If you
+      choose <b><b>blue</b></b> and the other person chooses <b>green</b> you earn
       <b>$0.50</b>.<li>If you choose <b>green</b> and the other person
       chooses <b>blue</b> you earn <b>$0.00</b>.  <li>If you choose <b>green</b> and
       the other person chooses <b>green</b> you earn <b>$0.75</b>.<p>Choose
@@ -436,7 +445,4 @@ def session():
       set(summary)
       put(('summary',number,summary))
       
-
-   
-
 run(session)

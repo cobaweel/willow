@@ -70,6 +70,18 @@ subjects will simply run a web browser, which connects to a web server
 that runs on the monitor computer. The user interface for the subjects
 will be displayed inside the browser window. 
 
+Screenshots
+-----------
+
+Willow is a versatile program, and you can use it for many different
+interfaces; but you might just be curious what a Willow interface can
+look like. Here are some examples taken from the first study that
+used Willow at the Center for the Study of Neuroeconomics at George
+Mason University.
+
+image::screen1.png[]
+image::screen2.png[]
+
 Installing Willow
 -----------------
 
