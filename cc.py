@@ -4,7 +4,7 @@ import random,datetime
 
 ROUNDS = 10              # How many rounds of CG and PD
 PIES = 20                # How many pies of RP
-T3 = False               # Survey on/off
+T3 = True                # Survey on/off
 T4 = True                # Pie charts on/off
 
 def session():
@@ -54,14 +54,14 @@ def session():
   else:
     for round in range(1,ROUNDS+1):
       get(("ping",))
-      set("""<h2>Task 1 round %d of %d.</h2><li>If you choose <b><b>blue</b></b> and
-      the other person chooses <b><b>blue</b></b> you earn <b>$0.50</b>.<li>If you
-      choose <b><b>blue</b></b> and the other person chooses <b>green</b> you earn
-      <b>$0.50</b>.<li>If you choose <b>green</b> and the other person
-      chooses <b>blue</b> you earn <b>$0.00</b>.  <li>If you choose <b>green</b> and
-      the other person chooses <b>green</b> you earn <b>$0.75</b>.<p>Choose
-      <input type='submit' id='G' value='green'> or <input
-      type='submit' id='B' value='blue'>...""" % (round,ROUNDS))
+      set("""<h2>Task 1 round %d of %d.</h2>
+          <li>If you choose <b>blue</b> and the other person chooses <b>blue</b> you earn <b>$0.40</b>.
+          <li>If you choose <b>blue</b> and the other person chooses <b>green</b> you earn <b>$0.40</b>.
+          <li>If you choose <b>green</b> and the other person chooses <b>blue</b> you earn <b>$0.00</b>.  
+          <li>If you choose <b>green</b> and the other person chooses <b>green</b> you earn <b>$0.75</b>.
+          <p>Choose
+          <input type='submit' id='B' value='blue'> or
+          <input type='submit' id='G' value='green'> ...""" % (round,ROUNDS))
       clack()
       _, _, choice = get(("click", me(), None))
       put(("choice", group_1, role, choice))
@@ -70,8 +70,8 @@ def session():
       elif choice == "B":
         add("<p>You chose <b>blue</b>.")
       _, _, _, other  = get(("choice", group_1, 1-role, None))
-      if   choice == "B" and other == "B": now = 50
-      elif choice == "B" and other == "G": now = 50
+      if   choice == "B" and other == "B": now = 40
+      elif choice == "B" and other == "G": now = 40
       elif choice == "G" and other == "B": now = 0
       elif choice == "G" and other == "G": now = 75
       cash1 += now
@@ -99,14 +99,15 @@ def session():
   else:
     for round in range(1,ROUNDS+1):
       get(("ping",))
-      set("""<h2>Task 2 round %d of %d.</h2><li>If you choose <b>square</b>
-      and the other person chooses <b>square</b> you earn <b>$0.25</b>.<li>If you
-      choose <b>square</b> and the other person chooses <b>circle</b> you earn
-      <b>$1.50</b>.  <li>If you choose <b>circle</b> and the other person chooses
-      <b>square</b> you earn <b>$0.00</b>.  <li>If you choose <b>circle</b> and the other
-      person chooses <b>circle</b> you earn <b>$1.00</b>.<p>Choose <input
-      type='submit' id='S' value='square'> or <input type='submit'
-      id='C' value='circle'>...""" % (round, ROUNDS))
+      set("""<h2>Task 2 round %d of %d.</h2>
+<li>If you choose <b>circle</b> and the other person chooses <b>circle</b> you earn <b>$1.00</b>.
+<li>If you choose <b>circle</b> and the other person chooses <b>square</b> you earn <b>$0.00</b>.  
+<li>If you choose <b>square</b> and the other person chooses <b>circle</b> you earn <b>$1.50</b>.  
+<li>If you choose <b>square</b> and the other person chooses <b>square</b> you earn <b>$0.25</b>.
+<p>Choose 
+<input type='submit' id='C' value='circle'> or
+<input type='submit' id='S' value='square'>
+...""" % (round, ROUNDS))
       clack()
       _, _, choice = get(("click", me(), None))
       put(("choice", group_2, role, choice))
@@ -224,58 +225,64 @@ def session():
      ("Now proceed to the next section of the questionnaire.", ["Proceed"]),
      ("What is your age in years?",validate(18,120)),
      ("What is your gender?", ["Male", "Female"]),
-     ("What is the highest level of education that you have completed or"
-      "are currently enrolled in? For example, if you are currently in"
+     ("What is the highest level of education that you have completed or "
+      "are currently enrolled in? For example, if you are currently in "
       "college, then choose Bachelor's degree.",
       ["Less than high school", "High school diploma or GED",
        "Bachelor degree", "Master degree", "Doctoral degree"]),
      ("What class are you in?",
       ["Freshman", "Sophomore", "Junior", "Senior", "MA student",
        "Pre-dissertation PhD student", "Dissertation PhD student"]),
-     ("""In what range is your college GPA? If you are not currently in
-     college (e.g., if you are a graduate student), then please put
-     down your GPA from when you were in college.""",   
+     ("""In what range is your current GPA?""",   
       ["0 to 2.0", "2.1 to 2.5", "2.6 to 3.0", "3.1 to 3.5", "3.6 to 4.0"]),
     ("The <b>SAT</b> has at least 2 sections:"
      "<br><b>verbal</b> (critical reading) and <b>quantitative</b> (math)."
-     "<br>If you took it, what was your SAT <b>verbal</b> score?"
+     "<p>If you took it, what was your SAT <b>verbal</b> score?"
      "<br>If you can't remember exactly, try to remember approximately."
-     "<br>(Leave blank if you did not take it.)",validate(200,800)),
+     "<br>(Leave blank if you did not take it.)"
+     "<p>&nbsp;<p>SAT <b>verbal</b>",validate(200,800)),
     ("The <b>SAT</b> has at least 2 sections:"
      "<br><b>verbal</b> (critical reading) and <b>quantitative</b> (math)."
-     "<br>If you took it, what was your SAT <b>quantitative</b> score?"
+     "<p>If you took it, what was your SAT <b>quantitative</b> score?"
      "<br>If you can't remember exactly, try to remember approximately."   
-     "<br>(Leave blank if you did not take it.)",validate(200,800)),
+     "<br>(Leave blank if you did not take it.)"
+     "<p>&nbsp;<p>SAT <b>quantitative</b>",validate(200,800)),
     ("The <b>ACT</b> has 4 sections:"
      "<br><b>English</b>, <b>math</b>, <b>reading</b>, and <b>science</b>."
-     "<br>If you took it, what was your ACT <b>English</b> score?"
+     "<p>If you took it, what was your ACT <b>English</b> score?"
      "<br>If you can't remember exactly, try to remember approximately."   
-     "<br>(Leave blank if you did not take it.)",validate(1,36)),
+     "<br>(Leave blank if you did not take it.)"
+     "<p>&nbsp;<p>ACT <b>English</b>",validate(1,36)),
     ("The <b>ACT</b> has 4 sections:"
      "<br><b>English</b>, <b>math</b>, <b>reading</b>, and <b>science</b>."
-     "<br>If you took it, what was your ACT <b>math</b> score?"
+     "<p>If you took it, what was your ACT <b>math</b> score?"
      "<br>If you can't remember exactly, try to remember approximately."   
-     "<br>(Leave blank if you did not take it.)",validate(1,36)),
+     "<br>(Leave blank if you did not take it.)"
+     "<p>&nbsp;<p>ACT <b>math</b>",validate(1,36)),
     ("The <b>ACT</b> has 4 sections:"
      "<br><b>English</b>, <b>math</b>, <b>reading</b>, and <b>science</b>."
-     "<br>If you took it, what was your ACT <b>reading</b> score?"
+     "<p>If you took it, what was your ACT <b>reading</b> score?"
      "<br>If you can't remember exactly, try to remember approximately."   
-     "<br>(Leave blank if you did not take it.)",validate(1,36)),
+     "<br>(Leave blank if you did not take it.)"
+     "<p>&nbsp;<p>ACT <b>reading</b>",validate(1,36)),
     ("The <b>ACT</b> has 4 sections:"
      "<br><b>English</b>, <b>math</b>, <b>reading</b>, and <b>science</b>."
-     "<br>If you took it, what was your ACT <b>science</b> score?"
+     "<p>If you took it, what was your ACT <b>science</b> score?"
      "<br>If you can't remember exactly, try to remember approximately."   
-     "<br>(Leave blank if you did not take it.)",validate(1,36)),
+     "<br>(Leave blank if you did not take it.)"
+     "<p>&nbsp;<p>ACT <b>science</b>",validate(1,36)),
     ("The <b>GRE</b> has at least 2 sections:"
      "<br><b>verbal</b> and <b>quantitative</b>."
-     "<br>If you took it, what was your GRE <b>verbal</b> score?"
+     "<p>If you took it, what was your GRE <b>verbal</b> score?"
      "<br>If you can't remember exactly, try to remember approximately."   
-     "<br>(Leave blank if you did not take it.)",validate(200,800)),
+     "<br>(Leave blank if you did not take it.)"
+     "<p>&nbsp;<p>GRE <b>verbal</b>",validate(200,800)),
     ("The <b>GRE</b> has at least 2 sections:"
      "<br><b>verbal</b> and <b>quantitative</b>."
-     "<br>If you took it, what was your GRE <b>quantitative</b> score?"
+     "<p>If you took it, what was your GRE <b>quantitative</b> score?"
      "<br>If you can't remember exactly, try to remember approximately."   
-     "<br>(Leave blank if you did not take it.)",validate(200,800))
+     "<br>(Leave blank if you did not take it.)"
+     "<p>&nbsp;<p>GRE <b>quantitative</b>",validate(200,800))
   ]
 
   if T3:
