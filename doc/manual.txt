@@ -988,6 +988,7 @@ stable mapping between terminals and client identifiers. That is where
 The way you typically call +assemble()+ is at the beginning of your
 session function, like so:
 
+[source,python]
 ----------------------------------------------------------------------
 def session():
     number, numbers = assemble()
@@ -1044,6 +1045,7 @@ predetermined way.
 
 Here's an example of how to use +assemble()+:
 
+[source,python]
 ----------------------------------------------------------------------
 def session():
     number, numbers = assemble()
@@ -1064,6 +1066,7 @@ total), and thus allows you to skip the whole button-clicking step.
 
 This is used for surveys. A typical use would be:
 
+[source,python]
 ----------------------------------------------------------------------
 
 MYSURVEY = [

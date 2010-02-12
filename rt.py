@@ -289,9 +289,9 @@ def session():
         clack()
         _, _, x = get(("click", me(), None))
         x = int(x)
-        die1, die2 = random.randint(1,6), random.randint(1,6)
-        add("<p><img src='rt%d.png'><img src='rt%d.png'>" % (die1, die2))
-        if die1+die2 >= n:
+        y = random.randint(1,12)
+        add("<p>The random number is %d" % y)
+        if y >= n:
           pay = 1.5 * x
         else:
           pay = 0

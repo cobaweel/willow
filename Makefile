@@ -8,9 +8,13 @@ clean:
 	-rm -f *~ \#* *.pyc 
 	-rm -f */*~ */\#* */*.pyc 
 
-dist: 
+dist: clean
 	(cd ..; tar czvf willow-$(DATE).tar.gz $(TARFLAGS) willow)
 
-.PHONY: all clean
+push: clean
+	git commit -a
+	git push git@github.com:jaapweel/willow.git
+
+.PHONY: all clean dist push
 
 

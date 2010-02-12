@@ -1648,14 +1648,16 @@ stable mapping between terminals and client identifiers. That is where
 <div class="paragraph"><p>The way you typically call <tt>assemble()</tt> is at the beginning of your
 session function, like so:</p></div>
 <div class="listingblock">
-<div class="content">
-<pre><tt>def session():
-    number, numbers = assemble()
+<div class="content"><!-- Generator: GNU source-highlight 3.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">session</span></span><span style="color: #990000">():</span>
+    number<span style="color: #990000">,</span> numbers <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">assemble</span></span><span style="color: #990000">()</span>
 
-    # ... your code ...
+    <span style="font-style: italic"><span style="color: #9A1900"># ... your code ...</span></span>
 
-run(session)</tt></pre>
-</div></div>
+<span style="font-weight: bold"><span style="color: #000000">run</span></span><span style="color: #990000">(</span>session<span style="color: #990000">)</span></tt></pre></div></div>
 <div class="paragraph"><p>Now, when you connect a bunch of clients, you will see a button
 labeled "0" on the first ("monitor") client, and buttons labeled "Log
 in" on all other ("subject") clients. As you click these "Log in"
@@ -1715,30 +1717,36 @@ and you will be assured that subject IDs are assigned in a
 predetermined way.</p></div>
 <div class="paragraph"><p>Here&#8217;s an example of how to use <tt>assemble()</tt>:</p></div>
 <div class="listingblock">
-<div class="content">
-<pre><tt>def session():
-    number, numbers = assemble()
-    if number == 0:
-       set("MONITOR&lt;p&gt;Using Subject IDs %r" % numbers)
-    else:
-       set("&lt;p&gt;This client has Subject ID %d" % number)
+<div class="content"><!-- Generator: GNU source-highlight 3.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">session</span></span><span style="color: #990000">():</span>
+    number<span style="color: #990000">,</span> numbers <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">assemble</span></span><span style="color: #990000">()</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> number <span style="color: #990000">==</span> <span style="color: #993399">0</span><span style="color: #990000">:</span>
+       <span style="font-weight: bold"><span style="color: #000000">set</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"MONITOR&lt;p&gt;Using Subject IDs %r"</span> <span style="color: #990000">%</span> numbers<span style="color: #990000">)</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">else</span></span><span style="color: #990000">:</span>
+       <span style="font-weight: bold"><span style="color: #000000">set</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;p&gt;This client has Subject ID %d"</span> <span style="color: #990000">%</span> number<span style="color: #990000">)</span>
 
-run(session)</tt></pre>
-</div></div>
+<span style="font-weight: bold"><span style="color: #000000">run</span></span><span style="color: #990000">(</span>session<span style="color: #990000">)</span></tt></pre></div></div>
 <div class="paragraph"><p>You can also pass an integer argument <tt>n</tt> to <tt>assemble()</tt>. This
 indicates that you want exactly n clients besides the monitor (n+1
 total), and thus allows you to skip the whole button-clicking step.</p></div>
 <h3 id="_tt_survey_title_number_questions_selector_tt">14.2. <tt>survey(title, number, questions, [selector])</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>This is used for surveys. A typical use would be:</p></div>
 <div class="listingblock">
-<div class="content">
-<pre><tt>MYSURVEY = [
-  ("Do you like chocolate?", ("Yes", "No"))
-]
+<div class="content"><!-- Generator: GNU source-highlight 3.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>
+MYSURVEY <span style="color: #990000">=</span> <span style="color: #990000">[</span>
+  <span style="color: #990000">(</span><span style="color: #FF0000">"Do you like chocolate?"</span><span style="color: #990000">,</span> <span style="color: #990000">(</span><span style="color: #FF0000">"Yes"</span><span style="color: #990000">,</span> <span style="color: #FF0000">"No"</span><span style="color: #990000">))</span>
+<span style="color: #990000">]</span>
 
-if me() &gt; 0:
-  survey("FOOD", me(), MYSURVEY)</tt></pre>
-</div></div>
+<span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">()</span> <span style="color: #990000">&gt;</span> <span style="color: #993399">0</span><span style="color: #990000">:</span>
+  <span style="font-weight: bold"><span style="color: #000000">survey</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"FOOD"</span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">(),</span> MYSURVEY<span style="color: #990000">)</span>
+</tt></pre></div></div>
 </div>
 <h2 id="_appendix_a_digression_on_your_ip_address">15. Appendix: A digression on your IP address</h2>
 <div class="sectionbody">
@@ -1887,7 +1895,7 @@ of the current thread.</p></div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2010-02-12 11:59:08 EDT
+Last updated 2010-02-12 12:41:35 EDT
 </div>
 </div>
 </body>
