@@ -584,7 +584,272 @@ University.</p></div>
 </div>
 </div>
 </div>
-<h2 id="_lesson_0_wherein_we_install_willow">3. Lesson 0: Wherein we install Willow</h2>
+<h2 id="_preliminary_1_html">3. Preliminary 1: HTML</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Willow relies on HTML, the hypertext markup language, for the purpose
+of constructing a user interface. A complete description of HTML is
+outside the scope of this manual, but I&#8217;ll give a brief introduction.</p></div>
+<div class="paragraph"><p>An HTML document is a text file with some special markup sequences. To
+practice with HTML, you can construct HTML documents with a text
+editor, and load them in a web browser.</p></div>
+<div class="paragraph"><p>Consider this example:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">&lt;p&gt;</span></span>This is a paragraph, with a <span style="font-weight: bold"><span style="color: #0000FF">&lt;b&gt;</span></span>bold<span style="font-weight: bold"><span style="color: #0000FF">&lt;/b&gt;</span></span> bit in it, and a <span style="font-weight: bold"><span style="color: #0000FF">&lt;br&gt;</span></span>line
+break and a <span style="font-weight: bold"><span style="color: #0000FF">&lt;a</span></span> <span style="color: #009900">href</span><span style="color: #990000">=</span><span style="color: #FF0000">"http://google.com"</span><span style="font-weight: bold"><span style="color: #0000FF">&gt;</span></span>link<span style="font-weight: bold"><span style="color: #0000FF">&lt;/a&gt;</span></span>.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/p&gt;</span></span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;ol&gt;</span></span>
+ <span style="font-weight: bold"><span style="color: #0000FF">&lt;li&gt;</span></span>This is         the first item of an ordered list.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/li&gt;</span></span>
+ <span style="font-weight: bold"><span style="color: #0000FF">&lt;li&gt;</span></span>This is the second        item of an ordered list.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/li&gt;</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;/ol&gt;</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;ul&gt;</span></span>
+ <span style="font-weight: bold"><span style="color: #0000FF">&lt;li&gt;</span></span>This is the first item of an unordered list. <span style="font-weight: bold"><span style="color: #0000FF">&lt;/li&gt;</span></span>
+ <span style="font-weight: bold"><span style="color: #0000FF">&lt;li&gt;</span></span>This is the second item of an unordered list.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/li&gt;</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;/ul&gt;</span></span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;div&gt;</span></span>This is a div. It has a <span style="font-weight: bold"><span style="color: #0000FF">&lt;span&gt;</span></span>span<span style="font-weight: bold"><span style="color: #0000FF">&lt;/span&gt;</span></span> in it.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/div&gt;</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;div&gt;</span></span>This is a div. It has another <span style="font-weight: bold"><span style="color: #0000FF">&lt;span&gt;</span></span>span<span style="font-weight: bold"><span style="color: #0000FF">&lt;/span&gt;</span></span> in it.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/div&gt;</span></span></tt></pre></div></div>
+<div class="paragraph"><p>If we type this into a file called <tt>example.html</tt> and load that file in
+a web browser, this is what we see:</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="html_1.png" alt="html_1.png"/>
+</div>
+</div>
+<div class="paragraph"><p>Even though this is a simple example, it already illustrates some of
+the most important points about HTML:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+HTML is made up of <em>elements</em>, which are delimited by <em>tags</em>. For
+  instance, the above example starts with a <tt>p</tt> element, the start of
+  which is marked with an opening tag <tt>&lt;p&gt;</tt>, and the end of which is
+  marked with a closing tag <tt>&lt;/p&gt;</tt>.
+</p>
+</li>
+<li>
+<p>
+Elements can have contents. For example, the <tt>b</tt> element in the
+  above example contains the text <tt>bold</tt>.
+</p>
+</li>
+<li>
+<p>
+Some elements, such as <tt>br</tt> do not have contents, and those do not
+  need a closing tag. (Sometimes, you will see these written like <tt>&lt;br
+  /&gt;</tt>; this is an XML thing, which you can read about elsewhere.)
+</p>
+</li>
+<li>
+<p>
+Elements also can have attributes. In the above example, the <tt>a</tt>
+  element has an <tt>href</tt> attribute, with value <tt>http://google.com</tt>.
+</p>
+</li>
+<li>
+<p>
+In HTML, any sequence of newline characters and/or blank characters
+  is always treated as a single blank. Extra blanks, or newlines, in
+  the HTML source have no effect. If you do want a line break, you can
+  use the the HTML element <tt>&lt;br&gt;</tt>.
+</p>
+</li>
+<li>
+<p>
+Most HTML elements have standard meanings for the browser. The <tt>b</tt>
+  element is rendered by typesetting its contents in bold, the <tt>a</tt>
+  element describes a link, etc. There are two exceptions: <tt>div</tt> and
+  <tt>span</tt>. These have no inherent meaning, and only become useful when
+  we start using things like CSS. The difference between <tt>div</tt> and
+  <tt>span</tt> is that a <tt>div</tt> is typeset above/below whatever comes
+  before/after it, while a <tt>span</tt> is typeset in-line.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Next, we will see a list of common HTML elements.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<tt>&lt;p&gt;&#8230;&lt;/p&gt;</tt>
+</dt>
+<dd>
+<p>
+A paragraph.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;ul&gt;&#8230;&lt;/ul&gt;</tt>
+</dt>
+<dd>
+<p>
+An unordered (bulleted) list.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;ol&gt;&#8230;&lt;/ol&gt;</tt>
+</dt>
+<dd>
+<p>
+An ordered (numbered) list.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;li&gt;&#8230;&lt;/li&gt;</tt>
+</dt>
+<dd>
+<p>
+An item for a list.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;div&gt;&#8230;&lt;/div&gt;</tt>
+</dt>
+<dd>
+<p>
+A generic chunk of text displayed vertically.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;input&gt;</tt>
+</dt>
+<dd>
+<p>
+An input widget
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;b&gt;&#8230;&lt;/b&gt;</tt>
+</dt>
+<dd>
+<p>
+A piece of text in bold
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;i&gt;&#8230;&lt;/i&gt;</tt>
+</dt>
+<dd>
+<p>
+A piece of text in italics
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;span&gt;&#8230;&lt;/span&gt;</tt>
+</dt>
+<dd>
+<p>
+A generic chunk of text displayed in-line.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;a&gt;&#8230;&lt;/a&gt;</tt>
+</dt>
+<dd>
+<p>
+A link
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;br&gt;</tt>
+</dt>
+<dd>
+<p>
+A line break
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;hr&gt;</tt>
+</dt>
+<dd>
+<p>
+A horizontal line
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;table&gt;</tt>
+</dt>
+<dd>
+<p>
+A table
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;tr&gt;</tt>
+</dt>
+<dd>
+<p>
+A table row
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;td&gt;</tt>
+</dt>
+<dd>
+<p>
+A table element
+</p>
+</dd>
+</dl></div>
+<div class="paragraph"><p>The last three of these fit together like so:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>&lt;table&gt;
+&lt;tr&gt;&lt;td&gt;Column 1, Row 1&lt;/td&gt;&lt;td&gt;Column 2, Row 1&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Column 1, Row 2&lt;/td&gt;&lt;td&gt;Column 2, Row 2&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</tt></pre>
+</div></div>
+<div class="paragraph"><p>Some of the more common HTML attributes:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<tt>&lt;table border=<em>1</em>&gt;&#8230;&lt;/table&gt;</tt>
+</dt>
+<dd>
+<p>
+A table with 1 pixel borders.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;a href="http://google.com/"&gt;&#8230;&lt;/a&gt;</tt>
+</dt>
+<dd>
+<p>
+A link to <tt>http://google.com/</tt>
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;input type=<em>submit</em> value=<em>foo</em>&gt;</tt>
+</dt>
+<dd>
+<p>
+A button with label <tt>foo</tt>
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;input type=<em>text</em>&gt;</tt>
+</dt>
+<dd>
+<p>
+A text field.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph"><p>That&#8217;s all for now. References on HTML abound both online and in
+print.</p></div>
+</div>
+<h2 id="_preliminary_2_css">4. Preliminary 2: CSS</h2>
+<div class="sectionbody">
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/note.png" alt="Note" />
+</td>
+<td class="content">Yet to be written.</td>
+</tr></table>
+</div>
+</div>
+<h2 id="_lesson_0_wherein_we_install_willow">5. Lesson 0: Wherein we install Willow</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>To install Willow, you extract the zip file to a convenient
 location. You will do this anew for each of your Willow projects.  In
@@ -598,7 +863,7 @@ move on to the next section of the manual. If things don&#8217;t work,
 you&#8217;ll notice soon enough, and you can go back and install Python. Do
 not use Python version 3. It will not work.</p></div>
 </div>
-<h2 id="_lesson_1_wherein_we_meet_willow">4. Lesson 1: Wherein we meet Willow</h2>
+<h2 id="_lesson_1_wherein_we_meet_willow">6. Lesson 1: Wherein we meet Willow</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>In the Willow folder, you will find a file named <tt>lesson.01</tt>. You need
 to run this file. On Windows and most Linux distributions, you can
@@ -648,7 +913,7 @@ server, you can use <tt>http://localhost:8000</tt> as a URL. If it is running
 somewhere else, you must find out the IP address of the server. (If
 you don&#8217;t know it, there is a whole chapter further down in the manual
 about how to figure it out.) If the IP address is, say,
-123.123.123.123, then you can reach your Willow server using
+<tt>123.123.123.123</tt>, then you can reach your Willow server using
 <tt>http://123.123.123.123:8000</tt>. The <tt>:8000</tt> part is called the port
 number; you can specify a different port number as an extra argument
 to <tt>run</tt> (e.g. <tt>run(session, 8001)</tt>) if you insist on a port different
@@ -667,7 +932,7 @@ page being displayed in the client&#8217;s browser.</p></div>
 see that each one shows "Hello, world." This is because the
 <tt>session()</tt> function gets called once for each client that connects.</p></div>
 </div>
-<h2 id="_lesson_2_wherein_all_clients_are_not_equal">5. Lesson 2: Wherein all clients are not equal</h2>
+<h2 id="_lesson_2_wherein_all_clients_are_not_equal">7. Lesson 2: Wherein all clients are not equal</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>In real applications, we usually do not want to do the same for every
 client that connects. More likely, we&#8217;ll want one client to show some
@@ -742,7 +1007,7 @@ string.</p></div>
 </div>
 </div>
 </div>
-<h2 id="_lesson_3_wherein_we_produce_output">6. Lesson 3: Wherein we produce output</h2>
+<h2 id="_lesson_3_wherein_we_produce_output">8. Lesson 3: Wherein we produce output</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>In this lesson, we will see some of the Willow functions for
 manipulating user interface elements. All of these are based on HTML
@@ -890,7 +1155,7 @@ is hidden by default and only shows up when you call <tt>show()</tt> on it.</p><
 <tt>push</tt>, <tt>pop</tt>, <tt>hide</tt>, and <tt>show</tt>. In combination with HTML and CSS,
 these primitives make a very powerful UI language.</p></div>
 </div>
-<h2 id="_lesson_4_wherein_we_chatter">7. Lesson 4: Wherein we chatter</h2>
+<h2 id="_lesson_4_wherein_we_chatter">9. Lesson 4: Wherein we chatter</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Now that we have seen how to produce output on the client screens, you
 may be wondering how we can read input. But before we get to that, we
@@ -994,7 +1259,7 @@ built into it.</td>
 </tr></table>
 </div>
 </div>
-<h2 id="_lesson_5_wherein_we_deal_with_input">8. Lesson 5: Wherein we deal with input</h2>
+<h2 id="_lesson_5_wherein_we_deal_with_input">10. Lesson 5: Wherein we deal with input</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Now that we have seen how to manipulate what appears on a client
 screen, we will turn our attention to the issue of input.</p></div>
@@ -1083,7 +1348,7 @@ where <tt><em>n</em></tt> is the number of the client and <tt><em>text</em></tt>
 the user typed in the field. In the above case, we only start looking
 for what&#8217;s in the field after the user has pressed the button.</p></div>
 </div>
-<h2 id="_lesson_6_wherein_we_poke_around_in_other_threads">9. Lesson 6: Wherein we poke around in other threads</h2>
+<h2 id="_lesson_6_wherein_we_poke_around_in_other_threads">11. Lesson 6: Wherein we poke around in other threads</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Many of the Willow functions, even though by default they operate on
 the client display associated with the current session thread, can
@@ -1141,7 +1406,7 @@ running the first.</td>
 </tr></table>
 </div>
 </div>
-<h2 id="_lesson_7_wherein_we_wrap_up_some_loose_ends">10. Lesson 7: Wherein we wrap up some loose ends</h2>
+<h2 id="_lesson_7_wherein_we_wrap_up_some_loose_ends">12. Lesson 7: Wherein we wrap up some loose ends</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>We have now encountered virtually the whole set of Willow
 primitives. If you look at the API documentation, you will discover a
@@ -1178,7 +1443,7 @@ that it makes sense to subtract them! The log file will be put in the
 on the time your Willow program has started. (A more human-readable
 timestamp format is used for the filenames.)</p></div>
 </div>
-<h2 id="_api_willow_willow">11. API: willow.willow</h2>
+<h2 id="_api_willow_willow">13. API: willow.willow</h2>
 <div class="sectionbody">
 <div class="admonitionblock">
 <table><tr>
@@ -1213,47 +1478,47 @@ associated by default with the current session thread.</td>
 the contents of the file are automatically substituted.</td>
 </tr></table>
 </div>
-<h3 id="_tt_me_tt">11.1. <tt>me()</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_me_tt">13.1. <tt>me()</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>Returns the number of the current client.</p></div>
-<h3 id="_tt_url_tt">11.2. <tt>url()</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_url_tt">13.2. <tt>url()</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>Returns the pathname part of the URL used to first load the current
 client. For instance, if the client was loaded as
 <tt>http://localhost:8000/</tt>, this returns "<tt>/</tt>", and if the client was
 loaded as <tt>http://localhost:8000/3</tt>, this returns "<tt>/3</tt>".</p></div>
-<h3 id="_tt_set_content_selector_number_tt">11.3. <tt>set(content, [selector], [number])</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_set_content_selector_number_tt">13.3. <tt>set(content, [selector], [number])</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>Set the content of the HTML element(s) referred to by <tt>selector</tt> on
 to be <tt>content</tt>.</p></div>
-<h3 id="_tt_add_content_selector_number_tt">11.4. <tt>add(content, [selector], [number])</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_add_content_selector_number_tt">13.4. <tt>add(content, [selector], [number])</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>Add <tt>content</tt> to the content of the HTML element(s) referred to by
 <tt>selector</tt>.</p></div>
-<h3 id="_tt_tweak_value_attribute_selector_number_tt">11.5. <tt>tweak(value, attribute, [selector], [number])</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_tweak_value_attribute_selector_number_tt">13.5. <tt>tweak(value, attribute, [selector], [number])</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>Change the value of attribute <tt>attribute</tt> to be <tt>value</tt> in HTML
 element(s) referred to by <tt>selector</tt>.</p></div>
-<h3 id="_tt_push_style_selector_number_tt">11.6. <tt>push(style, [selector], [number])</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_push_style_selector_number_tt">13.6. <tt>push(style, [selector], [number])</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>Add the CSS style <tt>style</tt> to the HTML element(s) referred to by
 <tt>selector</tt>.</p></div>
-<h3 id="_tt_pop_style_selector_number_tt">11.7. <tt>pop(style, [selector], [number])</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_pop_style_selector_number_tt">13.7. <tt>pop(style, [selector], [number])</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>Remove the CSS style <tt>style</tt> from HTML element(s) referred to by
 <tt>selector</tt>.</p></div>
-<h3 id="_tt_hide_selector_number_tt">11.8. <tt>hide([selector], [number])</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_hide_selector_number_tt">13.8. <tt>hide([selector], [number])</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>Hide the HTML element(s) referred to by <tt>selector</tt>.</p></div>
-<h3 id="_tt_show_selector_number_tt">11.9. <tt>show([selector], [number])</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_show_selector_number_tt">13.9. <tt>show([selector], [number])</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>Show the HTML element(s) referred to by <tt>selector</tt>, if previously
 hidden.</p></div>
-<h3 id="_tt_peek_selector_number_tt">11.10. <tt>peek([selector], [number])</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_peek_selector_number_tt">13.10. <tt>peek([selector], [number])</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>Request the contents of the HTML element(s) referred to by
 <tt>selector</tt> to be posted as <tt>("peek",number,contents)</tt>. Intended to
 be used with <tt>&lt;input type=<em>text</em>&gt;</tt> elements.</p></div>
-<h3 id="_tt_hold_number_tt">11.11. <tt>hold([number])</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_hold_number_tt">13.11. <tt>hold([number])</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>Stop executing subsequent <tt>set</tt>, <tt>add</tt>, <tt>push</tt>, <tt>pop</tt>, <tt>hide</tt>,
 <tt>show</tt>, and <tt>peek</tt> immediately, but instead stuff them in a buffer
 where they sit until <tt>flush()</tt> is called.</p></div>
-<h3 id="_tt_flush_number_tt">11.12. <tt>flush([number])</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_flush_number_tt">13.12. <tt>flush([number])</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>Execute all <tt>set</tt>, <tt>add</tt>, <tt>push</tt>, <tt>pop</tt>, <tt>hide</tt>, <tt>show</tt>, and <tt>peek</tt>
 actions that were held in a buffer since <tt>hold()</tt> was called, and
 from here on out resume executing such actions immediately without
 buffering.</p></div>
-<h3 id="_tt_put_tuple_delay_tt">11.13. <tt>put(tuple, [delay])</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_put_tuple_delay_tt">13.13. <tt>put(tuple, [delay])</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>After an optional <tt>delay</tt> in seconds, post the tuple onto the
 communication board.</p></div>
 <div class="admonitionblock">
@@ -1266,16 +1531,16 @@ communication board.</p></div>
   <tt>(x,)</tt>.</td>
 </tr></table>
 </div>
-<h3 id="_tt_get_queries_tt">11.14. <tt>get(*queries)</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_get_queries_tt">13.14. <tt>get(*queries)</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>Block until a tuple becomes present on the board that matches at
 least one of the queries, then return it. A tuple on the board
 matches a query whenever the tuple on the board and the query have
 the same length, and each element of the query is either <tt>None</tt> or
 identical to the corresponding element in the tuple on the board.</p></div>
-<h3 id="_tt_grab_queries_tt">11.15. <tt>grab(*queries)</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_grab_queries_tt">13.15. <tt>grab(*queries)</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>If a tuple is present on the board that matches at least one of the
 queries return it; otherwise return <tt>None</tt>.</p></div>
-<h3 id="_tt_run_session_port_tt">11.16. <tt>run(session, [port])</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_run_session_port_tt">13.16. <tt>run(session, [port])</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>This starts the Willow web server on the specified port (or port
 8000 if you leave the second argument out). The web server will
 create a thread for each client that connects, and each thread will
@@ -1284,7 +1549,7 @@ will return a different value, and <tt>add</tt>, <tt>set</tt>, etc. will by
 default operate on a different client. The web server will search
 for requested files in the current directory, among other places, so
 you can for instance include images in your pages.</p></div>
-<h3 id="_tt_config_filename_tt">11.17. <tt>config(filename)</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_config_filename_tt">13.17. <tt>config(filename)</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>Reads a configuration file in JSON format (<a href="http://json.org/">http://json.org/</a>) and
 returns a corresponding Python object. For instance, if you have a
 file <tt>protocol.txt</tt> containing the text <tt>{ "rounds" : 12, "subjects"
@@ -1302,7 +1567,7 @@ not need to worry about that. To get the value of the <tt>rounds</tt>
 parameter, simply use <tt>cfg["rounds"]</tt>.</td>
 </tr></table>
 </div>
-<h3 id="_tt_log_x_y_8230_tt">11.18. <tt>log(x,y,&#8230;)</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_log_x_y_8230_tt">13.18. <tt>log(x,y,&#8230;)</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>Write (x,y,&#8230;) to the log file as a record, with a UNIX timestamp
 prepended as the first column. A new log file is created in the <tt>log</tt>
 folder whenever the Willow library is loaded, and it bears a name
@@ -1312,7 +1577,7 @@ file would be called <tt>log/2010-02-10-15-32-42.csv</tt>.  This particular
 date-and-time format is used so that the files can be sorted by
 date/time. The log files are in CSV format and can be opened with a
 text editor or a spreadsheet program.</p></div>
-<h3 id="_css_features">11.19. CSS features</h3><div style="clear:left"></div>
+<h3 id="_css_features">13.19. CSS features</h3><div style="clear:left"></div>
 <div class="paragraph"><p>Some Willow features are accessed by means of CSS classes:</p></div>
 <div class="dlist"><dl>
 <dt class="hdlist1">
@@ -1339,7 +1604,7 @@ text editor or a spreadsheet program.</p></div>
 </dd>
 </dl></div>
 </div>
-<h2 id="_api_willow_twig">12. API: willow.twig</h2>
+<h2 id="_api_willow_twig">14. API: willow.twig</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Twig is an extension to Willow. It is a repository of code that shows
 up over and over in experimental interface programs: code for logging
@@ -1370,7 +1635,7 @@ to the next. (The interface to Willow functions may also change, but I
 try to avoid that, and make mention of it in the manual.)</td>
 </tr></table>
 </div>
-<h3 id="_tt_assemble_tt">12.1. <tt>assemble()</tt></h3><div style="clear:left"></div>
+<h3 id="_tt_assemble_tt">14.1. <tt>assemble()</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>Willow offers only a very basic mechanism for identifying clients: the
 numbers returned by <tt>me()</tt>, which are assigned to clients in the order
 in which they first connect. If you have a program launcher in your
@@ -1460,7 +1725,10 @@ predetermined way.</p></div>
 
 run(session)</tt></pre>
 </div></div>
-<h3 id="_tt_survey_title_number_questions_selector_tt">12.2. <tt>survey(title, number, questions, [selector])</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>You can also pass an integer argument <tt>n</tt> to <tt>assemble()</tt>. This
+indicates that you want exactly n clients besides the monitor (n+1
+total), and thus allows you to skip the whole button-clicking step.</p></div>
+<h3 id="_tt_survey_title_number_questions_selector_tt">14.2. <tt>survey(title, number, questions, [selector])</tt></h3><div style="clear:left"></div>
 <div class="paragraph"><p>This is used for surveys. A typical use would be:</p></div>
 <div class="listingblock">
 <div class="content">
@@ -1472,7 +1740,7 @@ if me() &gt; 0:
   survey("FOOD", me(), MYSURVEY)</tt></pre>
 </div></div>
 </div>
-<h2 id="_appendix_a_digression_on_your_ip_address">13. Appendix: A digression on your IP address</h2>
+<h2 id="_appendix_a_digression_on_your_ip_address">15. Appendix: A digression on your IP address</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>You need the IP address of your monitor computer in order for your
 client computers to connect to it. It would be convenient if Willow
@@ -1481,7 +1749,7 @@ this is easier said than done, since a computer can have multiple IP
 addresses at the same time: IP version 4 and IP version 6, on the
 wireless network, on the ethernet network, on the "loopback" network,
 and so on.</p></div>
-<h3 id="_how_to_find_your_ip_address_on_linux">13.1. How to find your IP address on Linux</h3><div style="clear:left"></div>
+<h3 id="_how_to_find_your_ip_address_on_linux">15.1. How to find your IP address on Linux</h3><div style="clear:left"></div>
 <div class="paragraph"><p>On Linux on my computer, I use the <tt>ifconfig</tt> command at the command
 line. When I enter</p></div>
 <div class="listingblock">
@@ -1544,7 +1812,7 @@ no IP address on <tt>eth1</tt>, which makes sense, because the wired
 connection was not plugged when I executed the command. In the output
 above you can also see IP v6 addresses (labeled <tt>inet6 addr</tt>), but
 those are not commonly used.</p></div>
-<h3 id="_how_to_find_your_ip_address_on_windows">13.2. How to find your IP address on Windows</h3><div style="clear:left"></div>
+<h3 id="_how_to_find_your_ip_address_on_windows">15.2. How to find your IP address on Windows</h3><div style="clear:left"></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -1554,7 +1822,7 @@ those are not commonly used.</p></div>
 </tr></table>
 </div>
 </div>
-<h2 id="_appendix_kiosk_mode_browsing">14. Appendix: Kiosk mode browsing</h2>
+<h2 id="_appendix_kiosk_mode_browsing">16. Appendix: Kiosk mode browsing</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>In order to prevent subjects from fiddling around with the web browser
 used to display a user interface to them, you can use a "kiosk mode"
@@ -1565,7 +1833,7 @@ the command line <tt>google-chrome --kiosk</tt> instead of just
 extraneous bits of user interface that subjects might accidentally
 click on.</p></div>
 </div>
-<h2 id="_appendix_architecture">15. Appendix: Architecture</h2>
+<h2 id="_appendix_architecture">17. Appendix: Architecture</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>In this section, I will describe some of the nuts and bolts of
 Willow. It is not usually necessary to understand this, but it may be
@@ -1611,10 +1879,6 @@ number, but it typically uses functions that automatically fill in the
 client number that the particular session thread is associated
 with. This is accomplished, of course, by looking at the thread name
 of the current thread.</p></div>
-<div class="paragraph"><p>Last, we come to the tuple space. This is largely a convenience, and
-could be used independently of the rest of Willow, but it has proven
-to be a convenient way of doing IPC between the threads without
-needing to understand overly complicated concurrency primitives.</p></div>
 <div class="imageblock">
 <div class="content">
 <img src="architecture.png" alt="architecture.png"/>
@@ -1623,7 +1887,7 @@ needing to understand overly complicated concurrency primitives.</p></div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2010-02-12 06:20:13 EDT
+Last updated 2010-02-12 11:59:08 EDT
 </div>
 </div>
 </body>

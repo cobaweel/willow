@@ -1,11 +1,18 @@
+# This is the code for a real experiment conducted at George Mason
+# University. The computerized part of the experiment consists of an
+# several iterated trust games, and a very long survey. This is an
+# example of how to do some rather complex subject matching
+# algorithms.
+
+
 from willow.willow import *
 from willow.twig import *
 import random,datetime
 
-DO_TRUST_GAMES = True
-#DO_TRUST_GAMES = False
-DO_LOTTERIES = True
-#DO_LOTTERIES = False
+#DO_TRUST_GAMES = True
+DO_TRUST_GAMES = False
+#DO_LOTTERIES = True
+DO_LOTTERIES = False
 DO_SURVEY = True
 #DO_SURVEY = False
 
@@ -292,7 +299,7 @@ def session():
         button("Proceed", "Proceed", wait=True)
         set("Wait...")
 
-  # Do the whole protocol twice
+  # Do parts 1-4 twice
   for _ in range(2):
     # Part 1
     if DO_TRUST_GAMES:
@@ -352,7 +359,7 @@ def session():
       if number == 0: button(4, 4, wait=True)
       lotteries()
 
-   # Now run the survey
+   # Now run the surveys
   if DO_SURVEY:
     if number == 0:
       add("<div class='survey' />")

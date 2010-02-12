@@ -103,13 +103,11 @@ def clack():
     while grab(("click", me(), None)): pass
 
 def survey(title, number, numbers, questions, selector="body"):
+  print "survey", title, number, numbers, questions, selector
   if number == 0:
     button("__survey_%s" % title, title, selector, wait=True)
-    add("<p>&nbsp;</p>")
-    clack()
-    for n in numbers: add("<div class='__survey_%s_%d'><b>%d</b> </div>" %
-                          (title, n, n), selector)
-    get(("click", me(), "__survey_%s" % title))
+    for n in numbers[1:]: add("<div class='__survey_%s_%d'><b>%d</b> </div>" %
+                              (title, n, n), selector)
     sync(number, numbers)
   else:
     sync(number, numbers)    

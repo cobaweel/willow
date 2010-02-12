@@ -90,6 +90,116 @@ University.
 image::screen1.png[]
 image::screen2.png[]
 
+Preliminary 1: HTML
+-------------------
+
+Willow relies on HTML, the hypertext markup language, for the purpose
+of constructing a user interface. A complete description of HTML is
+outside the scope of this manual, but I'll give a brief introduction.
+
+An HTML document is a text file with some special markup sequences. To
+practice with HTML, you can construct HTML documents with a text
+editor, and load them in a web browser.
+
+Consider this example:
+
+[source,html]
+----------------------------------------------------------------------
+<p>This is a paragraph, with a <b>bold</b> bit in it, and a <br>line
+break and a <a href="http://google.com">link</a>.</p>
+
+<ol>
+ <li>This is         the first item of an ordered list.</li>
+ <li>This is the second        item of an ordered list.</li>
+</ol>
+<ul>
+ <li>This is the first item of an unordered list. </li>
+ <li>This is the second item of an unordered list.</li>
+</ul>
+
+<div>This is a div. It has a <span>span</span> in it.</div>
+<div>This is a div. It has another <span>span</span> in it.</div>
+----------------------------------------------------------------------
+
+If we type this into a file called +example.html+ and load that file in
+a web browser, this is what we see:
+
+image::html_1.png[]
+
+Even though this is a simple example, it already illustrates some of
+the most important points about HTML:
+
+* HTML is made up of _elements_, which are delimited by _tags_. For
+  instance, the above example starts with a +p+ element, the start of
+  which is marked with an opening tag +<p>+, and the end of which is
+  marked with a closing tag +</p>+.
+
+* Elements can have contents. For example, the +b+ element in the
+  above example contains the text +bold+.
+
+* Some elements, such as +br+ do not have contents, and those do not
+  need a closing tag. (Sometimes, you will see these written like +<br
+  />+; this is an XML thing, which you can read about elsewhere.)
+
+* Elements also can have attributes. In the above example, the +a+
+  element has an +href+ attribute, with value +http://google.com+.
+
+* In HTML, any sequence of newline characters and/or blank characters
+  is always treated as a single blank. Extra blanks, or newlines, in
+  the HTML source have no effect. If you do want a line break, you can
+  use the the HTML element +<br>+.
+
+* Most HTML elements have standard meanings for the browser. The +b+
+  element is rendered by typesetting its contents in bold, the +a+
+  element describes a link, etc. There are two exceptions: +div+ and
+  +span+. These have no inherent meaning, and only become useful when
+  we start using things like CSS. The difference between +div+ and
+  +span+ is that a +div+ is typeset above/below whatever comes
+  before/after it, while a +span+ is typeset in-line.
+
+Next, we will see a list of common HTML elements. 
+
++<p>...</p>+::     A paragraph.
++<ul>...</ul>+::   An unordered (bulleted) list.
++<ol>...</ol>+::   An ordered (numbered) list.
++<li>...</li>+::   An item for a list.
++<div>...</div>+:: A generic chunk of text displayed vertically.
++<input>+:: An input widget
++<b>...</b>+:: A piece of text in bold
++<i>...</i>+:: A piece of text in italics
++<span>...</span>+:: A generic chunk of text displayed in-line.
++<a>...</a>+:: A link
++<br>+:: A line break
++<hr>+:: A horizontal line
++<table>+:: A table
++<tr>+:: A table row
++<td>+:: A table element
+
+The last three of these fit together like so:
+
+----------------------------------------------------------------------
+<table>
+<tr><td>Column 1, Row 1</td><td>Column 2, Row 1</td></tr>
+<tr><td>Column 1, Row 2</td><td>Column 2, Row 2</td></tr>
+</table>
+----------------------------------------------------------------------
+
+Some of the more common HTML attributes:
+
++<table border='1'>...</table>+:: A table with 1 pixel borders.
++<a href="http://google.com/">...</a>+:: A link to +http://google.com/+
++<input type='submit' value='foo'>+:: A button with label +foo+
++<input type='text'>+:: A text field.
+
+That's all for now. References on HTML abound both online and in
+print.
+
+Preliminary 2: CSS
+------------------
+
+NOTE: Yet to be written.
+
+
 Lesson 0: Wherein we install Willow
 -----------------------------------
 
@@ -158,7 +268,7 @@ server, you can use +http://localhost:8000+ as a URL. If it is running
 somewhere else, you must find out the IP address of the server. (If
 you don't know it, there is a whole chapter further down in the manual
 about how to figure it out.) If the IP address is, say,
-123.123.123.123, then you can reach your Willow server using
++123.123.123.123+, then you can reach your Willow server using
 +http://123.123.123.123:8000+. The +:8000+ part is called the port
 number; you can specify a different port number as an extra argument
 to +run+ (e.g. +run(session, 8001)+) if you insist on a port different
@@ -945,6 +1055,10 @@ def session():
 run(session)
 ----------------------------------------------------------------------
 
+You can also pass an integer argument +n+ to +assemble()+. This
+indicates that you want exactly n clients besides the monitor (n+1
+total), and thus allows you to skip the whole button-clicking step.
+
 +survey(title, number, questions, [selector])+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1102,10 +1216,5 @@ number, but it typically uses functions that automatically fill in the
 client number that the particular session thread is associated
 with. This is accomplished, of course, by looking at the thread name
 of the current thread.
-
-Last, we come to the tuple space. This is largely a convenience, and
-could be used independently of the rest of Willow, but it has proven
-to be a convenient way of doing IPC between the threads without
-needing to understand overly complicated concurrency primitives.
 
 image::architecture.png[]
