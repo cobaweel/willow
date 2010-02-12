@@ -1,5 +1,5 @@
-Willow, a Python framework for experimental economics
-=====================================================
+Willow: Experimental Economics with Python
+==========================================
 
 //////////////////////////////////////////////////////////////////////
 This manual is written in the asciidoc markup language, which can be
@@ -8,16 +8,14 @@ text, too, but if you decide to edit it, please do make sure that it
 remains valid asciidoc!
 //////////////////////////////////////////////////////////////////////
 
-:icons:
-:toc:
-
 About this manual
 -----------------
 
 You are reading the manual for Willow, a Python framework for
-experimental economics. This manual presumes that you already have an
-understanding of experimental economics, of HTML, and of Python
-programming.
+experimental economics developed at the Center for the Study of
+Neuroeconomics at George Mason University. This manual presumes that
+you already have an understanding of experimental economics, of HTML,
+and of Python programming.
 
 If you are interested in learning about experimental economics, you
 could do worse than to have a look at the following textbooks:
@@ -49,6 +47,18 @@ Python is an excellent first language. Some free resources include:
 
  http://www.swaroopch.com/notes/Python
 
+Also, in order to use Willow, you need to have basic knowledge of HTML
+and CSS, the languages used to build web pages. For this I strongly
+recommend
+
+ * Kennedy and Musciano, 'HTML & XHTML, The Definitive Guide',
+   O'Reilly.
+
+O'Reilly books are available full-text through an online service
+called Safari, which many universities subscribe to. There are also
+many free on-line sources about HTML and CSS.
+
+
 Why Willow?
 -----------
 
@@ -70,20 +80,18 @@ subjects will simply run a web browser, which connects to a web server
 that runs on the monitor computer. The user interface for the subjects
 will be displayed inside the browser window. 
 
-Screenshots
------------
-
 Willow is a versatile program, and you can use it for many different
 interfaces; but you might just be curious what a Willow interface can
-look like. Here are some examples taken from the first study that
-used Willow at the Center for the Study of Neuroeconomics at George
-Mason University.
+look like. Here are some examples taken from the first study that used
+Willow at the Center for the Study of Neuroeconomics and the
+Interdisciplinary Center for Economic Science at George Mason
+University.
 
 image::screen1.png[]
 image::screen2.png[]
 
-Installing Willow
------------------
+Lesson 0: Wherein we install Willow
+-----------------------------------
 
 To install Willow, you extract the zip file to a convenient
 location. You will do this anew for each of your Willow projects.  In
@@ -98,24 +106,22 @@ you'll notice soon enough, and you can go back and install Python. Do
 not use Python version 3. It will not work.
 
 
-Using Willow
-------------
+Lesson 1: Wherein we meet Willow
+--------------------------------
 
-In the Willow folder, you will find a file named +hello.py+. You need
+In the Willow folder, you will find a file named +lesson.01+. You need
 to run this file. On Windows and most Linux distributions, you can
-double click on it. You can also run the command +python hello.py+
-from the command line. Once the +hello.py+ program is running, fire up
-a web browser and point it to +http://localhost:8000+. You should see
+double click on it. You can also run the command +python lesson01.py+
+from the command line. Once the +lesson01.py+ program is running, fire up
+a web browser and point it to +http://localhost:8000/+. You should see
 a page that looks like so:
 
-**********************************************************************
-Hello World.
-**********************************************************************
+image::lesson01.1.png[]
 
 In practice, while programming, you will want to run Willow from
 within IDLE, which is the integrated development environment that
-comes with Python. To do so, right-click +hello.py+ and select "Edit
-with IDLE". This will pop up an editor window with the +hello.py+ code
+comes with Python. To do so, right-click +lesson01.py+ and select "Edit
+with IDLE". This will pop up an editor window with the +lesson01.py+ code
 in it:
 
 [source,python]
@@ -140,7 +146,7 @@ should stop the first one first (just close the window).
 Now, let us look at the above code. Most of it is boilerplate, but the
 good news is that this is all the boilerplate you need. The first line
 imports the willow library. It assumes that +willow.py+ is in a
-subdirectory +willow+ of the directory in which +hello.py+ is; this is
+subdirectory +willow+ of the directory in which +lesson01.py+ is; this is
 how things are set up for the sample programs, and if you put your own
 programs in the same place, it will just work. The next two lines
 define a session function, and the last line instructs Willow to start
@@ -160,9 +166,9 @@ from 8000.
 
 Once the web server is running, for each client that connects to it,
 the session function will be called once. It will keep running until
-it returns. Each session function runs in its own thread. This means
-that several "copies" of the session function are running
-simultaneously.
+it returns. We say that each session function runs in its own "session
+thread". This means that several "copies" of the session function are
+running simultaneously, one for each client.
 
 In this case, we want to simply display the text "Hello world." in the
 web browser of every client that connects, so we have a very simple
@@ -170,113 +176,486 @@ session function that does nothing but +add("<h1>Hello,
 world.</h1>")+. The +add()+ function adds an HTML snippet to the web
 page being displayed in the client's browser. 
 
-A digression on your IP address
--------------------------------
+Try connecting to +localhost:8000+ in multiple browser tabs. You'll
+see that each one shows "Hello, world." This is because the
++session()+ function gets called once for each client that connects.
 
-You need the IP address of your monitor computer in order for your
-client computers to connect to it. It would be convenient if Willow
-could display the right IP address for you to use, but unfortunately,
-this is easier said than done, since a computer can have multiple IP
-addresses at the same time: IP version 4 and IP version 6, on the
-wireless network, on the ethernet network, on the "loopback" network,
-and so on.
+Lesson 2: Wherein all clients are not equal
+-------------------------------------------
 
-How to find your IP address on Linux
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In real applications, we usually do not want to do the same for every
+client that connects. More likely, we'll want one client to show some
+sort of experimenter console, one client to show the interface for
+subject 1, one client the interface for subject 2, etc.
 
-On Linux on my computer, I use the +ifconfig+ command at the command
-line. When I enter
+Have a look at +lesson02.py+:
 
+[source,python]
 ----------------------------------------------------------------------
-$ ifconfig
+from willow.willow import *
+
+def session():
+  if me() == 0:
+      add("Hello monitor %d at URL %s" % (me(), url()))
+  else:
+      add("Hello subject %d at URL %s" % (me(), url()))
+
+run(session)        
+---------------------------------------------------------------------- 
+
+NOTE: The +%+ operator in Python is very useful for constructing
+strings. You can read about it in section 6.6.2, "String Formatting
+Operations", of the Python 2.6.4 Standard Library reference manual.
+
+As you can see, there is still only one +session()+ function, and for
+each client that connects, a session thread is started that runs the
++session()+ function. Each client runs the exact same function,
+but... inside the +session()+ function the value returned by +me()+
+will be different in each thread. In particular, each client gets a
+number, starting with 0, in the order in which the clients first
+connect, and +me()+ returns the number of the client associated with
+the current thread.
+
+The program also makes use of a second mechanism that can be used for
+distinguishing clients, and that is +url()+. As you may have noticed,
+Willow is not particularly picky about the URL you use to load it. You
+could have typed +http://localhost:8000/+ or +http://localhost:8000/3+
+or +http://localhost:8000/spamandtomatoes+ and in any of those cases,
+the same page would show and the same +session()+ function would be
+called; but inside each +session()+ function, +url()+ would return a
+different value.
+
+Try running +lesson02.py+ and then try to connect to Willow with
+various URLs. Each URL has to be of the form
++http://<the-host-running-willow>:8000/<something>+, where
++<the-host-running-willow>+ can be +localhost+ or your IP address or
+hostname, and +<something>+ can be anything, including the empty
+string.
+
+You should see pages looking like this:
+
+image::lesson02.1.png[]
+image::lesson02.2.png[]
+image::lesson02.3.png[]
+image::lesson02.4.png[]
+
+Lesson 3: Wherein we produce output
+-----------------------------------
+
+In this lesson, we will see some of the Willow functions for
+manipulating user interface elements. All of these are based on HTML
+and CSS, and it is crucial that you acquire a basic understanding of
+these languages. An extensive description of HTML and CSS is outside
+the scope of this manual.
+
+Have a look at +lesson03.py+. 
+
+[source,python]
 ----------------------------------------------------------------------
+from willow.willow import *
 
-the computer responds
-
-----------------------------------------------------------------------
-$ ifconfig
-eth1      Link encap:Ethernet  HWaddr 00:23:ae:1e:9e:ac  
-          UP BROADCAST MULTICAST  MTU:1500  Metric:1
-          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
-          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:1000 
-          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
-          Interrupt:17 
-
-eth2      Link encap:Ethernet  HWaddr 00:24:2b:c6:a4:76  
-          inet addr:10.143.91.80  Bcast:10.143.91.255  Mask:255.255.254.0
-          inet6 addr: fe80::224:2bff:fec6:a476/64 Scope:Link
-          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-          RX packets:10076 errors:0 dropped:0 overruns:0 frame:7868
-          TX packets:10906 errors:20 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:1000 
-          RX bytes:1571308 (1.5 MB)  TX bytes:1341157 (1.3 MB)
-          Interrupt:17 Base address:0xc000 
-
-lo        Link encap:Local Loopback  
-          inet addr:127.0.0.1  Mask:255.0.0.0
-          inet6 addr: ::1/128 Scope:Host
-          UP LOOPBACK RUNNING  MTU:16436  Metric:1
-          RX packets:85540 errors:0 dropped:0 overruns:0 frame:0
-          TX packets:85540 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:0 
-          RX bytes:41237280 (41.2 MB)  TX bytes:41237280 (41.2 MB)
-$
-----------------------------------------------------------------------
-
-TIP: In this and many other software manuals, +$+ is used to indicate
-the Linux/UNIX prompt. On your computer, it may be different. +%+ is a
-popular choice, too, for example.
-
-There is much information here, but we only need a little. First,
-notice that this computer has three network interfaces, called +eth1+,
-+eth2+ and +lo+. +lo+ is the loopback device; it does not correspond
-to any actual hardware, but it is rather a contraption that the
-operating system uses so that you can make connections to your own
-machine at address +127.0.0.1+ even when the network is down. The
-other two network devices are actual network cards that are in the
-computer; as it happens, +eth1+ is a wired Ethernet network, and
-+eth2+ is a wireless 802.11g network. According to the information
-above, the computer has IP address 10.143.91.80 on +eth2+, and it has
-no IP address on +eth1+, which makes sense, because the wired
-connection was not plugged when I executed the command. In the output
-above you can also see IP v6 addresses (labeled +inet6 addr+), but
-those are not commonly used.
-
-How to find your IP address on Windows
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-BLABLABLA
-
-
-A digression on HTML, the hypertext markup language
----------------------------------------------------
-
-In order to use Willow, it is necessary that you understand some HTML,
-because HTML is the language of web pages, and the user interface for
-a Willow program is made up of web pages. This manual will not go into
-detail about HTML, but here is a summary of some of the most common
-HTML tags:
-
-[source,html]
-----------------------------------------------------------------------
-<h1>This is a level 1 heading.</h1>
-<h2>This is a level 2 heading.</h2>
-<h3>This is a level 3 heading.</h3>
-<p>This is a paragraph, with <b>bold</b> and <i>italics</i>.
-<li>This is a bulleted list item.
-<input type="submit" id="foo" value="This is a button">
-<input type="text" id="foo" value="This is a text box">
+def session():
+    add("<style type='text/css'>.important { font-weight: bold; }</style>")
+    add("<p>The <span class='important' id='a'>division</span> of "
+        "<span class='b'>labor</span> is limited "
+        "by the extent of the "
+        "<a href='http://ebay.org'>market</a>.")
+    add(" and subdivision", "#a")
+    set("labour", ".b")
+    tweak("http://ebay.com", "href", "a")
+    pop("important","#a")
+    push("important",".b")    
+    add("<p class='elusive'>Microfoundations.</p>")
+    add("<p class='hidden'>Prices.</p>")    
+    hide(".elusive")
+    show(".hidden")
+    
+run(session)        
 ----------------------------------------------------------------------
 
-A more complicated Willow example
----------------------------------
+This displays a web page like so:
 
-BLABLABLA
+image::lesson03.1.png[]
+
+This shows off all of Willow's UI manipulation functions. Let's go
+through it line by line.
+
+    add("<style type='text/css'>.important { font-weight: bold; }</style>")
+
+First we add a style sheet to the page. Again, CSS is beyond the scope
+of this manual and you should go out and read up on it, but what this
+comes down to is that we instruct the browser to typeset in bold all
+HTML elements that have class "important" turned on.
+
+    add("<p>The <span class='important' id='a'>division</span> of "
+        "<span class='b'>labor</span> is limited "
+        "by the extent of the "
+        "<a href='http://ebay.org'>market</a>.")
+
+Note that in Python string literal juxtaposition adds the string
+literals together, which makes for a convenient way of splitting long
+strings over several lines.
+
+The +<span>+ element in HTML has no default meaning, and without any
+style sheets or other manipulations, a piece of HTML enclosed in a
++<span>+ is exactly identical to the same piece of HTML not so
+enclosed. In the above fragment, we have two +<span>+ elementss. Note
+that because the style sheet instructed the browser to print all
+elements of class +important+ in bold, the word "division" is printed
+in bold; or at least, it would be, if we did not manipulate it
+further.
+
+    add(" and subdivision", "#a")
+
+This shows that you can add text not just to the page as a whole, but
+also to particular elements. The optional second argument to +add+ is
+a CSS selector. The most common CSS selectors are:
+
+ * +p+, which refers to all +<p>+ elements;
+ * +h1+, which refers to all +<h1>+ elements;
+ * etc.;
+ * +.x+, which refers to all elements with +class='x'+;
+ * +#a+, which refers to the first element with +id='a'+.
+
+Note that some selectors can refer to more than one element, and in
+that case, your HTML snippet gets added to all matching elements.
+
+In this case, what we are asking Willow to do is to find the first
+HTML element with +id='a'+ and add the text " and subdivision" to the
+end of it it.
+
+    set("labour", ".b")
+
+The +set()+ function is just like the +add()+ function except that
+instead of adding HTML to the end of some element, it replaces the
+entire contents of the element. In particular, +set("")+ clears the
+entire page!
+
+    tweak("http://ebay.com", "href", "a")
+
+So far, we have seen the functions +add+ and +set+ that manipulate the
+contents of HTML elements. But HTML elements have attributes as well
+as contents. For instance, if you write +<a href="foo">...</a>+, you
+have created an +<a>+ element with contents "..." and with an +href+
+attribute with value +foo+. The +tweak()+ function serves to
+manipulate attributes. In this case, we set the +href+ attribute of
+*every single +<a>+ element on the page* to be +http://ebay.com+.
+
+    pop("important","#a")
+    push("important",".b")    
+
+In HTML, a single element can have more than one class. You can write
+that as +<p class='class1 class2'>...</p>+. The +pop()+ and +push()+
+functions are there to remove a class from an element and to add a
+class to an element, respectively, without changing any other classes
+that the element might have.
+
+    add("<p class='elusive'>Microfoundations.</p>")
+    add("<p class='hidden'>Prices.</p>")    
+    hide(".elusive")
+    show(".hidden")
+
+The +hide()+ and +show()+ functions do just that: hide and show
+elements. Willow is set up so that any element with class +hidden+ set
+is hidden by default and only shows up when you call +show()+ on it.
+
+So far, we have seen the Willow UI primitives: +add+, +set+, +tweak+,
++push+, +pop+, +hide+, and +show+. In combination with HTML and CSS,
+these primitives make a very powerful UI language. 
+
+Lesson 4: Wherein we chatter
+----------------------------
+
+Now that we have seen how to produce output on the client screens, you
+may be wondering how we can read input. But before we get to that, we
+will first discuss another important feature of Willow: its
+communication system.
+
+Consider +lesson04.py+. 
+
+[source,python]
+----------------------------------------------------------------------
+from willow.willow import *
+
+def session():
+  if me() == 0:
+    add("<h1>Monitor</h1>")
+    while True:
+      _, n = get(("HELLO", None))
+      add("<p>Client %d logged in" % n)
+  else:
+    put(("HELLO", me()))
+    add(me())
+    
+run(session)        
+----------------------------------------------------------------------
+
+In this short program, we can see a typical use case for the important
+Willow functions +put()+ and +get()+. The first client, for which
++me()==0+, acts as a control panel that displays information about
+other clients coming online. In order to convey that information, each
+client other than the first puts a tuple +("HELLO", me())+ on the
+Board. The first client retrieves these tuples and uses them to
+display information about logins.
+
+After the monitor client and 3 other clients have connected, the
+monitor client display would look like this:
+
+image::lesson04.1.png[]
+
+To fully understand this, we must understand the Board. The Board is
+the one and only data structure that is shared between the various
+session threads in Willow.
+The board contains tuples. Tuples are immutable sequences, and they
+are built into Python. For instance, +(2,3)+ is a two-element tuple,
+and +(2,3,"a")+ is a three-element tuple. 
+
+NOTE: One peculiarity of Python is that a one-element tuple is written
++(2,)+ to distinguish it from +(2)+, which is just another way of
+writing +2+.
+
+To put +_my_tuple_+ on the board, you call +put(_my_tuple_)+. For
+instance, to put +(2,3)+ on the board, you call +put( (2,3) )+. Note the
+double parentheses!)
+
+To retrieve +_my_tuple_+ from the board, you call
++get(_my_tuple_)+. In practice, though, you typically don't know yet
+what tuple you want to retrieve. For that reason, +get()+ allows
+wildcards, in the form of +None+ elements in its tuple argument. For
+instance, +get( (2,None) )+ means: retrieve from the board any tuple
+with two elements of which the first is +2+ and the second may be
+anything at all.
+
+The +get()+ function is blocking. This means that if there is no
+matching tuple on the board, it will sit around waiting until one
+appears. This is what happens in the example code: the first thread
+(the one with +me()==0+) sits around waiting for tuples of the form
++("HELLO", _<something>_)+ to show up on the board. Every time one
+such tuple shows up, the +get()+ function returns it, the loop loops,
+and the +get()+ function is called again, blocking until the next
+tuple shows up.
+
+When a tuple is gotten with +get()+, it is removed from the
+board. Therefore, in the above code, you do not need to worry about
+looping around retrieving the same tuple over and over again. If you
+want to retrieve a tuple and leave it available (maybe for some other
+thread), you simply put it back on with +put()+.
+
+Another important trick in the use of +get()+ is that you can specify
+more than one pattern. For instance, +get( ("HELLO,"), ("ERROR",) )+
+blocks until either the one-element tuple +("HELLO",)+ or the
+one-element tuple +("ERROR",)+ shows up on the board, then removes and
+returns the tuple.
+
+Finally, I will mention +grab()+. It is like +get()+, except that it
+does not block. If a matching tuple is available, it will return that,
+but if there is none, it will simply return +None+ (unlike +get()+,
+which will sit there twiddling its thumbs until a matching tuple shows
+up).
 
 
-API documentation
------------------
+NOTE: You could, conceivably, have your own shared data structures
+simply by declaring some global variables outside of +session()+, but
+I recommend that you don't. In order to make sure your data structures
+remain consistent, you would have to implement rules to make sure that
+no two threads fiddle with them at the same time ("mutual exclusion"),
+which can rapidly become extremely complicated. The Board is a data
+structure known as a Tuple Space, which already has mutual exclusion
+built into it.
+
+
+Lesson 5: Wherein we deal with input
+------------------------------------
+
+Now that we have seen how to manipulate what appears on a client
+screen, we will turn our attention to the issue of input.
+
+There are two basic ways of giving input to a Willow client: you can
+click things, and you can fill out text fields.
+
+The +lesson05.py+ code demonstrates both.
+
+[source,python]
+----------------------------------------------------------------------
+from willow.willow import *
+
+def session():
+  add("<p>Please enter your name.")
+  add("<input id='bid' type='text'>")
+  add("<input id='submit' type='submit'>")
+  _, _, _ = get(("click", me(), "submit"))
+  peek("#bid")
+  _, _, name = get(("peek", me(), None))
+  add("<p>Hello, %s." % name)
+
+run(session)        
+----------------------------------------------------------------------
+
+This should initially display a screen that looks like so:
+
+image::lesson05.1.png[]
+
+
+You can then type something in the text box and click the button
+labeled "Submit", and the screen will look like:
+
+image::lesson05.2.png[]
+
+What's going on here?
+
+First of all, HTML elements that look like
+
+  <input type='submit' ...>
+
+are buttons.
+
+In HTML, each +<input>+ element that is a button must have two
+attributes: +type+ must be set to +submit+, to make sure we are
+displaying a button and not some other sort of input element, and
++value+ must be set to the text that is to be on the button (or, if it
+is left out, the text defaults to "Submit", or possibly something else
+if your browser is set up for a language other than English).
+
+In Willow, your button must additionally have an +id+ attribute, which
+is how we keep track of which buttons get clicked.
+
+When a button gets clicked, a tuple +("click", _n_, _id_)+ is
+automatically posted onto the board, where +_n_+ is the number of the
+client that received the button click and +_id_+ is the +id+ of the
+button. 
+
+This is why, after we have displayed the button, we can just call
++get( ("click", me(), "submit") )+, which will block until the button is
+clicked. Note that if you insist on blocking one client thread until a
+button in some _other_ client thread has been clicked, you can do
+that, simply by replacing +me()+ in the above call to +get()+ by some
+other integer (but it is not recommended).
+
+NOTE: If the button is clicked multiple times, multiple tuples will be
+inserted. This may result in behavior you may not necessarily
+intend. If you want to wait for a button to get clicked that may have
+been clicked before you started waiting, you will need to clear those
+old tuples off the board, by saying e.g. +grab( ("click",me(),None) )+.
+
+The way we deal with text fields is similar to the way we deal with
+buttons, but there is no natural moment to automatically insert the
+contents of a text field into the Board, so instead we have to request
+it explicitly.
+
+To show a text field, we use a piece of HTML that looks like
+
+  <input id='_name_of_text_field_' type='text'>
+
+and then we call +peek("#_name_of_text_field_")+. This will cause a
+tuple to be posted to theboard of the form +("peek", _n_, _text_)+,
+where +_n_+ is the number of the client and +_text_+ is the text that
+the user typed in the field. In the above case, we only start looking
+for what's in the field after the user has pressed the button.
+
+Lesson 6: Wherein we poke around in other threads
+-------------------------------------------------
+
+Many of the Willow functions, even though by default they operate on
+the client display associated with the current session thread, can
+also operate on a different client display if you pass the
++number=_n_+ optional parameter. This is never necessary, but it may
+be more convenient than passing messages through the board to the
+other session thread so that it can then manipulate its corresponding
+client display.
+
+Take for instance the code in lesson 4:
+
+[source,python]
+----------------------------------------------------------------------
+from willow.willow import *
+
+def session():
+  if me() == 0:
+    add("<h1>Monitor</h1>")
+    while True:
+      _, n = get(("HELLO", None))
+      add("<p>Client %d logged in" % n)
+  else:
+    put(("HELLO", me()))
+    add(me())
+    
+run(session)        
+----------------------------------------------------------------------
+
+We could rewrite that as follows:
+
+[source,python]
+----------------------------------------------------------------------
+from willow.willow import *
+
+def session():
+  if me() == 0:
+    add("<h1>Monitor</h1>")
+  else:
+    add("<p>Client %d logged in" % me(), number=0)
+    add(me())
+    
+run(session)        
+----------------------------------------------------------------------
+
+NOTE: Strictly speaking, the above programs are not entirely
+equivalent. If the first session thread executed very, very slowly and
+the second client connect immediately after the first, then the
+"Client 1 logged in" message could conceivably show up before the
+"Monitor" heading when running the second program, but not when
+running the first. 
+
+Lesson 7: Wherein we wrap up some loose ends
+--------------------------------------------
+
+We have now encountered virtually the whole set of Willow
+primitives. If you look at the API documentation, you will discover a
+few odds and ends that haven't been mentioned so far.
+
+.The +hold()+ and +flush()+ functions
+
+These may improve performance in very high-throughput applications but
+most likely aren't anything you need to worry about.
+
+.The optional +delay+ argument to +put()+
+
+You will also see that +put()+ accepts a delay as an optional
+argument: calling +put( ("boo",), delay=3.4 )+ causes the tuple
++("boo",)+ to be posted to the board 3.4 seconds later; the +put()+
+function itself returns immediately. This makes it possible, for
+instance, to do things like "wait for this button to be clicked or 7.2
+seconds to elapse, whichever comes first," like so:
+
+[source,python]
+----------------------------------------------------------------------
+add("<input id='submit' type='submit'>")
+put(("timeout",), delay=7.2)
+get(("click", me(), "submit"), ("timeout",))
+----------------------------------------------------------------------
+
+.The +config()+ function
+
+You may want to use configuration files to configure, say, different
+treatments. In order to make this possible, Willow has a function that
+reads a JSON object out of a text file. 
+
+.The +log()+ function
+
+This is how you cause your Willow program to produce a data file. Each
+call to +log()+ will result in a single row in a CSV file, which is a
+simple spreadsheet format that is understood by Excel, OpenOffice,
+Stata, and other data analysis software. Each row will automatically
+get a timestamp added to the front of it, which is a large integer
+representing the number of seconds that have passed since the "Unix
+epoch" on January 1, 1970, 0:00 UTC. This may seem like an odd choice
+of timestamp format, but the advantage of this type of timestamp is
+that it makes sense to subtract them! The log file will be put in the
++log/+ subdirectory (folder) and it will be named automatically based
+on the time your Willow program has started. (A more human-readable
+timestamp format is used for the filenames.)
+
+API: willow.willow
+------------------
 
 NOTE: The +selector+ argument can take any CSS selector. The CSS
 selector mini-language is rather rich, but the most typical cases are
@@ -293,129 +672,150 @@ associated by default with the current session thread.
 NOTE: Whenever +argument+ is a file descriptor that can be read from,
 the contents of the file are automatically substituted.
 
-+me()+::
++me()+
+~~~~~~
 
-  Returns the number of the current client.
+Returns the number of the current client.
 
-+url()+::
++url()+
+~~~~~~~
 
-  Returns the pathname part of the URL used to first load the current
-  client. For instance, if the client was loaded as
-  +http://localhost:8000/+, this returns "+/+", and if the client was
-  loaded as +http://localhost:8000/3+, this returns "+/3+".
+Returns the pathname part of the URL used to first load the current
+client. For instance, if the client was loaded as
++http://localhost:8000/+, this returns "+/+", and if the client was
+loaded as +http://localhost:8000/3+, this returns "+/3+".
 
-+set(content, [selector], [number])+::
++set(content, [selector], [number])+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  Set the content of the HTML element(s) referred to by +selector+ on
-  to be +content+.
+Set the content of the HTML element(s) referred to by +selector+ on
+to be +content+.
 
-+add(content, [selector], [number])+::
++add(content, [selector], [number])+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  Add +content+ to the content of the HTML element(s) referred to by
-  +selector+.
+Add +content+ to the content of the HTML element(s) referred to by
++selector+.
 
-+tweak(value, attribute, [selector], [number])+::
++tweak(value, attribute, [selector], [number])+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  Change the value of attribute +attribute+ to be +value+ in HTML
-  element(s) referred to by +selector+.
+Change the value of attribute +attribute+ to be +value+ in HTML
+element(s) referred to by +selector+.
 
-+push(style, [selector], [number])+::
++push(style, [selector], [number])+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  Add the CSS style +style+ to the HTML element(s) referred to by
-  +selector+.
+Add the CSS style +style+ to the HTML element(s) referred to by
++selector+.
 
-+pop(style, [selector], [number])+::
++pop(style, [selector], [number])+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  Remove the CSS style +style+ from HTML element(s) referred to by
-  +selector+.
+Remove the CSS style +style+ from HTML element(s) referred to by
++selector+.
 
-+hide([selector], [number])+::
++hide([selector], [number])+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  Hide the HTML element(s) referred to by +selector+.
+Hide the HTML element(s) referred to by +selector+.
 
-+show([selector], [number])+::
++show([selector], [number])+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  Show the HTML element(s) referred to by +selector+, if previously
-  hidden.
+Show the HTML element(s) referred to by +selector+, if previously
+hidden.
 
-+peek([selector], [number])+::
++peek([selector], [number])+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  Request the contents of the HTML element(s) referred to by
-  +selector+ to be posted as +("peek",number,contents)+. Intended to
-  be used with +<input type='text'>+ elements.
+Request the contents of the HTML element(s) referred to by
++selector+ to be posted as +("peek",number,contents)+. Intended to
+be used with +<input type='text'>+ elements.
 
-+hold([number])+::
++hold([number])+
+~~~~~~~~~~~~~~~~
 
-  Stop executing subsequent +set+, +add+, +push+, +pop+, +hide+,
-  +show+, and +peek+ immediately, but instead stuff them in a buffer
-  where they sit until +flush()+ is called.
+Stop executing subsequent +set+, +add+, +push+, +pop+, +hide+,
++show+, and +peek+ immediately, but instead stuff them in a buffer
+where they sit until +flush()+ is called.
 
-+flush([number])+::
++flush([number])+
+~~~~~~~~~~~~~~~~~
 
-  Execute all +set+, +add+, +push+, +pop+, +hide+, +show+, and +peek+
-  actions that were held in a buffer since +hold()+ was called, and
-  from here on out resume executing such actions immediately without
-  buffering.
+Execute all +set+, +add+, +push+, +pop+, +hide+, +show+, and +peek+
+actions that were held in a buffer since +hold()+ was called, and
+from here on out resume executing such actions immediately without
+buffering.
 
-+put(tuple, [delay])+::
++put(tuple, [delay])+
+~~~~~~~~~~~~~~~~~~~~~
 
-  After an optional +delay+ in seconds, post the tuple onto the
-  communication board.
+After an optional +delay+ in seconds, post the tuple onto the
+communication board.
 
 WARNING: In Python, the value +x+ is the same as +(x)+, but it is not the
-    same as the one-element tuple containing it, which is written
-    +(x,)+.
+  same as the one-element tuple containing it, which is written
+  +(x,)+.
 
-+get(*queries)+::
++get(*queries)+
+~~~~~~~~~~~~~~~
 
-  Block until a tuple becomes present on the board that matches at
-  least one of the queries, then return it. A tuple on the board
-  matches a query whenever the tuple on the board and the query have
-  the same length, and each element of the query is either +None+ or
-  identical to the corresponding element in the tuple on the board.
+Block until a tuple becomes present on the board that matches at
+least one of the queries, then return it. A tuple on the board
+matches a query whenever the tuple on the board and the query have
+the same length, and each element of the query is either +None+ or
+identical to the corresponding element in the tuple on the board.
 
-+grab(*queries)+::
++grab(*queries)+
+~~~~~~~~~~~~~~~~
 
-  If a tuple is present on the board that matches at least one of the
-  queries return it; otherwise return +None+. 
+If a tuple is present on the board that matches at least one of the
+queries return it; otherwise return +None+. 
 
 
-+run(session, [port])+:: 
++run(session, [port])+ 
+~~~~~~~~~~~~~~~~~~~~~~~
 
-  This starts the Willow web server on the specified port (or port
-  8000 if you leave the second argument out). The web server will
-  create a thread for each client that connects, and each thread will
-  run the +session+ function. Within each thread, the +me()+ function
-  will return a different value, and +add+, +set+, etc. will by
-  default operate on a different client. The web server will search
-  for requested files in the current directory, among other places, so
-  you can for instance include images in your pages.
+This starts the Willow web server on the specified port (or port
+8000 if you leave the second argument out). The web server will
+create a thread for each client that connects, and each thread will
+run the +session+ function. Within each thread, the +me()+ function
+will return a different value, and +add+, +set+, etc. will by
+default operate on a different client. The web server will search
+for requested files in the current directory, among other places, so
+you can for instance include images in your pages.
 
-+config(filename)+::
++config(filename)+
+~~~~~~~~~~~~~~~~~~
 
-  Reads a configuration file in JSON format (http://json.org/) and
-  returns a corresponding Python object. For instance, if you have a
-  file +protocol.txt+ containing the text +{ "rounds" : 12, "subjects"
-  : 4}+ then +cfg = willow.config("protocol.txt")+ will set the
-  variable +cfg+ to the python dictionary +{u'rounds': 12,
-  u'subjects': 4}+.
+Reads a configuration file in JSON format (http://json.org/) and
+returns a corresponding Python object. For instance, if you have a
+file +protocol.txt+ containing the text +{ "rounds" : 12, "subjects"
+: 4}+ then +cfg = willow.config("protocol.txt")+ will set the
+variable +cfg+ to the python dictionary +{u'rounds': 12,
+u'subjects': 4}+.
 
 WARNING: The letter +u+ appears in front of the strings that come out
-  of +config+ because JSON strings are Unicode, not ASCII, but you do
-  not need to worry; to get the value of the +rounds+ parameter,
-  simply use +cfg["rounds"]+.
+of +config+ because JSON strings are Unicode, not ASCII, but you do
+not need to worry about that. To get the value of the +rounds+
+parameter, simply use +cfg["rounds"]+.
 
-+log(x,y,...)+::
++log(x,y,...)+
+~~~~~~~~~~~~~~
 
-  Write (x,y,...) to the log file as a record. A new log file is
-  created in the +log+ folder whenever the Willow library is loaded,
-  and it bears a name based on the date and time when it was
-  created. The log files are in CSV format and can be opened with a
-  text editor or a spreadsheet program.
+Write (x,y,...) to the log file as a record, with a UNIX timestamp
+prepended as the first column. A new log file is created in the +log+
+folder whenever the Willow library is loaded, and it bears a name
+based on the date and time when it was created. For instance, if
+Willow was invoked at 15:32:42 on February 2 of the year 2010, the
+file would be called +log/2010-02-10-15-32-42.csv+.  This particular
+date-and-time format is used so that the files can be sorted by
+date/time. The log files are in CSV format and can be opened with a
+text editor or a spreadsheet program.
 
-
-Willow CSS tricks
------------------
+CSS features
+~~~~~~~~~~~~
 
 Some Willow features are accessed by means of CSS classes:
 
@@ -433,79 +833,8 @@ Some Willow features are accessed by means of CSS classes:
 	pointer is positioned over that element. This can be used to
 	create "hover" effects.
 
-Kiosk mode browsing
--------------------
-
-In order to prevent subjects from fiddling around with the web browser
-used to display a user interface to them, you can use a "kiosk mode"
-web browser. While several web browsers have kiosk modes, I have found
-that Google Chrome is the most convenient. On Linux, you simply use
-the command line +google-chrome --kiosk+ instead of just
-+google-chrome+, and you get a full-screen browser without any
-extraneous bits of user interface that subjects might accidentally
-click on. 
-
-Architecture
-------------
-
-In this section, I will describe some of the nuts and bolts of
-Willow. It is not usually necessary to understand this, but it may be
-helpful for those seeking to extend Willow or satisfy their curiosity.
-
-The core of willow is made up of +willow/willow.py+ and
-+willow/willow.js+ (which is included by +willow/index.html+). In
-+willow.py+, the function +run+ is defined, which starts a web
-server. This web server serves GET requests in pretty much the normal
-way, but it does something special using POST requests. In particular,
-it expects POST requests to be Ajax calls ("+XMLHttpRequest+") from
-+willow.js+. In fact, each running instance of +willow.js+ (and there
-is one per client) will always have one such request outstanding; when
-a response comes in, a new one is generated immediately. This means
-that the web server always has a way of talking to the client: it can
-respond to the outstanding POST request. In order to keep track of the
-outstanding POST requests, the web server is multithreaded; each
-request gets its own thread. The web server threads, in their turn,
-decide what to reply to a POST request by looking on a queue. 
-
-For each client, there is a separate queue. Each client generates, in
-JavaScript, a UUID, which it submits when it first connects, and which
-the web server can use to map a POST request to the correct queue. The
-reason that we do not use the sequential client numbers for this
-purpose is that the way the protocol works implies that the first
-contact is made by the client, and the clients have no way of doing
-the communication required to make sure their client IDs are
-sequential before they are actually talking to the server. UUIDs, on
-the other hand, which are hashes of the wall clock time and a random
-number, can be generated in a decentralized way. Once clients connect,
-they are also assigned a sequential client number, which is exposed to
-the user.
-
-The web server does not busy itself with putting things on the
-queues. That is what session threads are for. One session thread is
-started each time a client connects for the first time. The session
-thread is configurable; in fact, in runs whatever +session+ function
-is passed to +run()+. Each session thread is assigned a name which is
-the sequential client number, and the queues are made indexable by
-these numbers as well. (Note that this means we have two different
-tables pointing to the same queues, one indexed by UUID, and one by
-client number.)
-
-It is these +session+ functions that put things onto the queues. Each
-session function has access to each of the queues, indexed by client
-number, but it typically uses functions that automatically fill in the
-client number that the particular session thread is associated
-with. This is accomplished, of course, by looking at the thread name
-of the current thread.
-
-Last, we come to the tuple space. This is largely a convenience, and
-could be used independently of the rest of Willow, but it has proven
-to be a convenient way of doing IPC between the threads without
-needing to understand overly complicated concurrency primitives.
-
-image::architecture.png[]
-
-Twig
-----
+API: willow.twig
+----------------
 
 Twig is an extension to Willow. It is a repository of code that shows
 up over and over in experimental interface programs: code for logging
@@ -523,15 +852,15 @@ the beginning of your file:
 from willow.twig import *
 ----------------------------------------------------------------------
 
-Twig internally uses tuples and HTML +id+s that start with +__+ (two
-underscores). If you plan to use Twig, you should avoid using any
-tuples or HTML +id+s that start with two underscore, so as not to
-interfere with Twig.
+Twig internally uses tuples and HTML +id+ values that start with +__+
+(two underscores). If you plan to use Twig, you should avoid using any
+tuples or HTML +id+ values that start with two underscore, so as not
+to interfere with Twig.
 
-Twig is still under development, and as of right now, the interface to
-Twig functions is likely change from one Willow version to the
-next. (The interface to Willow functions may also change, but I try to
-avoid that, and make mention of it in the manual.)
+CAUTION: Twig is still under development, and as of right now, the
+interface to Twig functions is likely change from one Willow version
+to the next. (The interface to Willow functions may also change, but I
+try to avoid that, and make mention of it in the manual.)
 
 +assemble()+
 ~~~~~~~~~~~~
@@ -632,3 +961,151 @@ if me() > 0:
 
 ----------------------------------------------------------------------
 
+Appendix: A digression on your IP address
+-----------------------------------------
+
+You need the IP address of your monitor computer in order for your
+client computers to connect to it. It would be convenient if Willow
+could display the right IP address for you to use, but unfortunately,
+this is easier said than done, since a computer can have multiple IP
+addresses at the same time: IP version 4 and IP version 6, on the
+wireless network, on the ethernet network, on the "loopback" network,
+and so on.
+
+How to find your IP address on Linux
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+On Linux on my computer, I use the +ifconfig+ command at the command
+line. When I enter
+
+----------------------------------------------------------------------
+$ ifconfig
+----------------------------------------------------------------------
+
+the computer responds
+
+----------------------------------------------------------------------
+$ ifconfig
+eth1      Link encap:Ethernet  HWaddr 00:23:ae:1e:9e:ac  
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+          Interrupt:17 
+
+eth2      Link encap:Ethernet  HWaddr 00:24:2b:c6:a4:76  
+          inet addr:10.143.91.80  Bcast:10.143.91.255  Mask:255.255.254.0
+          inet6 addr: fe80::224:2bff:fec6:a476/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:10076 errors:0 dropped:0 overruns:0 frame:7868
+          TX packets:10906 errors:20 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:1571308 (1.5 MB)  TX bytes:1341157 (1.3 MB)
+          Interrupt:17 Base address:0xc000 
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:85540 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:85540 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:41237280 (41.2 MB)  TX bytes:41237280 (41.2 MB)
+$
+----------------------------------------------------------------------
+
+TIP: In this and many other software manuals, +$+ is used to indicate
+the Linux/UNIX prompt. On your computer, it may be different. +%+ is a
+popular choice, too, for example.
+
+There is much information here, but we only need a little. First,
+notice that this computer has three network interfaces, called +eth1+,
++eth2+ and +lo+. +lo+ is the loopback device; it does not correspond
+to any actual hardware, but it is rather a contraption that the
+operating system uses so that you can make connections to your own
+machine at address +127.0.0.1+ even when the network is down. The
+other two network devices are actual network cards that are in the
+computer; as it happens, +eth1+ is a wired Ethernet network, and
++eth2+ is a wireless 802.11g network. According to the information
+above, the computer has IP address 10.143.91.80 on +eth2+, and it has
+no IP address on +eth1+, which makes sense, because the wired
+connection was not plugged when I executed the command. In the output
+above you can also see IP v6 addresses (labeled +inet6 addr+), but
+those are not commonly used.
+
+How to find your IP address on Windows
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+NOTE: This section has yet to be written.
+
+Appendix: Kiosk mode browsing
+-----------------------------
+
+In order to prevent subjects from fiddling around with the web browser
+used to display a user interface to them, you can use a "kiosk mode"
+web browser. While several web browsers have kiosk modes, I have found
+that Google Chrome is the most convenient. On Linux, you simply use
+the command line +google-chrome --kiosk+ instead of just
++google-chrome+, and you get a full-screen browser without any
+extraneous bits of user interface that subjects might accidentally
+click on. 
+
+Appendix: Architecture
+----------------------
+
+In this section, I will describe some of the nuts and bolts of
+Willow. It is not usually necessary to understand this, but it may be
+helpful for those seeking to extend Willow or satisfy their curiosity.
+
+The core of willow is made up of +willow/willow.py+ and
++willow/willow.js+ (which is included by +willow/index.html+). In
++willow.py+, the function +run+ is defined, which starts a web
+server. This web server serves GET requests in pretty much the normal
+way, but it does something special using POST requests. In particular,
+it expects POST requests to be Ajax calls ("+XMLHttpRequest+") from
++willow.js+. In fact, each running instance of +willow.js+ (and there
+is one per client) will always have one such request outstanding; when
+a response comes in, a new one is generated immediately. This means
+that the web server always has a way of talking to the client: it can
+respond to the outstanding POST request. In order to keep track of the
+outstanding POST requests, the web server is multithreaded; each
+request gets its own thread. The web server threads, in their turn,
+decide what to reply to a POST request by looking on a queue. 
+
+For each client, there is a separate queue. Each client generates, in
+JavaScript, a UUID, which it submits when it first connects, and which
+the web server can use to map a POST request to the correct queue. The
+reason that we do not use the sequential client numbers for this
+purpose is that the way the protocol works implies that the first
+contact is made by the client, and the clients have no way of doing
+the communication required to make sure their client IDs are
+sequential before they are actually talking to the server. UUIDs, on
+the other hand, which are hashes of the wall clock time and a random
+number, can be generated in a decentralized way. Once clients connect,
+they are also assigned a sequential client number, which is exposed to
+the user.
+
+The web server does not busy itself with putting things on the
+queues. That is what session threads are for. One session thread is
+started each time a client connects for the first time. The session
+thread is configurable; in fact, in runs whatever +session+ function
+is passed to +run()+. Each session thread is assigned a name which is
+the sequential client number, and the queues are made indexable by
+these numbers as well. (Note that this means we have two different
+tables pointing to the same queues, one indexed by UUID, and one by
+client number.)
+
+It is these +session+ functions that put things onto the queues. Each
+session function has access to each of the queues, indexed by client
+number, but it typically uses functions that automatically fill in the
+client number that the particular session thread is associated
+with. This is accomplished, of course, by looking at the thread name
+of the current thread.
+
+Last, we come to the tuple space. This is largely a convenience, and
+could be used independently of the rest of Willow, but it has proven
+to be a convenient way of doing IPC between the threads without
+needing to understand overly complicated concurrency primitives.
+
+image::architecture.png[]

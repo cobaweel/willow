@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
 <article lang="en">
 <articleinfo>
     <title>Willow, a Python framework for experimental economics</title>
-
-
 </articleinfo>
 <section id="_about_this_manual">
 <title>About this manual</title>
 <simpara>You are reading the manual for Willow, a Python framework for
-experimental economics. This manual presumes that you already have an
-understanding of experimental economics, of HTML, and of Python
-programming.</simpara>
-
+experimental economics developed at the Center for the Study of
+Neuroeconomics at George Mason University. This manual presumes that
+you already have an understanding of experimental economics, of HTML,
+and of Python programming.</simpara>
 <simpara>If you are interested in learning about experimental economics, you
 could do worse than to have a look at the following textbooks:</simpara>
-
 <itemizedlist>
 <listitem>
 <simpara>
@@ -31,7 +28,6 @@ John Kagel and Alvin Roth, <emphasis>The Handbook of Experimental Economics</emp
 </itemizedlist>
 <simpara>In order to get started with Python if you already know how to program
 in some other language, you can try</simpara>
-
 <itemizedlist>
 <listitem>
 <simpara>
@@ -49,7 +45,6 @@ Guido van Rossum et al., <emphasis>The Python Tutorial</emphasis>
 <simpara>If you want to learn both the craft of computer programming and the
 Python programming language at the same time, you are in luck, since
 Python is an excellent first language. Some free resources include:</simpara>
-
 <itemizedlist>
 <listitem>
 <simpara>
@@ -65,6 +60,20 @@ Swaroop C. H., <emphasis>A Byte of Python</emphasis>
 <literallayout class="monospaced">http://www.swaroopch.com/notes/Python</literallayout>
 </listitem>
 </itemizedlist>
+<simpara>Also, in order to use Willow, you need to have basic knowledge of HTML
+and CSS, the languages used to build web pages. For this I strongly
+recommend</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+Kennedy and Musciano, <emphasis>HTML &amp; XHTML, The Definitive Guide</emphasis>,
+   O&#8217;Reilly.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>O&#8217;Reilly books are available full-text through an online service
+called Safari, which many universities subscribe to. There are also
+many free on-line sources about HTML and CSS.</simpara>
 </section>
 <section id="_why_willow">
 <title>Why Willow?</title>
@@ -73,28 +82,22 @@ typically used in experimental economics. Without Willow, you might
 design such an interface from scratch, or by modifying earlier
 from-scratch software written for similar experiments. Using Willow,
 you can do the same thing, but faster and better.</simpara>
-
 <simpara>Willow sets out to accomplish this goal not by providing canned
 routines for commonly performed experiments. After all, it is
 precisely because our experiments are different from what has gone
 before that we bother with them. Rather, Willow is a generic toolkit
 that makes a lot of the things we do in experimental economics easy.</simpara>
-
 <simpara>To use a Willow program, you need only install your program on a
 single "monitor" computer. The computers used by your research
 subjects will simply run a web browser, which connects to a web server
 that runs on the monitor computer. The user interface for the subjects
 will be displayed inside the browser window.</simpara>
-
-</section>
-<section id="_screenshots">
-<title>Screenshots</title>
 <simpara>Willow is a versatile program, and you can use it for many different
 interfaces; but you might just be curious what a Willow interface can
-look like. Here are some examples taken from the first study that
-used Willow at the Center for the Study of Neuroeconomics at George
-Mason University.</simpara>
-
+look like. Here are some examples taken from the first study that used
+Willow at the Center for the Study of Neuroeconomics and the
+Interdisciplinary Center for Economic Science at George Mason
+University.</simpara>
 <informalfigure>
 <mediaobject>
   <imageobject>
@@ -112,8 +115,8 @@ Mason University.</simpara>
 </mediaobject>
 </informalfigure>
 </section>
-<section id="_installing_willow">
-<title>Installing Willow</title>
+<section id="_lesson_0_installing_willow">
+<title>Lesson 0: Installing Willow</title>
 <simpara>To install Willow, you extract the zip file to a convenient
 location. You will do this anew for each of your Willow projects.  In
 addition, you will need to have Python installed. Willow has been
@@ -122,47 +125,39 @@ it with Python 2.6 on Windows and Mac OSX as well. If you do not have
 Python 2.6 on your computer, get it from
 <ulink url="http://www.python.org/download/releases/2.6.3/">http://www.python.org/download/releases/2.6.3/</ulink> and then come back. If
 you are not sure whether you have Python 2.6 on your computer, just
-move on to the next section of the manual. If things don't work,
-you'll notice soon enough, and you can go back and install Python. Do
+move on to the next section of the manual. If things don&#8217;t work,
+you&#8217;ll notice soon enough, and you can go back and install Python. Do
 not use Python version 3. It will not work.</simpara>
-
 </section>
-<section id="_using_willow">
-<title>Using Willow</title>
+<section id="_lesson_1_getting_started_with_willow">
+<title>Lesson 1: Getting started with Willow</title>
 <simpara>In the Willow folder, you will find a file named <literal>hello.py</literal>. You need
 to run this file. On Windows and most Linux distributions, you can
 double click on it. You can also run the command <literal>python hello.py</literal>
 from the command line. Once the <literal>hello.py</literal> program is running, fire up
 a web browser and point it to <literal>http://localhost:8000</literal>. You should see
 a page that looks like so:</simpara>
-
 <sidebar>
 <simpara>Hello World.</simpara>
-
 </sidebar>
 <simpara>In practice, while programming, you will want to run Willow from
 within IDLE, which is the integrated development environment that
 comes with Python. To do so, right-click <literal>hello.py</literal> and select "Edit
 with IDLE". This will pop up an editor window with the <literal>hello.py</literal> code
 in it:</simpara>
-
-<programlisting language="python" linenumbering="unnumbered">
-<![CDATA[from willow.willow import *
+<programlisting language="python" linenumbering="unnumbered">from willow.willow import *
 
 def session():
-  add("<h1>Hello, world.</h1>")
+  add("&lt;h1&gt;Hello, world.&lt;/h1&gt;")
 
-run(session)]]>
-</programlisting>
+run(session)</programlisting>
 <simpara>See here the code of a very simple but working Willow program. You can
 run it using the <literal>Run &gt; Run Module</literal> menu option or by pressing
 <literal>F5</literal>. Again, you now need to point a web browser to
 <literal>http://localhost:8000</literal>.</simpara>
-
 <simpara>If you see an error message like "address already in use," you are
 probably trying to run two instances of Willow simultaneously. You
 should stop the first one first (just close the window).</simpara>
-
 <simpara>Now, let us look at the above code. Most of it is boilerplate, but the
 good news is that this is all the boilerplate you need. The first line
 imports the willow library. It assumes that <literal>willow.py</literal> is in a
@@ -171,34 +166,304 @@ how things are set up for the sample programs, and if you put your own
 programs in the same place, it will just work. The next two lines
 define a session function, and the last line instructs Willow to start
 the web server, using the session function that has just been defined.</simpara>
-
 <simpara>Together, these four lines define a web server that you can connect to
 from a browser. If the browser is running on the same machine as the
 server, you can use <literal>http://localhost:8000</literal> as a URL. If it is running
 somewhere else, you must find out the IP address of the server. (If
-you don't know it, there is a whole chapter further down in the manual
+you don&#8217;t know it, there is a whole chapter further down in the manual
 about how to figure it out.) If the IP address is, say,
 123.123.123.123, then you can reach your Willow server using
 <literal>http://123.123.123.123:8000</literal>. The <literal>:8000</literal> part is called the port
 number; you can specify a different port number as an extra argument
 to <literal>run</literal> (e.g. <literal>run(session, 8001)</literal>) if you insist on a port different
 from 8000.</simpara>
-
 <simpara>Once the web server is running, for each client that connects to it,
 the session function will be called once. It will keep running until
 it returns. Each session function runs in its own thread. This means
 that several "copies" of the session function are running
 simultaneously.</simpara>
-
 <simpara>In this case, we want to simply display the text "Hello world." in the
 web browser of every client that connects, so we have a very simple
 session function that does nothing but <literal>add("&lt;h1&gt;Hello,
 world.&lt;/h1&gt;")</literal>. The <literal>add()</literal> function adds an HTML snippet to the web
-page being displayed in the client's browser.</simpara>
-
+page being displayed in the client&#8217;s browser.</simpara>
 </section>
-<section id="_a_digression_on_your_ip_address">
-<title>A digression on your IP address</title>
+<section id="_willow_willow">
+<title>willow.willow</title>
+<note><simpara>The <literal>selector</literal> argument can take any CSS selector. The CSS
+selector mini-language is rather rich, but the most typical cases are
+things like <literal>p</literal> (to get at all <literal>&lt;p&gt;</literal> elements), <literal>#a</literal>, (to get at the
+first element with <literal>id="a"</literal>), and <literal>.a</literal> (to get at all elements with
+<literal>class="a"</literal>). For more information, consult any book or web page on
+CSS. Whenever <literal>selector</literal> is omitted, the selector "<literal>body</literal>" is implied,
+which means you are referring to the entire body of the HTML document.</simpara></note>
+<note><simpara>By specifying an integer, or a sequence of integers, for
+<literal>number</literal>, you can operate directly on clients other than the one
+associated by default with the current session thread.</simpara></note>
+<note><simpara>Whenever <literal>argument</literal> is a file descriptor that can be read from,
+the contents of the file are automatically substituted.</simpara></note>
+<section id="_literal_me_literal">
+<title><literal>me()</literal></title>
+<simpara>Returns the number of the current client.</simpara>
+</section>
+<section id="_literal_url_literal">
+<title><literal>url()</literal></title>
+<simpara>Returns the pathname part of the URL used to first load the current
+client. For instance, if the client was loaded as
+<literal>http://localhost:8000/</literal>, this returns "<literal>/</literal>", and if the client was
+loaded as <literal>http://localhost:8000/3</literal>, this returns "<literal>/3</literal>".</simpara>
+</section>
+<section id="_literal_set_content_selector_number_literal">
+<title><literal>set(content, [selector], [number])</literal></title>
+<simpara>Set the content of the HTML element(s) referred to by <literal>selector</literal> on
+to be <literal>content</literal>.</simpara>
+</section>
+<section id="_literal_add_content_selector_number_literal">
+<title><literal>add(content, [selector], [number])</literal></title>
+<simpara>Add <literal>content</literal> to the content of the HTML element(s) referred to by
+<literal>selector</literal>.</simpara>
+</section>
+<section id="_literal_tweak_value_attribute_selector_number_literal">
+<title><literal>tweak(value, attribute, [selector], [number])</literal></title>
+<simpara>Change the value of attribute <literal>attribute</literal> to be <literal>value</literal> in HTML
+element(s) referred to by <literal>selector</literal>.</simpara>
+</section>
+<section id="_literal_push_style_selector_number_literal">
+<title><literal>push(style, [selector], [number])</literal></title>
+<simpara>Add the CSS style <literal>style</literal> to the HTML element(s) referred to by
+<literal>selector</literal>.</simpara>
+</section>
+<section id="_literal_pop_style_selector_number_literal">
+<title><literal>pop(style, [selector], [number])</literal></title>
+<simpara>Remove the CSS style <literal>style</literal> from HTML element(s) referred to by
+<literal>selector</literal>.</simpara>
+</section>
+<section id="_literal_hide_selector_number_literal">
+<title><literal>hide([selector], [number])</literal></title>
+<simpara>Hide the HTML element(s) referred to by <literal>selector</literal>.</simpara>
+</section>
+<section id="_literal_show_selector_number_literal">
+<title><literal>show([selector], [number])</literal></title>
+<simpara>Show the HTML element(s) referred to by <literal>selector</literal>, if previously
+hidden.</simpara>
+</section>
+<section id="_literal_peek_selector_number_literal">
+<title><literal>peek([selector], [number])</literal></title>
+<simpara>Request the contents of the HTML element(s) referred to by
+<literal>selector</literal> to be posted as <literal>("peek",number,contents)</literal>. Intended to
+be used with <literal>&lt;input type=<emphasis>text</emphasis>&gt;</literal> elements.</simpara>
+</section>
+<section id="_literal_hold_number_literal">
+<title><literal>hold([number])</literal></title>
+<simpara>Stop executing subsequent <literal>set</literal>, <literal>add</literal>, <literal>push</literal>, <literal>pop</literal>, <literal>hide</literal>,
+<literal>show</literal>, and <literal>peek</literal> immediately, but instead stuff them in a buffer
+where they sit until <literal>flush()</literal> is called.</simpara>
+</section>
+<section id="_literal_flush_number_literal">
+<title><literal>flush([number])</literal></title>
+<simpara>Execute all <literal>set</literal>, <literal>add</literal>, <literal>push</literal>, <literal>pop</literal>, <literal>hide</literal>, <literal>show</literal>, and <literal>peek</literal>
+actions that were held in a buffer since <literal>hold()</literal> was called, and
+from here on out resume executing such actions immediately without
+buffering.</simpara>
+</section>
+<section id="_literal_put_tuple_delay_literal">
+<title><literal>put(tuple, [delay])</literal></title>
+<simpara>After an optional <literal>delay</literal> in seconds, post the tuple onto the
+communication board.</simpara>
+<warning><simpara>In Python, the value <literal>x</literal> is the same as <literal>(x)</literal>, but it is not the
+  same as the one-element tuple containing it, which is written
+  <literal>(x,)</literal>.</simpara></warning>
+</section>
+<section id="_literal_get_queries_literal">
+<title><literal>get(*queries)</literal></title>
+<simpara>Block until a tuple becomes present on the board that matches at
+least one of the queries, then return it. A tuple on the board
+matches a query whenever the tuple on the board and the query have
+the same length, and each element of the query is either <literal>None</literal> or
+identical to the corresponding element in the tuple on the board.</simpara>
+</section>
+<section id="_literal_grab_queries_literal">
+<title><literal>grab(*queries)</literal></title>
+<simpara>If a tuple is present on the board that matches at least one of the
+queries return it; otherwise return <literal>None</literal>.</simpara>
+</section>
+<section id="_literal_run_session_port_literal">
+<title><literal>run(session, [port])</literal></title>
+<simpara>This starts the Willow web server on the specified port (or port
+8000 if you leave the second argument out). The web server will
+create a thread for each client that connects, and each thread will
+run the <literal>session</literal> function. Within each thread, the <literal>me()</literal> function
+will return a different value, and <literal>add</literal>, <literal>set</literal>, etc. will by
+default operate on a different client. The web server will search
+for requested files in the current directory, among other places, so
+you can for instance include images in your pages.</simpara>
+</section>
+<section id="_literal_config_filename_literal">
+<title><literal>config(filename)</literal></title>
+<simpara>Reads a configuration file in JSON format (<ulink url="http://json.org/">http://json.org/</ulink>) and
+returns a corresponding Python object. For instance, if you have a
+file <literal>protocol.txt</literal> containing the text <literal>{ "rounds" : 12, "subjects"
+: 4}</literal> then <literal>cfg = willow.config("protocol.txt")</literal> will set the
+variable <literal>cfg</literal> to the python dictionary <literal>{u&#8217;rounds': 12,
+u&#8217;subjects': 4}</literal>.</simpara>
+<warning><simpara>The letter <literal>u</literal> appears in front of the strings that come out
+of <literal>config</literal> because JSON strings are Unicode, not ASCII, but you do
+not need to worry; to get the value of the <literal>rounds</literal> parameter,
+simply use <literal>cfg["rounds"]</literal>.</simpara></warning>
+</section>
+<section id="_literal_log_x_y_8230_literal">
+<title><literal>log(x,y,&#8230;)</literal></title>
+<simpara>Write (x,y,&#8230;) to the log file as a record. A new log file is
+created in the <literal>log</literal> folder whenever the Willow library is loaded,
+and it bears a name based on the date and time when it was
+created. The log files are in CSV format and can be opened with a
+text editor or a spreadsheet program.</simpara>
+</section>
+<section id="_css_features">
+<title>CSS features</title>
+<simpara>Some Willow features are accessed by means of CSS classes:</simpara>
+<simpara><literal>hidden</literal></simpara>
+<literallayout class="monospaced">Any element that has class +hidden+ turned on will start out
+hidden. You can call +show()+ on it to make it
+appear. Example: +&lt;p&gt;At the moment, you can&lt;span
+class="hidden"&gt;not&lt;/span&gt; trade widgets.&lt;/p&gt;+</literallayout>
+<variablelist>
+<varlistentry>
+<term>
+<literal>bait</literal>
+</term>
+<listitem>
+<simpara>
+        Any element that has class <literal>bait</literal> turned on will automatically
+        get the additional class <literal>mouse</literal> turned on whenever the mouse
+        pointer is positioned over that element. This can be used to
+        create "hover" effects.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+</section>
+<section id="_willow_twig">
+<title>willow.twig</title>
+<simpara>Twig is an extension to Willow. It is a repository of code that shows
+up over and over in experimental interface programs: code for logging
+in terminals in a certain order, for doing surveys, etc. All of Twig
+is written on top of Willow, and there is nothing in it that you
+couldn&#8217;t do yourself using Willow and some Python standard library
+functions. If a Twig functions doesn&#8217;t fit your needs, you can always
+write your own (and maybe look at the Twig source code for
+inspiration.)</simpara>
+<simpara>To use Twig in your code, you have to add an additional import line to
+the beginning of your file:</simpara>
+<screen>from willow.twig import *</screen>
+<simpara>Twig internally uses tuples and HTML <literal>id+s that start with +__</literal> (two
+underscores). If you plan to use Twig, you should avoid using any
+tuples or HTML +id+s that start with two underscore, so as not to
+interfere with Twig.</simpara>
+<simpara>Twig is still under development, and as of right now, the interface to
+Twig functions is likely change from one Willow version to the
+next. (The interface to Willow functions may also change, but I try to
+avoid that, and make mention of it in the manual.)</simpara>
+<section id="_literal_assemble_literal">
+<title><literal>assemble()</literal></title>
+<simpara>Willow offers only a very basic mechanism for identifying clients: the
+numbers returned by <literal>me()</literal>, which are assigned to clients in the order
+in which they first connect. If you have a program launcher in your
+lab that automatically launches clients on a number of terminals
+around the room, you can end up with these client numbers being
+distributed around the room in strange ways, based on which machines
+are the fastest to connect. In practice, you may want to have a more
+stable mapping between terminals and client identifiers. That is where
+<literal>assemble()</literal> comes in.</simpara>
+<simpara>The way you typically call <literal>assemble()</literal> is at the beginning of your
+session function, like so:</simpara>
+<screen>def session():
+    number, numbers = assemble()
+
+    # ... your code ...
+
+run(session)</screen>
+<simpara>Now, when you connect a bunch of clients, you will see a button
+labeled "0" on the first ("monitor") client, and buttons labeled "Log
+in" on all other ("subject") clients. As you click these "Log in"
+buttons on the subject clients, they will each be assigned a
+number. These numbers are independent from the numbers returned by
+<literal>me()</literal>, and they are assigned, starting with 1, in the order in which
+the "Log in" buttons are clicked.</simpara>
+<simpara>When you have pressed all the "Log in" buttons, you can go back to the
+monitor client, and you will see that by now, it has a sequence of
+buttons with labels like:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+0
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+0, 1
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+0, 1, 2
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+0, 1, 2, 3
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>These buttons allow you to decide which of the subjectclients to
+actually use. This is particularly useful when you want to set up an
+experiment that may have a different number of participants based on
+actual turnout: you can set up the lab with, say, 12 logged in
+machines, and if only 10 students turn out, you click the button
+labeled "0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10+.</simpara>
+<simpara>Once one of the buttons on the monitor is clicked, the <literal>assemble()</literal>
+function returns a tuple of two elements. The first is the subject ID
+newly associated with the current thread, or, if the subject is not
+included on the button clicked on the monitor, <literal>None</literal>. The second is a
+list of all the subject IDs, including <literal>0</literal> (which refers to the
+monitor).</simpara>
+<simpara>One further feature of <literal>assemble()</literal> is revealed when you use
+non-standard URLs to load the subject clients. For instance, if your
+Willow instance is running on a machine with IP address <literal>1.2.3.4</literal>, you
+would normally use <literal>http://1.2.3.4:8000/</literal> to connect, but you could
+also use <literal>http://1.2.3.4:8000/42</literal>. In that case, the subject
+identifier will be assigned not sequentially but according to the
+number at the end of the URL. This is useful if you have a centralized
+program launcher facility in your lab that is able to open different
+web pages on different terminals. In that case, you can simply
+configure the program launcher to open <literal>http://1.2.3.4:8000/1</literal> on the
+first machine, <literal>http://1.2.3.4:8000/2</literal> on the second machine, etc.,
+and you will be assured that subject IDs are assigned in a
+predetermined way.</simpara>
+<simpara>Here&#8217;s an example of how to use <literal>assemble()</literal>:</simpara>
+<screen>def session():
+    number, numbers = assemble()
+    if number == 0:
+       set("MONITOR&lt;p&gt;Using Subject IDs %r" % numbers)
+    else:
+       set("&lt;p&gt;This client has Subject ID %d" % number)
+
+run(session)</screen>
+</section>
+<section id="_literal_survey_title_number_questions_selector_literal">
+<title><literal>survey(title, number, questions, [selector])</literal></title>
+<simpara>This is used for surveys. A typical use would be:</simpara>
+<screen>MYSURVEY = [
+  ("Do you like chocolate?", ("Yes", "No"))
+]
+
+if me() &gt; 0:
+  survey("FOOD", me(), MYSURVEY)</screen>
+</section>
+</section>
+<section id="_appendix_a_digression_on_your_ip_address">
+<title>Appendix: A digression on your IP address</title>
 <simpara>You need the IP address of your monitor computer in order for your
 client computers to connect to it. It would be convenient if Willow
 could display the right IP address for you to use, but unfortunately,
@@ -206,15 +471,12 @@ this is easier said than done, since a computer can have multiple IP
 addresses at the same time: IP version 4 and IP version 6, on the
 wireless network, on the ethernet network, on the "loopback" network,
 and so on.</simpara>
-
 <section id="_how_to_find_your_ip_address_on_linux">
 <title>How to find your IP address on Linux</title>
 <simpara>On Linux on my computer, I use the <literal>ifconfig</literal> command at the command
 line. When I enter</simpara>
-
 <screen>$ ifconfig</screen>
 <simpara>the computer responds</simpara>
-
 <screen>$ ifconfig
 eth1      Link encap:Ethernet  HWaddr 00:23:ae:1e:9e:ac
           UP BROADCAST MULTICAST  MTU:1500  Metric:1
@@ -260,334 +522,28 @@ no IP address on <literal>eth1</literal>, which makes sense, because the wired
 connection was not plugged when I executed the command. In the output
 above you can also see IP v6 addresses (labeled <literal>inet6 addr</literal>), but
 those are not commonly used.</simpara>
-
 </section>
 <section id="_how_to_find_your_ip_address_on_windows">
 <title>How to find your IP address on Windows</title>
 <simpara>BLABLABLA</simpara>
-
 </section>
 </section>
-<section id="_a_digression_on_html_the_hypertext_markup_language">
-<title>A digression on HTML, the hypertext markup language</title>
-<simpara>In order to use Willow, it is necessary that you understand some HTML,
-because HTML is the language of web pages, and the user interface for
-a Willow program is made up of web pages. This manual will not go into
-detail about HTML, but here is a summary of some of the most common
-HTML tags:</simpara>
-
-<programlisting language="html" linenumbering="unnumbered">
-<![CDATA[<h1>This is a level 1 heading.</h1>
-<h2>This is a level 2 heading.</h2>
-<h3>This is a level 3 heading.</h3>
-<p>This is a paragraph, with <b>bold</b> and <i>italics</i>.
-<li>This is a bulleted list item.
-<input type="submit" id="foo" value="This is a button">
-<input type="text" id="foo" value="This is a text box">]]>
-</programlisting>
-</section>
-<section id="_a_more_complicated_willow_example">
-<title>A more complicated Willow example</title>
-<simpara>BLABLABLA</simpara>
-
-</section>
-<section id="_api_documentation">
-<title>API documentation</title>
-<note><simpara>The <literal>selector</literal> argument can take any CSS selector. The CSS
-selector mini-language is rather rich, but the most typical cases are
-things like <literal>p</literal> (to get at all <literal>&lt;p&gt;</literal> elements), <literal>#a</literal>, (to get at the
-first element with <literal>id="a"</literal>), and <literal>.a</literal> (to get at all elements with
-<literal>class="a"</literal>). For more information, consult any book or web page on
-CSS. Whenever <literal>selector</literal> is omitted, the selector "<literal>body</literal>" is implied,
-which means you are referring to the entire body of the HTML document.</simpara></note>
-<note><simpara>By specifying an integer, or a sequence of integers, for
-<literal>number</literal>, you can operate directly on clients other than the one
-associated by default with the current session thread.</simpara></note>
-<note><simpara>Whenever <literal>argument</literal> is a file descriptor that can be read from,
-the contents of the file are automatically substituted.</simpara></note>
-<variablelist>
-<varlistentry>
-<term>
-<literal>me()</literal>
-</term>
-<listitem>
-<simpara>
-  Returns the number of the current client.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<literal>url()</literal>
-</term>
-<listitem>
-<simpara>
-  Returns the pathname part of the URL used to first load the current
-  client. For instance, if the client was loaded as
-  <literal>http://localhost:8000/</literal>, this returns "<literal>/</literal>", and if the client was
-  loaded as <literal>http://localhost:8000/3</literal>, this returns "<literal>/3</literal>".
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<literal>set(content, [selector], [number])</literal>
-</term>
-<listitem>
-<simpara>
-  Set the content of the HTML element(s) referred to by <literal>selector</literal> on
-  to be <literal>content</literal>.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<literal>add(content, [selector], [number])</literal>
-</term>
-<listitem>
-<simpara>
-  Add <literal>content</literal> to the content of the HTML element(s) referred to by
-  <literal>selector</literal>.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<literal>tweak(value, attribute, [selector], [number])</literal>
-</term>
-<listitem>
-<simpara>
-  Change the value of attribute <literal>attribute</literal> to be <literal>value</literal> in HTML
-  element(s) referred to by <literal>selector</literal>.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<literal>push(style, [selector], [number])</literal>
-</term>
-<listitem>
-<simpara>
-  Add the CSS style <literal>style</literal> to the HTML element(s) referred to by
-  <literal>selector</literal>.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<literal>pop(style, [selector], [number])</literal>
-</term>
-<listitem>
-<simpara>
-  Remove the CSS style <literal>style</literal> from HTML element(s) referred to by
-  <literal>selector</literal>.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<literal>hide([selector], [number])</literal>
-</term>
-<listitem>
-<simpara>
-  Hide the HTML element(s) referred to by <literal>selector</literal>.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<literal>show([selector], [number])</literal>
-</term>
-<listitem>
-<simpara>
-  Show the HTML element(s) referred to by <literal>selector</literal>, if previously
-  hidden.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<literal>peek([selector], [number])</literal>
-</term>
-<listitem>
-<simpara>
-  Request the contents of the HTML element(s) referred to by
-  <literal>selector</literal> to be posted as <literal>("peek",number,contents)</literal>. Intended to
-  be used with <literal>&lt;input type=<emphasis>text</emphasis>&gt;</literal> elements.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<literal>hold([number])</literal>
-</term>
-<listitem>
-<simpara>
-  Stop executing subsequent <literal>set</literal>, <literal>add</literal>, <literal>push</literal>, <literal>pop</literal>, <literal>hide</literal>,
-  <literal>show</literal>, and <literal>peek</literal> immediately, but instead stuff them in a buffer
-  where they sit until <literal>flush()</literal> is called.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<literal>flush([number])</literal>
-</term>
-<listitem>
-<simpara>
-  Execute all <literal>set</literal>, <literal>add</literal>, <literal>push</literal>, <literal>pop</literal>, <literal>hide</literal>, <literal>show</literal>, and <literal>peek</literal>
-  actions that were held in a buffer since <literal>hold()</literal> was called, and
-  from here on out resume executing such actions immediately without
-  buffering.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<literal>put(tuple, [delay])</literal>
-</term>
-<listitem>
-<simpara>
-  After an optional <literal>delay</literal> in seconds, post the tuple onto the
-  communication board.
-</simpara>
-</listitem>
-</varlistentry>
-</variablelist>
-<warning><simpara>In Python, the value <literal>x</literal> is the same as <literal>(x)</literal>, but it is not the
-    same as the one-element tuple containing it, which is written
-    <literal>(x,)</literal>.</simpara></warning>
-<variablelist>
-<varlistentry>
-<term>
-<literal>get(*queries)</literal>
-</term>
-<listitem>
-<simpara>
-  Block until a tuple becomes present on the board that matches at
-  least one of the queries, then return it. A tuple on the board
-  matches a query whenever the tuple on the board and the query have
-  the same length, and each element of the query is either <literal>None</literal> or
-  identical to the corresponding element in the tuple on the board.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<literal>grab(*queries)</literal>
-</term>
-<listitem>
-<simpara>
-  If a tuple is present on the board that matches at least one of the
-  queries return it; otherwise return <literal>None</literal>.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<literal>run(session, [port])</literal>
-</term>
-<listitem>
-<simpara>
-  This starts the Willow web server on the specified port (or port
-  8000 if you leave the second argument out). The web server will
-  create a thread for each client that connects, and each thread will
-  run the <literal>session</literal> function. Within each thread, the <literal>me()</literal> function
-  will return a different value, and <literal>add</literal>, <literal>set</literal>, etc. will by
-  default operate on a different client. The web server will search
-  for requested files in the current directory, among other places, so
-  you can for instance include images in your pages.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<literal>config(filename)</literal>
-</term>
-<listitem>
-<simpara>
-  Reads a configuration file in JSON format (<ulink url="http://json.org/">http://json.org/</ulink>) and
-  returns a corresponding Python object. For instance, if you have a
-  file <literal>protocol.txt</literal> containing the text <literal>{ "rounds" : 12, "subjects"
-  : 4}</literal> then <literal>cfg = willow.config("protocol.txt")</literal> will set the
-  variable <literal>cfg</literal> to the python dictionary <literal>{u'rounds': 12,
-  u'subjects': 4}</literal>.
-</simpara>
-</listitem>
-</varlistentry>
-</variablelist>
-<warning><simpara>The letter <literal>u</literal> appears in front of the strings that come out
-  of <literal>config</literal> because JSON strings are Unicode, not ASCII, but you do
-  not need to worry; to get the value of the <literal>rounds</literal> parameter,
-  simply use <literal>cfg["rounds"]</literal>.</simpara></warning>
-<variablelist>
-<varlistentry>
-<term>
-<literal>log(x,y,&#8230;)</literal>
-</term>
-<listitem>
-<simpara>
-  Write (x,y,&#8230;) to the log file as a record. A new log file is
-  created in the <literal>log</literal> folder whenever the Willow library is loaded,
-  and it bears a name based on the date and time when it was
-  created. The log files are in CSV format and can be opened with a
-  text editor or a spreadsheet program.
-</simpara>
-</listitem>
-</varlistentry>
-</variablelist>
-</section>
-<section id="_willow_css_tricks">
-<title>Willow CSS tricks</title>
-<simpara>Some Willow features are accessed by means of CSS classes:</simpara>
-
-<variablelist>
-<varlistentry>
-<term>
-<literal>hidden</literal>
-</term>
-<listitem>
-<simpara>
-        Any element that has class <literal>hidden</literal> turned on will start out
-        hidden. You can call <literal>show()</literal> on it to make it
-        appear. Example: <literal>&lt;p&gt;At the moment, you can&lt;span
-        class="hidden"&gt;not&lt;/span&gt; trade widgets.&lt;/p&gt;</literal>
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<literal>bait</literal>
-</term>
-<listitem>
-<simpara>
-        Any element that has class <literal>bait</literal> turned on will automatically
-        get the additional class <literal>mouse</literal> turned on whenever the mouse
-        pointer is positioned over that element. This can be used to
-        create "hover" effects.
-</simpara>
-</listitem>
-</varlistentry>
-</variablelist>
-</section>
-<section id="_kiosk_mode_browsing">
-<title>Kiosk mode browsing</title>
+<section id="_appendix_kiosk_mode_browsing">
+<title>Appendix: Kiosk mode browsing</title>
 <simpara>In order to prevent subjects from fiddling around with the web browser
 used to display a user interface to them, you can use a "kiosk mode"
 web browser. While several web browsers have kiosk modes, I have found
 that Google Chrome is the most convenient. On Linux, you simply use
-the command line <literal>google-chrome &#8212;kiosk</literal> instead of just
+the command line <literal>google-chrome --kiosk</literal> instead of just
 <literal>google-chrome</literal>, and you get a full-screen browser without any
 extraneous bits of user interface that subjects might accidentally
 click on.</simpara>
-
 </section>
-<section id="_architecture">
-<title>Architecture</title>
+<section id="_appendix_architecture">
+<title>Appendix: Architecture</title>
 <simpara>In this section, I will describe some of the nuts and bolts of
 Willow. It is not usually necessary to understand this, but it may be
 helpful for those seeking to extend Willow or satisfy their curiosity.</simpara>
-
 <simpara>The core of willow is made up of <literal>willow/willow.py</literal> and
 <literal>willow/willow.js</literal> (which is included by <literal>willow/index.html</literal>). In
 <literal>willow.py</literal>, the function <literal>run</literal> is defined, which starts a web
@@ -602,7 +558,6 @@ respond to the outstanding POST request. In order to keep track of the
 outstanding POST requests, the web server is multithreaded; each
 request gets its own thread. The web server threads, in their turn,
 decide what to reply to a POST request by looking on a queue.</simpara>
-
 <simpara>For each client, there is a separate queue. Each client generates, in
 JavaScript, a UUID, which it submits when it first connects, and which
 the web server can use to map a POST request to the correct queue. The
@@ -615,7 +570,6 @@ the other hand, which are hashes of the wall clock time and a random
 number, can be generated in a decentralized way. Once clients connect,
 they are also assigned a sequential client number, which is exposed to
 the user.</simpara>
-
 <simpara>The web server does not busy itself with putting things on the
 queues. That is what session threads are for. One session thread is
 started each time a client connects for the first time. The session
@@ -625,19 +579,16 @@ the sequential client number, and the queues are made indexable by
 these numbers as well. (Note that this means we have two different
 tables pointing to the same queues, one indexed by UUID, and one by
 client number.)</simpara>
-
 <simpara>It is these <literal>session</literal> functions that put things onto the queues. Each
 session function has access to each of the queues, indexed by client
 number, but it typically uses functions that automatically fill in the
 client number that the particular session thread is associated
 with. This is accomplished, of course, by looking at the thread name
 of the current thread.</simpara>
-
 <simpara>Last, we come to the tuple space. This is largely a convenience, and
 could be used independently of the rest of Willow, but it has proven
 to be a convenient way of doing IPC between the threads without
 needing to understand overly complicated concurrency primitives.</simpara>
-
 <informalfigure>
 <mediaobject>
   <imageobject>
@@ -646,137 +597,5 @@ needing to understand overly complicated concurrency primitives.</simpara>
   <textobject><phrase>architecture.png</phrase></textobject>
 </mediaobject>
 </informalfigure>
-</section>
-<section id="_twig">
-<title>Twig</title>
-<simpara>Twig is an extension to Willow. It is a repository of code that shows
-up over and over in experimental interface programs: code for logging
-in terminals in a certain order, for doing surveys, etc. All of Twig
-is written on top of Willow, and there is nothing in it that you
-couldn't do yourself using Willow and some Python standard library
-functions. If a Twig functions doesn't fit your needs, you can always
-write your own (and maybe look at the Twig source code for
-inspiration.)</simpara>
-
-<simpara>To use Twig in your code, you have to add an additional import line to
-the beginning of your file:</simpara>
-
-<screen>from willow.twig import *</screen>
-<simpara>Twig internally uses tuples and HTML <literal>id+s that start with +__</literal> (two
-underscores). If you plan to use Twig, you should avoid using any
-tuples or HTML +id+s that start with two underscore, so as not to
-interfere with Twig.</simpara>
-
-<simpara>Twig is still under development, and as of right now, the interface to
-Twig functions is likely change from one Willow version to the
-next. (The interface to Willow functions may also change, but I try to
-avoid that, and make mention of it in the manual.)</simpara>
-
-<section id="_literal_assemble_literal">
-<title><literal>assemble()</literal></title>
-<simpara>Willow offers only a very basic mechanism for identifying clients: the
-numbers returned by <literal>me()</literal>, which are assigned to clients in the order
-in which they first connect. If you have a program launcher in your
-lab that automatically launches clients on a number of terminals
-around the room, you can end up with these client numbers being
-distributed around the room in strange ways, based on which machines
-are the fastest to connect. In practice, you may want to have a more
-stable mapping between terminals and client identifiers. That is where
-<literal>assemble()</literal> comes in.</simpara>
-
-<simpara>The way you typically call <literal>assemble()</literal> is at the beginning of your
-session function, like so:</simpara>
-
-<screen>def session():
-    number, numbers = assemble()
-
-    # ... your code ...
-
-run(session)</screen>
-<simpara>Now, when you connect a bunch of clients, you will see a button
-labeled "0" on the first ("monitor") client, and buttons labeled "Log
-in" on all other ("subject") clients. As you click these "Log in"
-buttons on the subject clients, they will each be assigned a
-number. These numbers are independent from the numbers returned by
-<literal>me()</literal>, and they are assigned, starting with 1, in the order in which
-the "Log in" buttons are clicked.</simpara>
-
-<simpara>When you have pressed all the "Log in" buttons, you can go back to the
-monitor client, and you will see that by now, it has a sequence of
-buttons with labels like:</simpara>
-
-<itemizedlist>
-<listitem>
-<simpara>
-0
-</simpara>
-</listitem>
-<listitem>
-<simpara>
-0, 1
-</simpara>
-</listitem>
-<listitem>
-<simpara>
-0, 1, 2
-</simpara>
-</listitem>
-<listitem>
-<simpara>
-0, 1, 2, 3
-</simpara>
-</listitem>
-</itemizedlist>
-<simpara>These buttons allow you to decide which of the subjectclients to
-actually use. This is particularly useful when you want to set up an
-experiment that may have a different number of participants based on
-actual turnout: you can set up the lab with, say, 12 logged in
-machines, and if only 10 students turn out, you click the button
-labeled "0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10+.</simpara>
-
-<simpara>Once one of the buttons on the monitor is clicked, the <literal>assemble()</literal>
-function returns a tuple of two elements. The first is the subject ID
-newly associated with the current thread, or, if the subject is not
-included on the button clicked on the monitor, <literal>None</literal>. The second is a
-list of all the subject IDs, including <literal>0</literal> (which refers to the
-monitor).</simpara>
-
-<simpara>One further feature of <literal>assemble()</literal> is revealed when you use
-non-standard URLs to load the subject clients. For instance, if your
-Willow instance is running on a machine with IP address <literal>1.2.3.4</literal>, you
-would normally use <literal>http://1.2.3.4:8000/</literal> to connect, but you could
-also use <literal>http://1.2.3.4:8000/42</literal>. In that case, the subject
-identifier will be assigned not sequentially but according to the
-number at the end of the URL. This is useful if you have a centralized
-program launcher facility in your lab that is able to open different
-web pages on different terminals. In that case, you can simply
-configure the program launcher to open <literal>http://1.2.3.4:8000/1</literal> on the
-first machine, <literal>http://1.2.3.4:8000/2</literal> on the second machine, etc.,
-and you will be assured that subject IDs are assigned in a
-predetermined way.</simpara>
-
-<simpara>Here's an example of how to use <literal>assemble()</literal>:</simpara>
-
-<screen>def session():
-    number, numbers = assemble()
-    if number == 0:
-       set("MONITOR&lt;p&gt;Using Subject IDs %r" % numbers)
-    else:
-       set("&lt;p&gt;This client has Subject ID %d" % number)
-
-run(session)</screen>
-</section>
-<section id="_literal_survey_title_number_questions_selector_literal">
-<title><literal>survey(title, number, questions, [selector])</literal></title>
-<simpara>This is used for surveys. A typical use would be:</simpara>
-
-<screen>
-MYSURVEY = [
-  ("Do you like chocolate?", ("Yes", "No"))
-]
-
-if me() &gt; 0:
-  survey("FOOD", me(), MYSURVEY)</screen>
-</section>
 </section>
 </article>

@@ -46,10 +46,10 @@ log_fd2  = open(log_fn2,"w")
 def log(*msg):
   log_lock.acquire()
   log_csv.writerow([str(int(time.time()))] + list(msg))
+  log_fd1.flush()
   log_fd2.write("%s  \t%r\n" % ("LOG", msg))
   log_fd2.flush()
   log_lock.release()
-  trace("LOG",msg, True)
 
 def trace(tag, obj, d=False):
   assert type(tag) == str
