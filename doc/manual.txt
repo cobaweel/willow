@@ -116,7 +116,7 @@ from the command line. Once the +lesson01.py+ program is running, fire up
 a web browser and point it to +http://localhost:8000/+. You should see
 a page that looks like so:
 
-image::lesson01.1.png[]
+image::lesson01_1.png[]
 
 In practice, while programming, you will want to run Willow from
 within IDLE, which is the integrated development environment that
@@ -234,10 +234,10 @@ string.
 
 You should see pages looking like this:
 
-image::lesson02.1.png[]
-image::lesson02.2.png[]
-image::lesson02.3.png[]
-image::lesson02.4.png[]
+image::lesson02_1.png[]
+image::lesson02_2.png[]
+image::lesson02_3.png[]
+image::lesson02_4.png[]
 
 Lesson 3: Wherein we produce output
 -----------------------------------
@@ -275,7 +275,7 @@ run(session)
 
 This displays a web page like so:
 
-image::lesson03.1.png[]
+image::lesson03_1.png[]
 
 This shows off all of Willow's UI manipulation functions. Let's go
 through it line by line.
@@ -401,7 +401,7 @@ display information about logins.
 After the monitor client and 3 other clients have connected, the
 monitor client display would look like this:
 
-image::lesson04.1.png[]
+image::lesson04_1.png[]
 
 To fully understand this, we must understand the Board. The Board is
 the one and only data structure that is shared between the various
@@ -493,13 +493,13 @@ run(session)
 
 This should initially display a screen that looks like so:
 
-image::lesson05.1.png[]
+image::lesson05_1.png[]
 
 
 You can then type something in the text box and click the button
 labeled "Submit", and the screen will look like:
 
-image::lesson05.2.png[]
+image::lesson05_2.png[]
 
 What's going on here?
 
