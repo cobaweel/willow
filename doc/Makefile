@@ -1,5 +1,8 @@
 manual.html: manual.txt
-	asciidoc -atoc -aicons -anumbered $<
+	asciidoc -aicons -anumbered $<
+
+manual.pdf: manual.html
+	wkhtmltopdf --userstyle-sheet manual.css $<
 
 .PHONY: clean
 clean:
