@@ -12,7 +12,7 @@ dist: clean
 	(cd ..; zip -r $(ZIP) econwillow  $(TARFLAGS) ; scp $(ZIP) jaapweel,econwillow@frs.sourceforge.net:/home/frs/project/e/ec/econwillow/$(ZIP) )
 
 git: clean
-	git commit -a; git push master
+	git commit -a; git push ssh://jaapweel@econwillow.git.sourceforge.net/gitroot/econwillow/econwillow
 
 web: clean
 	(cd web; scp * jaapweel,econwillow@web.sourceforge.net:/home/groups/e/ec/econwillow/htdocs/)
