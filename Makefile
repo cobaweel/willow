@@ -1,5 +1,5 @@
-DATE=`date +%F-%H%M`
-TARFLAGS=--exclude=log/* --exclude=.git/* --exclude=*~ --exclude=.git
+ZIP=econwillow-`date +%F-%H%M`.zip
+TARFLAGS=-x log/* -x .git/* -x *~ -x .git
 
 all:
 	@echo Nothing to make...
@@ -9,11 +9,13 @@ clean:
 	-rm -f */*~ */\#* */*.pyc 
 
 dist: clean
-	(cd ..; tar czvf willow-$(DATE).tar.gz $(TARFLAGS) willow)
+	(cd ..; zip -r $(ZIP) econwillow  $(TARFLAGS) ; scp $(ZIP) jaapweel,econwillow@frs.sourceforge.net:/home/frs/project/e/ec/econwillow/$(ZIP) )
 
-push: clean
-	git commit -a
-	git push git@github.com:jaapweel/willow.git
+git: clean
+	git commit -a; git push
+
+web: clean
+	(cd web; scp * jaapweel,econwillow@web.sourceforge.net:/home/groups/e/ec/econwillow/htdocs/)
 
 .PHONY: all clean dist push
 

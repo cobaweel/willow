@@ -36,11 +36,11 @@ __all__ = ('log', 'put', 'get', 'tweak', 'grab', 'me', 'hold', 'flush',
 # which is automatically named based on the time the library is
 # loaded, using the thread-safe trace() function.
 
-log_fn1  = time.strftime("log/%Y-%m-%d-%H-%M-%S.csv")
+log_fn1  = os.path.join("log",time.strftime("%Y-%m-%d-%H-%M-%S.csv"))
 log_fd1  = open(log_fn1,"w")
 log_csv  = csv.writer(log_fd1)
 log_lock = threading.Lock()
-log_fn2  = time.strftime("log/%Y-%m-%d-%H-%M-%S.txt")
+log_fn2  = os.path.join("log",time.strftime("%Y-%m-%d-%H-%M-%S.txt"))
 log_fd2  = open(log_fn2,"w")
 
 def log(*msg):
@@ -96,7 +96,10 @@ def put(item, delay=0):
   if delay < 0:
     raise Exception, "time travel not yet implemented" 
   elif delay > 0:
-    def thunk(): put(item)
+    name = threading.current_thread().name
+    def thunk():
+      threading.current_thread().name = name
+      put(item)
     threading.Timer(delay, thunk).start()
   else:
     board_cv.acquire()
