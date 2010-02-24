@@ -14,15 +14,19 @@ QUIZ = [
   ("You can transfer seeds to any avatar anywhere on the island.",TF),
   ("You can adjust the fertilizer levels on your fruit farm at any time.",TF)
 ]
-ANSWERS=["False", "False", "True", "False", "False", "True", "False", "True", "False", "True"]
+ANSWERS=["False", "False", "True", "False", "False",
+         "True", "False", "True", "False", "True"]
 
 def session():
   add(open("ti.html"),"head")
   set("<div class='survey'></div>")
   results = survey("QUIZ", me(), QUIZ)
   set("")
-  table( [ ["<b>Question</b>", "<b>Your answer</b>", "<b>Correct answer</b>"] ] +
-         [ [ QUIZ[i][0], QUIZ[i][1][results[i]-1], ANSWERS[i] ] for i in range(len(QUIZ)) ])
+  table( [ ["<b>Question</b>",
+            "<b>Your answer</b>",
+            "<b>Correct answer</b>"] ] +
+         [ [ QUIZ[i][0], QUIZ[i][1][results[i]-1],
+             ANSWERS[i] ] for i in range(len(QUIZ)) ])
   add("<p>Wait for an experimenter to review your answers.</p>")
   button("x","Click here when review is completed.")
   clack()

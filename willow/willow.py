@@ -26,7 +26,7 @@
 import json, BaseHTTPServer, time, Queue, mimetypes, SocketServer
 import threading, sys, csv, os, os.path
 
-__all__ = ('log', 'put', 'get', 'tweak', 'grab', 'me', 'hold', 'flush',
+__all__ = ('log', 'put', 'get', 'tweak', 'grab', 'me', 
            'add', 'set', 'push', 'pop', 'hide', 'show', 'peek', 'run',
            'config', 'url')
 
@@ -91,7 +91,7 @@ def find(*queries):
           return key
   return None
 
-def put(item, delay=0):
+def put(item, delay=0, copies=1):
   assert type(item)==tuple, "the board can only contain tuples"
   if delay < 0:
     raise Exception, "time travel not yet implemented" 
@@ -99,13 +99,14 @@ def put(item, delay=0):
     name = threading.current_thread().name
     def thunk():
       threading.current_thread().name = name
-      put(item)
+      put(item,copies=copies)
     threading.Timer(delay, thunk).start()
   else:
     board_cv.acquire()
     global board_counter
-    board_counter += 1
-    board_space[board_counter] = item
+    for _ in range(copies):
+      board_counter += 1
+      board_space[board_counter] = item
     board_cv.notifyAll()
     board_cv.release()
     trace("PUT",item,True)
@@ -172,7 +173,7 @@ def me():
   try:
     number = int(name)
   except ValueError:
-    raise Exception, "must be called from a session thread"
+    return -1
   return int(threading.current_thread().name)
 
 def url():
@@ -310,5 +311,10 @@ def run(session, port=8000):
     daemon_threads = True
     allow_reuse_address = True
 
-  MyHTTPServer(('', port), MyRequestHandler).serve_forever()
+  try:
+    trace("RUN","Willow is running")
+    MyHTTPServer(('', port), MyRequestHandler).serve_forever()
+  except KeyboardInterrupt:
+    trace("RUN","Willow is done")
+
 

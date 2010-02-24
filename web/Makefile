@@ -1,7 +1,7 @@
-manual.html: manual.txt
-	asciidoc -aicons -anumbered $<
+manual.html: manual.txt Makefile
+	asciidoc -atoc -aicons -anumbered $<
 
-manual.pdf: manual.html
+manual.pdf: manual.html Makefile
 	wkhtmltopdf --userstyle-sheet manual.css $<
 
 .PHONY: clean

@@ -715,54 +715,74 @@ the second client connect immediately after the first, then the
 "Monitor" heading when running the second program, but not when
 running the first. 
 
-Lesson 7: Wherein we wrap up some loose ends
---------------------------------------------
+Lesson 7: Wherein we stall for time
+-----------------------------------
 
-We have now encountered virtually the whole set of Willow
-primitives. If you look at the API documentation, you will discover a
-few odds and ends that haven't been mentioned so far.
-
-.The +hold()+ and +flush()+ functions
-
-These may improve performance in very high-throughput applications but
-most likely aren't anything you need to worry about.
-
-.The optional +delay+ argument to +put()+
-
-You will also see that +put()+ accepts a delay as an optional
-argument: calling +put( ("boo",), delay=3.4 )+ causes the tuple
-+("boo",)+ to be posted to the board 3.4 seconds later; the +put()+
-function itself returns immediately. This makes it possible, for
-instance, to do things like "wait for this button to be clicked or 7.2
-seconds to elapse, whichever comes first," like so:
+Look at this:
 
 [source,python]
 ----------------------------------------------------------------------
-add("<input id='submit' type='submit'>")
-put(("timeout",), delay=7.2)
-get(("click", me(), "submit"), ("timeout",))
+from willow.willow import *
+
+def session():
+  add("Hello, ")
+  put(("PING",), delay=2.3)
+  get(("PING",))
+  add("world.")
+
+run(session)        
 ----------------------------------------------------------------------
 
-.The +config()+ function
+It shows "Hello, " on the screen, and 2.3 seconds later, it adds " world."
 
-You may want to use configuration files to configure, say, different
-treatments. In order to make this possible, Willow has a function that
-reads a JSON object out of a text file. 
+That's all there is to this one. +put()+ takes an optional +delay=+
+argument, and if you use it, the tuple won't actually arrive on the
+board until the delay is over. Meanwhile, you can still do other
+things; remember that the +put()+ function *always* returns
+immediately. Only the +get()+ function can block, if there are no
+matching tuples, until a matching tuple appears.
 
-.The +log()+ function
+Lesson 8: Wherein we finall produce data
+----------------------------------------
 
-This is how you cause your Willow program to produce a data file. Each
-call to +log()+ will result in a single row in a CSV file, which is a
-simple spreadsheet format that is understood by Excel, OpenOffice,
-Stata, and other data analysis software. Each row will automatically
-get a timestamp added to the front of it, which is a large integer
-representing the number of seconds that have passed since the "Unix
-epoch" on January 1, 1970, 0:00 UTC. This may seem like an odd choice
-of timestamp format, but the advantage of this type of timestamp is
-that it makes sense to subtract them! The log file will be put in the
-+log/+ subdirectory (folder) and it will be named automatically based
-on the time your Willow program has started. (A more human-readable
-timestamp format is used for the filenames.)
+
+[source,python]
+----------------------------------------------------------------------
+from willow.willow import *
+
+def session():
+  add("Hello, world.")
+  log("hello", "world")
+
+run(session)        
+----------------------------------------------------------------------
+ 
+
+This is how you cause your Willow program to produce a data file. 
+
+In this case, a data file was produced in the +log+ subdirectory
+(i.e. folder) called + 2010-02-23-22-00-05.csv+. The name is chosen
+automatically based on the date and time
+(year-month-day-hour-minute-second).
+
+The file contains:
+
+----------------------------------------------------------------------
+1266981599,hello,world,0
+1266981599,hello,world,1
+1266981600,hello,world,2
+1266981600,hello,world,3
+----------------------------------------------------------------------
+
+This is a CSV file, which is a simple text-file based spreadsheet
+format. It is understood by Excel, OpenOffice, Stata, and other data
+analysis software. You can also just open it in a text editor.
+
+Each row will automatically get a timestamp added to the front of it,
+which is a large integer representing the number of seconds that have
+passed since the "Unix epoch" on January 1, 1970, 0:00 UTC. This may
+seem like an odd choice of timestamp format, but the advantage of this
+type of timestamp is that it makes sense to subtract them! 
 
 API: willow.willow
 ------------------
@@ -843,26 +863,12 @@ Request the contents of the HTML element(s) referred to by
 +selector+ to be posted as +("peek",number,contents)+. Intended to
 be used with +<input type='text'>+ elements.
 
-+hold([number])+
-~~~~~~~~~~~~~~~~
-
-Stop executing subsequent +set+, +add+, +push+, +pop+, +hide+,
-+show+, and +peek+ immediately, but instead stuff them in a buffer
-where they sit until +flush()+ is called.
-
-+flush([number])+
-~~~~~~~~~~~~~~~~~
-
-Execute all +set+, +add+, +push+, +pop+, +hide+, +show+, and +peek+
-actions that were held in a buffer since +hold()+ was called, and
-from here on out resume executing such actions immediately without
-buffering.
-
-+put(tuple, [delay])+
-~~~~~~~~~~~~~~~~~~~~~
++put(tuple, [delay], [copies])+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 After an optional +delay+ in seconds, post the tuple onto the
-communication board.
+communication board. If +copies=N+ is specified, +N+ copies of the
+same tuple will be posted.
 
 WARNING: In Python, the value +x+ is the same as +(x)+, but it is not the
   same as the one-element tuple containing it, which is written
@@ -871,18 +877,17 @@ WARNING: In Python, the value +x+ is the same as +(x)+, but it is not the
 +get(*queries)+
 ~~~~~~~~~~~~~~~
 
-Block until a tuple becomes present on the board that matches at
-least one of the queries, then return it. A tuple on the board
-matches a query whenever the tuple on the board and the query have
-the same length, and each element of the query is either +None+ or
+Block until a tuple becomes present on the board that matches at least
+one of the queries, then remove and return it. A tuple on the board
+matches a query whenever the tuple on the board and the query have the
+same length, and each element of the query is either +None+ or
 identical to the corresponding element in the tuple on the board.
 
 +grab(*queries)+
 ~~~~~~~~~~~~~~~~
 
 If a tuple is present on the board that matches at least one of the
-queries return it; otherwise return +None+. 
-
+queries remove and return it; otherwise return +None+.
 
 +run(session, [port])+ 
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -895,21 +900,6 @@ will return a different value, and +add+, +set+, etc. will by
 default operate on a different client. The web server will search
 for requested files in the current directory, among other places, so
 you can for instance include images in your pages.
-
-+config(filename)+
-~~~~~~~~~~~~~~~~~~
-
-Reads a configuration file in JSON format (http://json.org/) and
-returns a corresponding Python object. For instance, if you have a
-file +protocol.txt+ containing the text +{ "rounds" : 12, "subjects"
-: 4}+ then +cfg = willow.config("protocol.txt")+ will set the
-variable +cfg+ to the python dictionary +{u'rounds': 12,
-u'subjects': 4}+.
-
-WARNING: The letter +u+ appears in front of the strings that come out
-of +config+ because JSON strings are Unicode, not ASCII, but you do
-not need to worry about that. To get the value of the +rounds+
-parameter, simply use +cfg["rounds"]+.
 
 +log(x,y,...)+
 ~~~~~~~~~~~~~~

@@ -8,15 +8,16 @@ clean:
 	-rm -f *~ \#* *.pyc 
 	-rm -f */*~ */\#* */*.pyc 
 
-dist: clean
+git: clean
+	git commit -a; git push
+
+dist: clean git
 	(cd ..; zip -r $(ZIP) econwillow  $(TARFLAGS) ; scp $(ZIP) jaapweel,econwillow@frs.sourceforge.net:/home/frs/project/e/ec/econwillow/$(ZIP) )
 
-git: clean
-	git commit -a; git push ssh://jaapweel@econwillow.git.sourceforge.net/gitroot/econwillow/econwillow
-
-web: clean
+web: clean 
+	(cd web; make)
 	(cd web; rsync -rvz . jaapweel,econwillow@web.sourceforge.net:/home/groups/e/ec/econwillow/htdocs/)
 
-.PHONY: all clean dist push
+.PHONY: all clean git dist web
 
 
