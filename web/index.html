@@ -1,144 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	  "http://www.w3.org/TR/html4/strict.dtd">
 <html>
- <head>
-   <style type="text/css">
-    * {
-	line-height: 160%;
-    }
+  <head>
+    <title>Willow: Experiments in Python</title>
 
-    body { 
-	font-family: georgia, serif;
-	margin: 1em auto;
-	padding: 40px;
-
-	width: 800px; 
-        background-color: lightyellow;
-        font-size: 12pt;
-    }
-
-    h1 {
-        border-bottom: 1px solid lightgrey;
-        font-size: 260%;
-    }
-
-    h1,h2,a {
-        color: #063;
-        text-decoration: none;
-    }
-
-    a {
-       border-bottom: 1px dotted #063;
-    }
-
-    a.none {
-       border:none;
-    }
-
-    .floater {
+    <link rel="stylesheet" type="text/css" href="yui.css">
+    <style type="text/css">
+      html { 
+        background: lightyellow;
+      }
+      * {
+        font-family: Georgia, serif;
+      }
+      h1, h2 {
+        font-family: sans-serif;
+      }
+      p * {
+        max-width: 100%;
+      }
+      h1 {
+        font-size: 300%;
+        line-height:100%;
+      }
+      body > div {
+        line-height: 160%;
+        font-size: 120%;
+      }
+      .right{
         background: white;
-        height: auto;
-        border: 1px solid lightgrey;
-        padding: 1em;
-        margin: 1em 0;
-        text-align: center;
-        font-size: 10pt;
-        max-width: 760px;
-    }
-
-    .right {
-        float: right;
-        margin-left: 2em;
-        width: 25%;
-    }
-   </style>
-   <title>Willow: Experiments in Python</title>
- </head>
-
- <body>
-   <h1>Willow: Experiments in Python</h1>
-   <div class="floater">
-     <a class="none" href="http://economics.gmu.edu"><img src="gmu.jpg" height="120px"></a>
-     <a class="none" href="http://neuroeconomics.net"><img src="csn.png" height="120px"></a>
-     <a class="none" href="http://ices.gmu.edu"><img src="ices.png" height="120px"></a>
-     <p>Willow is a project of
-     the <a href="http://neuroeconomics.net">Center for the Study of
-     Neuroeconomics</a> and
-     the <a href="http://ices.gmu.edu">Interdisciplinary Center for
-     Economic Science</a> at
-     the <a href="http://economics.gmu.edu">George Mason University
-     Department of Economics</a>.
-   </div>
-   
-   <div class="floater right" >
-     <a class="none" href="http://www.ugcs.caltech.edu/~weel"><img style="width:100%;"
-     src="me.jpg"></a> <p>Willow is written
-     by <a href="http://www.ugcs.caltech.edu/~weel">Jaap Weel</a>, a
-     PhD student at <a href="http://economics.gmu.edu">GMU</a>.</p>
-      <a class="none" href="http://www.neuroeconomics.net/subcategory.php/144.html"> 
-	<img style="width:100%;" src="kevin.jpg"></a> <p>Willow is
-     supported by
-     by <a  href="http://www.neuroeconomics.net/subcategory.php/144.html">Professor
-     Kevin McCabe</a>, director of the
-      <a href="http://neuroeconomics.net">Center for the Study of
-     Neuroeconomics</a> at <a href="http://economics.gmu.edu">GMU</a>.
-   </div>
-
-   <h2>Where do I get myself a Willow?</h2>
-
-   <li>Willow is a software library for experimental economics in
-   <a href="http://python.org/about">Python</a>
-   <li>You can download the latest <a href="http://sourceforge.net/projects/econwillow/files/">release</a>
-   <li>Read
-   the <a href="http://econwillow.git.sourceforge.net/git/gitweb.cgi?p=econwillow/econwillow;a=blob_plain;f=doc/manual.pdf;hb=HEAD">
-   current development version's documentation</a> in PDF
-   <li>Visit the Sourceforge project page
-   at <a href="https://sourceforge.net/projects/econwillow/"> project
-   econwillow</a>
-   
-   <h2>What is this Willow thing?</h2>
-   <p>Willow is a tool for making the kinds of computer user
-     interfaces typically used in experimental economics. Without
-     Willow, you might design such an interface from scratch, or by
-     modifying earlier from-scratch software written for similar
-     experiments.  Using Willow, you can do the same thing, but faster
-     and better.
-
-   <p>Willow sets out to accomplish this goal not by providing canned
-     routines for commonly performed experiments. After all, it is
-     precisely because our experiments are different from what has
-     gone before that we bother with them. Rather, Willow is a generic
-     toolkit that makes a lot of the things we do in experimental
-     economics easy.
-
-   <p>To use a Willow program, you need only install your program on a
-     single "monitor" computer. The computers used by your research
-     subjects will simply run a web browser, which connects to a web
-     server that runs on the monitor computer. The user interface for
-     the subjects will be displayed inside the browser window.
-
-   <p>Willow is a versatile program, and you can use it for many
-     different interfaces; but you might just be curious what a Willow
-     interface can look like. Below are some examples taken from the
-     first study that used Willow.
-
-     <h2 style="clear:both;">Can I see some screenshots?</h2>
-
-     <p><img style="border:6px dotted white;" src="screen1.png">
-     <p><img style="border:6px dotted white;" src="screen2.png">
-   <hr><p align="right"> Willow is hosted on <a href="http://sourceforge.net/projects/econwillow"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=305622&amp;type=9"
-   width="80" height="15" alt="Get Willow: Experiments in Python at
-   SourceForge.net. Fast, secure and Free Open Source software
-   downloads" /></a>
-
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-1356066-5");
-pageTracker._trackPageview();
-} catch(err) {}</script>
-
- </body>
+        border-left: 1px dotted lightgrey;
+        padding: 20px;
+      }
+      .left {
+        margin-right: 80px;
+      }
+      a {
+        text-decoration: none;
+      }
+      .shot {
+        border: 1px inset lightgrey;
+      }
+      h1, a  {
+        color: #063;;
+      }
+      ul.buttons {
+        margin: 1em 0; 
+        list-style:none;
+      }
+      ul.buttons * {
+        font-family: sans-serif;
+      }
+      ul.buttons  li  {
+        display: block;
+        background: #063;
+        padding: 15px;
+      border: 5px outset lightgreen;
+      }
+      ul.buttons li a {
+        color: goldenrod;
+        text-transform: uppercase;
+        font-size: 120%;
+        font-weight: bold;
+      }
+     </style>
+  </head>
+  <body>
+    <div id="doc3" class="yui-t4">
+      <div id="hd" role="banner">
+      </div>
+      <div id="bd" role="main">
+	<div id="yui-main">
+	  <div class="yui-b"><div class="yui-g left">
+	      <h1>Willow: Experiments in Python</h1>
+	      <p>
+		Willow is a tool for making the kinds of computer user
+		interfaces typically used in experimental
+		economics. Without Willow, you might design such an
+		interface from scratch, or by modifying earlier
+		from-scratch software written for similar experiments.
+		Using Willow, you can do the same thing, but faster
+		and better.
+	      </p>
+	      <h2>Getting started</h2>
+	      <p>
+		To get started with Willow, use the buttons on the
+		right. If you have questions, you can:
+		<ul>
+		  <li>Read the manual.</li>
+		  <li>If that doesn't work, ask on the forum.</li>
+		  <li>If that doesn't work, file a bug in the bug tracker.</li>
+		</ul>
+	      </p>
+	      <h2>Screenshots</h2>
+	      <p>
+		Can't do without them. Here are some:
+	      </p>
+	      <p>
+		<img class="shot" src="screen1.png">
+	      </p>
+	      <p>
+		<img class="shot" src="screen2.png">
+	      </p>
+	    </div>
+	  </div>
+	</div>
+	<div class="yui-b right">
+	  <ul class="buttons">
+	    <li><a href="http://econwillow.sourceforge.net/">willow</a></li>
+	    <li><a href="http://sourceforge.net/projects/econwillow/files/">download</a></li>
+	    <li><a href="manual.html">manual</a></li>
+	    <li><a href="https://sourceforge.net/projects/econwillow/forums/forum/1094149.html">forums</a></li>
+	    <li><a href="https://sourceforge.net/tracker/?func=add&group_id=305622&atid=1287850">report a bug</a></li>
+	  </ul>
+	  <p>
+	    <img src="me.jpg" width="100px">
+	    <img src="kevin.jpg" width="100px">
+	  </p>
+	  <p>
+	    Willow is written
+	    by <a href="http://www.ugcs.caltech.edu/~weel">Jaap
+	    Weel</a>, a PhD student
+	    at <a href="http://economics.gmu.edu">GMU</a>, and
+	    supported by by
+	    <a href="http://www.neuroeconomics.net/subcategory.php/144.html">
+	      Professor Kevin McCabe
+	    </a>, director of the
+	    <a href="http://neuroeconomics.net"> 
+	      Center for the Study of Neuroeconomics
+	    </a>
+	    at 
+	    <a href="http://economics.gmu.edu">
+	      GMU
+	    </a>.
+	  </p>
+	  <p>
+	    <img src="gmu.jpg">
+	  </p>
+	  <p>
+	    <img src="csn.png">
+	  </p>
+	  <p>
+	    <img src="ices.png">
+	  </p>
+	  <p>Willow is a project of
+	    the <a href="http://neuroeconomics.net"> Center for the
+	      Study of Neuroeconomics </a> and
+	    the <a href="http://ices.gmu.edu"> Interdisciplinary
+	      Center for Economic Science </a> at
+	    the <a href="http://economics.gmu.edu"> George Mason
+	      University Department of Economics </a>.
+	  </p>
+	  <p>
+	    Willow is hosted on 
+	    <a href="http://sourceforge.net/projects/econwillow">
+	      <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=305622&amp;type=9"
+		   width="80" height="15" />
+	    </a>
+	  </p>
+	  <script type="text/javascript">
+	    var gaJsHost = (("https:" == document.location.protocol) ?
+	    "https://ssl." : "http://www.");
+	    document.write(unescape("%3Cscript src='" + gaJsHost +
+	    "google-analytics.com/ga.js'
+	    type='text/javascript'%3E%3C/script%3E"));
+	  </script>
+	  <script type="text/javascript">
+	    try { var pageTracker = _gat._getTracker("UA-1356066-5");
+	    pageTracker._trackPageview(); } catch(err) {}
+	  </script>
+	</div>
+      </div>
+      <div id="ft" role="contentinfo">
+      </div>
+    </div>
+  </body>
 </html>
 
