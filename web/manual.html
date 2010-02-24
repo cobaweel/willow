@@ -1,0 +1,1824 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.4.4" />
+<title>Willow: Experimental Economics with Python</title>
+<style type="text/css">
+/* Debug borders */
+p, li, dt, dd, div, pre, h1, h2, h3, h4, h5, h6 {
+/*
+  border: 1px solid red;
+*/
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+tt {
+  color: navy;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  font-family: sans-serif;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+
+div.sectionbody {
+  font-family: serif;
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+
+pre {
+  padding: 0;
+  margin: 0;
+}
+
+span#author {
+  color: #527bbd;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+span#email {
+}
+span#revision {
+  font-family: sans-serif;
+}
+
+div#footer {
+  font-family: sans-serif;
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+div#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+div#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+div#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.tableblock, div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.5em;
+  margin-bottom: 2.5em;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-family: sans-serif;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid silver;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid silver;
+  background: #f4f4f4;
+  padding: 0.5em;
+}
+
+div.quoteblock {
+  padding-left: 2.0em;
+  margin-right: 10%;
+}
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock {
+  padding-left: 2.0em;
+  margin-right: 10%;
+}
+div.verseblock > div.content {
+  white-space: pre;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 2px solid silver;
+}
+
+div.exampleblock > div.content {
+  border-left: 2px solid silver;
+  padding: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+div.imageblock img { border: 1px solid silver; }
+span.image img { border-style: none; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead {
+  font-family: sans-serif;
+  font-weight: bold;
+}
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+@media print {
+  div#footer-badges { display: none; }
+}
+
+div#toctitle {
+  color: #527bbd;
+  font-family: sans-serif;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+/* Workarounds for IE6's broken and incomplete CSS2. */
+
+div.sidebar-content {
+  background: #ffffee;
+  border: 1px solid silver;
+  padding: 0.5em;
+}
+div.sidebar-title, div.image-title {
+  color: #527bbd;
+  font-family: sans-serif;
+  font-weight: bold;
+  margin-top: 0.0em;
+  margin-bottom: 0.5em;
+}
+
+div.listingblock div.content {
+  border: 1px solid silver;
+  background: #f4f4f4;
+  padding: 0.5em;
+}
+
+div.quoteblock-attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock-content {
+  white-space: pre;
+}
+div.verseblock-attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+
+div.exampleblock-content {
+  border-left: 2px solid silver;
+  padding-left: 0.5em;
+}
+
+/* IE6 sets dynamically generated links as visited. */
+div#toc a:visited { color: blue; }
+</style>
+</head>
+<body>
+<div id="header">
+<h1>Willow: Experimental Economics with Python</h1>
+</div>
+<div id="preamble">
+<div class="sectionbody">
+</div>
+</div>
+<h2 id="_about_this_manual">1. About this manual</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>You are reading the manual for Willow, a Python framework for
+experimental economics developed at the Center for the Study of
+Neuroeconomics at George Mason University. This manual presumes that
+you already have an understanding of experimental economics, of HTML,
+and of Python programming.</p></div>
+<div class="paragraph"><p>If you are interested in learning about experimental economics, you
+could do worse than to have a look at the following textbooks:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Daniel Friedman, <em>Experimental Methods: A Primer for Economists</em>
+</p>
+</li>
+<li>
+<p>
+John Kagel and Alvin Roth, <em>The Handbook of Experimental Economics</em>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>In order to get started with Python if you already know how to program
+in some other language, you can try</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Mark Pilgrim, <em>Dive into Python</em>
+</p>
+<div class="literalblock">
+<div class="content">
+<pre><tt>http://diveintopython.org</tt></pre>
+</div></div>
+</li>
+<li>
+<p>
+Guido van Rossum et al., <em>The Python Tutorial</em>
+</p>
+<div class="literalblock">
+<div class="content">
+<pre><tt>http://docs.python.org/tutorial/</tt></pre>
+</div></div>
+</li>
+</ul></div>
+<div class="paragraph"><p>If you want to learn both the craft of computer programming and the
+Python programming language at the same time, you are in luck, since
+Python is an excellent first language. Some free resources include:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Jeffrey Elkner, Allen B. Downey, and Chris Meyers, <em>How to Think
+  Like a Computer Scientist</em>
+</p>
+<div class="literalblock">
+<div class="content">
+<pre><tt>http://openbookproject.net/thinkCSpy/</tt></pre>
+</div></div>
+</li>
+<li>
+<p>
+Swaroop C. H., <em>A Byte of Python</em>
+</p>
+<div class="literalblock">
+<div class="content">
+<pre><tt>http://www.swaroopch.com/notes/Python</tt></pre>
+</div></div>
+</li>
+</ul></div>
+<div class="paragraph"><p>Also, in order to use Willow, you need to have basic knowledge of HTML
+and CSS, the languages used to build web pages. For this I strongly
+recommend</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Kennedy and Musciano, <em>HTML &amp; XHTML, The Definitive Guide</em>,
+   O&#8217;Reilly.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>O&#8217;Reilly books are available full-text through an online service
+called Safari, which many universities subscribe to. There are also
+many free on-line sources about HTML and CSS.</p></div>
+</div>
+<h2 id="_why_willow">2. Why Willow?</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Willow is a tool for making the kinds of computer user interfaces
+typically used in experimental economics. Without Willow, you might
+design such an interface from scratch, or by modifying earlier
+from-scratch software written for similar experiments. Using Willow,
+you can do the same thing, but faster and better.</p></div>
+<div class="paragraph"><p>Willow sets out to accomplish this goal not by providing canned
+routines for commonly performed experiments. After all, it is
+precisely because our experiments are different from what has gone
+before that we bother with them. Rather, Willow is a generic toolkit
+that makes a lot of the things we do in experimental economics easy.</p></div>
+<div class="paragraph"><p>To use a Willow program, you need only install your program on a
+single "monitor" computer. The computers used by your research
+subjects will simply run a web browser, which connects to a web server
+that runs on the monitor computer. The user interface for the subjects
+will be displayed inside the browser window.</p></div>
+<div class="paragraph"><p>Willow is a versatile program, and you can use it for many different
+interfaces; but you might just be curious what a Willow interface can
+look like. Here are some examples taken from the first study that used
+Willow at the Center for the Study of Neuroeconomics and the
+Interdisciplinary Center for Economic Science at George Mason
+University.</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="screen1.png" alt="screen1.png"/>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="screen2.png" alt="screen2.png"/>
+</div>
+</div>
+</div>
+<h2 id="_preliminary_1_html">3. Preliminary 1: HTML</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Willow relies on HTML, the hypertext markup language, for the purpose
+of constructing a user interface. A complete description of HTML is
+outside the scope of this manual, but I&#8217;ll give a brief introduction.</p></div>
+<div class="paragraph"><p>An HTML document is a text file with some special markup sequences. To
+practice with HTML, you can construct HTML documents with a text
+editor, and load them in a web browser.</p></div>
+<div class="paragraph"><p>Consider this example:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">&lt;p&gt;</span></span>This is a paragraph, with a <span style="font-weight: bold"><span style="color: #0000FF">&lt;b&gt;</span></span>bold<span style="font-weight: bold"><span style="color: #0000FF">&lt;/b&gt;</span></span> bit in it, and a <span style="font-weight: bold"><span style="color: #0000FF">&lt;br&gt;</span></span>line
+break and a <span style="font-weight: bold"><span style="color: #0000FF">&lt;a</span></span> <span style="color: #009900">href</span><span style="color: #990000">=</span><span style="color: #FF0000">"http://google.com"</span><span style="font-weight: bold"><span style="color: #0000FF">&gt;</span></span>link<span style="font-weight: bold"><span style="color: #0000FF">&lt;/a&gt;</span></span>.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/p&gt;</span></span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;ol&gt;</span></span>
+ <span style="font-weight: bold"><span style="color: #0000FF">&lt;li&gt;</span></span>This is         the first item of an ordered list.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/li&gt;</span></span>
+ <span style="font-weight: bold"><span style="color: #0000FF">&lt;li&gt;</span></span>This is the second        item of an ordered list.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/li&gt;</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;/ol&gt;</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;ul&gt;</span></span>
+ <span style="font-weight: bold"><span style="color: #0000FF">&lt;li&gt;</span></span>This is the first item of an unordered list. <span style="font-weight: bold"><span style="color: #0000FF">&lt;/li&gt;</span></span>
+ <span style="font-weight: bold"><span style="color: #0000FF">&lt;li&gt;</span></span>This is the second item of an unordered list.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/li&gt;</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;/ul&gt;</span></span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;div&gt;</span></span>This is a div. It has a <span style="font-weight: bold"><span style="color: #0000FF">&lt;span&gt;</span></span>span<span style="font-weight: bold"><span style="color: #0000FF">&lt;/span&gt;</span></span> in it.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/div&gt;</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">&lt;div&gt;</span></span>This is a div. It has another <span style="font-weight: bold"><span style="color: #0000FF">&lt;span&gt;</span></span>span<span style="font-weight: bold"><span style="color: #0000FF">&lt;/span&gt;</span></span> in it.<span style="font-weight: bold"><span style="color: #0000FF">&lt;/div&gt;</span></span></tt></pre></div></div>
+<div class="paragraph"><p>If we type this into a file called <tt>example.html</tt> and load that file in
+a web browser, this is what we see:</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="html_1.png" alt="html_1.png"/>
+</div>
+</div>
+<div class="paragraph"><p>Even though this is a simple example, it already illustrates some of
+the most important points about HTML:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+HTML is made up of <em>elements</em>, which are delimited by <em>tags</em>. For
+  instance, the above example starts with a <tt>p</tt> element, the start of
+  which is marked with an opening tag <tt>&lt;p&gt;</tt>, and the end of which is
+  marked with a closing tag <tt>&lt;/p&gt;</tt>.
+</p>
+</li>
+<li>
+<p>
+Elements can have contents. For example, the <tt>b</tt> element in the
+  above example contains the text <tt>bold</tt>.
+</p>
+</li>
+<li>
+<p>
+Some elements, such as <tt>br</tt> do not have contents, and those do not
+  need a closing tag. (Sometimes, you will see these written like <tt>&lt;br
+  /&gt;</tt>; this is an XML thing, which you can read about elsewhere.)
+</p>
+</li>
+<li>
+<p>
+Elements also can have attributes. In the above example, the <tt>a</tt>
+  element has an <tt>href</tt> attribute, with value <tt>http://google.com</tt>.
+</p>
+</li>
+<li>
+<p>
+In HTML, any sequence of newline characters and/or blank characters
+  is always treated as a single blank. Extra blanks, or newlines, in
+  the HTML source have no effect. If you do want a line break, you can
+  use the the HTML element <tt>&lt;br&gt;</tt>.
+</p>
+</li>
+<li>
+<p>
+Most HTML elements have standard meanings for the browser. The <tt>b</tt>
+  element is rendered by typesetting its contents in bold, the <tt>a</tt>
+  element describes a link, etc. There are two exceptions: <tt>div</tt> and
+  <tt>span</tt>. These have no inherent meaning, and only become useful when
+  we start using things like CSS. The difference between <tt>div</tt> and
+  <tt>span</tt> is that a <tt>div</tt> is typeset above/below whatever comes
+  before/after it, while a <tt>span</tt> is typeset in-line.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Next, we will see a list of common HTML elements.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<tt>&lt;p&gt;&#8230;&lt;/p&gt;</tt>
+</dt>
+<dd>
+<p>
+A paragraph.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;ul&gt;&#8230;&lt;/ul&gt;</tt>
+</dt>
+<dd>
+<p>
+An unordered (bulleted) list.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;ol&gt;&#8230;&lt;/ol&gt;</tt>
+</dt>
+<dd>
+<p>
+An ordered (numbered) list.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;li&gt;&#8230;&lt;/li&gt;</tt>
+</dt>
+<dd>
+<p>
+An item for a list.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;div&gt;&#8230;&lt;/div&gt;</tt>
+</dt>
+<dd>
+<p>
+A generic chunk of text displayed vertically.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;input&gt;</tt>
+</dt>
+<dd>
+<p>
+An input widget
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;b&gt;&#8230;&lt;/b&gt;</tt>
+</dt>
+<dd>
+<p>
+A piece of text in bold
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;i&gt;&#8230;&lt;/i&gt;</tt>
+</dt>
+<dd>
+<p>
+A piece of text in italics
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;span&gt;&#8230;&lt;/span&gt;</tt>
+</dt>
+<dd>
+<p>
+A generic chunk of text displayed in-line.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;a&gt;&#8230;&lt;/a&gt;</tt>
+</dt>
+<dd>
+<p>
+A link
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;br&gt;</tt>
+</dt>
+<dd>
+<p>
+A line break
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;hr&gt;</tt>
+</dt>
+<dd>
+<p>
+A horizontal line
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;table&gt;</tt>
+</dt>
+<dd>
+<p>
+A table
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;tr&gt;</tt>
+</dt>
+<dd>
+<p>
+A table row
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;td&gt;</tt>
+</dt>
+<dd>
+<p>
+A table element
+</p>
+</dd>
+</dl></div>
+<div class="paragraph"><p>The last three of these fit together like so:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>&lt;table&gt;
+&lt;tr&gt;&lt;td&gt;Column 1, Row 1&lt;/td&gt;&lt;td&gt;Column 2, Row 1&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Column 1, Row 2&lt;/td&gt;&lt;td&gt;Column 2, Row 2&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</tt></pre>
+</div></div>
+<div class="paragraph"><p>Some of the more common HTML attributes:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<tt>&lt;table border=<em>1</em>&gt;&#8230;&lt;/table&gt;</tt>
+</dt>
+<dd>
+<p>
+A table with 1 pixel borders.
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;a href="http://google.com/"&gt;&#8230;&lt;/a&gt;</tt>
+</dt>
+<dd>
+<p>
+A link to <tt>http://google.com/</tt>
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;input type=<em>submit</em> value=<em>foo</em>&gt;</tt>
+</dt>
+<dd>
+<p>
+A button with label <tt>foo</tt>
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>&lt;input type=<em>text</em>&gt;</tt>
+</dt>
+<dd>
+<p>
+A text field.
+</p>
+</dd>
+</dl></div>
+<div class="paragraph"><p>That&#8217;s all for now. References on HTML abound both online and in
+print.</p></div>
+</div>
+<h2 id="_preliminary_2_css">4. Preliminary 2: CSS</h2>
+<div class="sectionbody">
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/note.png" alt="Note" />
+</td>
+<td class="content">Yet to be written.</td>
+</tr></table>
+</div>
+</div>
+<h2 id="_lesson_0_wherein_we_install_willow">5. Lesson 0: Wherein we install Willow</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>To install Willow, you extract the zip file to a convenient
+location. You will do this anew for each of your Willow projects.  In
+addition, you will need to have Python installed. Willow has been
+tested using Python 2.6 on Ubuntu GNU/Linux. You should be able to use
+it with Python 2.6 on Windows and Mac OSX as well. If you do not have
+Python 2.6 on your computer, get it from
+<a href="http://www.python.org/download/releases/2.6.3/">http://www.python.org/download/releases/2.6.3/</a> and then come back. If
+you are not sure whether you have Python 2.6 on your computer, just
+move on to the next section of the manual. If things don&#8217;t work,
+you&#8217;ll notice soon enough, and you can go back and install Python. Do
+not use Python version 3. It will not work.</p></div>
+</div>
+<h2 id="_lesson_1_wherein_we_meet_willow">6. Lesson 1: Wherein we meet Willow</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In the Willow folder, you will find a file named <tt>lesson.01</tt>. You need
+to run this file. On Windows and most Linux distributions, you can
+double click on it. You can also run the command <tt>python lesson01.py</tt>
+from the command line. Once the <tt>lesson01.py</tt> program is running, fire up
+a web browser and point it to <tt>http://localhost:8000/</tt>. You should see
+a page that looks like so:</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="lesson01_1.png" alt="lesson01_1.png"/>
+</div>
+</div>
+<div class="paragraph"><p>In practice, while programming, you will want to run Willow from
+within IDLE, which is the integrated development environment that
+comes with Python. To do so, right-click <tt>lesson01.py</tt> and select "Edit
+with IDLE". This will pop up an editor window with the <tt>lesson01.py</tt> code
+in it:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000080">from</span></span> willow<span style="color: #990000">.</span>willow <span style="font-weight: bold"><span style="color: #000080">import</span></span> <span style="color: #990000">*</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">session</span></span><span style="color: #990000">():</span>
+  <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;h1&gt;Hello, world.&lt;/h1&gt;"</span><span style="color: #990000">)</span>
+
+<span style="font-weight: bold"><span style="color: #000000">run</span></span><span style="color: #990000">(</span>session<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>See here the code of a very simple but working Willow program. You can
+run it using the <tt>Run &gt; Run Module</tt> menu option or by pressing
+<tt>F5</tt>. Again, you now need to point a web browser to
+<tt>http://localhost:8000</tt>.</p></div>
+<div class="paragraph"><p>If you see an error message like "address already in use," you are
+probably trying to run two instances of Willow simultaneously. You
+should stop the first one first (just close the window).</p></div>
+<div class="paragraph"><p>Now, let us look at the above code. Most of it is boilerplate, but the
+good news is that this is all the boilerplate you need. The first line
+imports the willow library. It assumes that <tt>willow.py</tt> is in a
+subdirectory <tt>willow</tt> of the directory in which <tt>lesson01.py</tt> is; this is
+how things are set up for the sample programs, and if you put your own
+programs in the same place, it will just work. The next two lines
+define a session function, and the last line instructs Willow to start
+the web server, using the session function that has just been defined.</p></div>
+<div class="paragraph"><p>Together, these four lines define a web server that you can connect to
+from a browser. If the browser is running on the same machine as the
+server, you can use <tt>http://localhost:8000</tt> as a URL. If it is running
+somewhere else, you must find out the IP address of the server. (If
+you don&#8217;t know it, there is a whole chapter further down in the manual
+about how to figure it out.) If the IP address is, say,
+<tt>123.123.123.123</tt>, then you can reach your Willow server using
+<tt>http://123.123.123.123:8000</tt>. The <tt>:8000</tt> part is called the port
+number; you can specify a different port number as an extra argument
+to <tt>run</tt> (e.g. <tt>run(session, 8001)</tt>) if you insist on a port different
+from 8000.</p></div>
+<div class="paragraph"><p>Once the web server is running, for each client that connects to it,
+the session function will be called once. It will keep running until
+it returns. We say that each session function runs in its own "session
+thread". This means that several "copies" of the session function are
+running simultaneously, one for each client.</p></div>
+<div class="paragraph"><p>In this case, we want to simply display the text "Hello world." in the
+web browser of every client that connects, so we have a very simple
+session function that does nothing but <tt>add("&lt;h1&gt;Hello,
+world.&lt;/h1&gt;")</tt>. The <tt>add()</tt> function adds an HTML snippet to the web
+page being displayed in the client&#8217;s browser.</p></div>
+<div class="paragraph"><p>Try connecting to <tt>localhost:8000</tt> in multiple browser tabs. You&#8217;ll
+see that each one shows "Hello, world." This is because the
+<tt>session()</tt> function gets called once for each client that connects.</p></div>
+</div>
+<h2 id="_lesson_2_wherein_all_clients_are_not_equal">7. Lesson 2: Wherein all clients are not equal</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In real applications, we usually do not want to do the same for every
+client that connects. More likely, we&#8217;ll want one client to show some
+sort of experimenter console, one client to show the interface for
+subject 1, one client the interface for subject 2, etc.</p></div>
+<div class="paragraph"><p>Have a look at <tt>lesson02.py</tt>:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000080">from</span></span> willow<span style="color: #990000">.</span>willow <span style="font-weight: bold"><span style="color: #000080">import</span></span> <span style="color: #990000">*</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">session</span></span><span style="color: #990000">():</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">()</span> <span style="color: #990000">==</span> <span style="color: #993399">0</span><span style="color: #990000">:</span>
+      <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Hello monitor %d at URL %s"</span> <span style="color: #990000">%</span> <span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">(),</span> <span style="font-weight: bold"><span style="color: #000000">url</span></span><span style="color: #990000">()))</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">else</span></span><span style="color: #990000">:</span>
+      <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"Hello subject %d at URL %s"</span> <span style="color: #990000">%</span> <span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">(),</span> <span style="font-weight: bold"><span style="color: #000000">url</span></span><span style="color: #990000">()))</span>
+
+<span style="font-weight: bold"><span style="color: #000000">run</span></span><span style="color: #990000">(</span>session<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/note.png" alt="Note" />
+</td>
+<td class="content">The <tt>%</tt> operator in Python is very useful for constructing
+strings. You can read about it in section 6.6.2, "String Formatting
+Operations", of the Python 2.6.4 Standard Library reference manual.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>As you can see, there is still only one <tt>session()</tt> function, and for
+each client that connects, a session thread is started that runs the
+<tt>session()</tt> function. Each client runs the exact same function,
+but&#8230; inside the <tt>session()</tt> function the value returned by <tt>me()</tt>
+will be different in each thread. In particular, each client gets a
+number, starting with 0, in the order in which the clients first
+connect, and <tt>me()</tt> returns the number of the client associated with
+the current thread.</p></div>
+<div class="paragraph"><p>The program also makes use of a second mechanism that can be used for
+distinguishing clients, and that is <tt>url()</tt>. As you may have noticed,
+Willow is not particularly picky about the URL you use to load it. You
+could have typed <tt>http://localhost:8000/</tt> or <tt>http://localhost:8000/3</tt>
+or <tt>http://localhost:8000/spamandtomatoes</tt> and in any of those cases,
+the same page would show and the same <tt>session()</tt> function would be
+called; but inside each <tt>session()</tt> function, <tt>url()</tt> would return a
+different value.</p></div>
+<div class="paragraph"><p>Try running <tt>lesson02.py</tt> and then try to connect to Willow with
+various URLs. Each URL has to be of the form
+<tt>http://&lt;the-host-running-willow&gt;:8000/&lt;something&gt;</tt>, where
+<tt>&lt;the-host-running-willow&gt;</tt> can be <tt>localhost</tt> or your IP address or
+hostname, and <tt>&lt;something&gt;</tt> can be anything, including the empty
+string.</p></div>
+<div class="paragraph"><p>You should see pages looking like this:</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="lesson02_1.png" alt="lesson02_1.png"/>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="lesson02_2.png" alt="lesson02_2.png"/>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="lesson02_3.png" alt="lesson02_3.png"/>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="lesson02_4.png" alt="lesson02_4.png"/>
+</div>
+</div>
+</div>
+<h2 id="_lesson_3_wherein_we_produce_output">8. Lesson 3: Wherein we produce output</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In this lesson, we will see some of the Willow functions for
+manipulating user interface elements. All of these are based on HTML
+and CSS, and it is crucial that you acquire a basic understanding of
+these languages. An extensive description of HTML and CSS is outside
+the scope of this manual.</p></div>
+<div class="paragraph"><p>Have a look at <tt>lesson03.py</tt>.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000080">from</span></span> willow<span style="color: #990000">.</span>willow <span style="font-weight: bold"><span style="color: #000080">import</span></span> <span style="color: #990000">*</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">session</span></span><span style="color: #990000">():</span>
+    <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;style type='text/css'&gt;.important { font-weight: bold; }&lt;/style&gt;"</span><span style="color: #990000">)</span>
+    <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;p&gt;The &lt;span class='important' id='a'&gt;division&lt;/span&gt; of "</span>
+<span style="font-style: italic"><span style="color: #9A1900">        "&lt;span class='b'&gt;labor&lt;/span&gt; is limited "</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">        "by the extent of the "</span></span>
+        <span style="color: #FF0000">"&lt;a href='http://ebay.org'&gt;market&lt;/a&gt;."</span><span style="color: #990000">)</span>
+    <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">" and subdivision"</span><span style="color: #990000">,</span> <span style="color: #FF0000">"#a"</span><span style="color: #990000">)</span>
+    <span style="font-weight: bold"><span style="color: #000000">set</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"labour"</span><span style="color: #990000">,</span> <span style="color: #FF0000">".b"</span><span style="color: #990000">)</span>
+    <span style="font-weight: bold"><span style="color: #000000">tweak</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"http://ebay.com"</span><span style="color: #990000">,</span> <span style="color: #FF0000">"href"</span><span style="color: #990000">,</span> <span style="color: #FF0000">"a"</span><span style="color: #990000">)</span>
+    <span style="font-weight: bold"><span style="color: #000000">pop</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"important"</span><span style="color: #990000">,</span><span style="color: #FF0000">"#a"</span><span style="color: #990000">)</span>
+    <span style="font-weight: bold"><span style="color: #000000">push</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"important"</span><span style="color: #990000">,</span><span style="color: #FF0000">".b"</span><span style="color: #990000">)</span>
+    <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;p class='elusive'&gt;Microfoundations.&lt;/p&gt;"</span><span style="color: #990000">)</span>
+    <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;p class='hidden'&gt;Prices.&lt;/p&gt;"</span><span style="color: #990000">)</span>
+    <span style="font-weight: bold"><span style="color: #000000">hide</span></span><span style="color: #990000">(</span><span style="color: #FF0000">".elusive"</span><span style="color: #990000">)</span>
+    <span style="font-weight: bold"><span style="color: #000000">show</span></span><span style="color: #990000">(</span><span style="color: #FF0000">".hidden"</span><span style="color: #990000">)</span>
+
+<span style="font-weight: bold"><span style="color: #000000">run</span></span><span style="color: #990000">(</span>session<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>This displays a web page like so:</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="lesson03_1.png" alt="lesson03_1.png"/>
+</div>
+</div>
+<div class="paragraph"><p>This shows off all of Willow&#8217;s UI manipulation functions. Let&#8217;s go
+through it line by line.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>add("&lt;style type='text/css'&gt;.important { font-weight: bold; }&lt;/style&gt;")</tt></pre>
+</div></div>
+<div class="paragraph"><p>First we add a style sheet to the page. Again, CSS is beyond the scope
+of this manual and you should go out and read up on it, but what this
+comes down to is that we instruct the browser to typeset in bold all
+HTML elements that have class "important" turned on.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>add("&lt;p&gt;The &lt;span class='important' id='a'&gt;division&lt;/span&gt; of "
+    "&lt;span class='b'&gt;labor&lt;/span&gt; is limited "
+    "by the extent of the "
+    "&lt;a href='http://ebay.org'&gt;market&lt;/a&gt;.")</tt></pre>
+</div></div>
+<div class="paragraph"><p>Note that in Python string literal juxtaposition adds the string
+literals together, which makes for a convenient way of splitting long
+strings over several lines.</p></div>
+<div class="paragraph"><p>The <tt>&lt;span&gt;</tt> element in HTML has no default meaning, and without any
+style sheets or other manipulations, a piece of HTML enclosed in a
+<tt>&lt;span&gt;</tt> is exactly identical to the same piece of HTML not so
+enclosed. In the above fragment, we have two <tt>&lt;span&gt;</tt> elementss. Note
+that because the style sheet instructed the browser to print all
+elements of class <tt>important</tt> in bold, the word "division" is printed
+in bold; or at least, it would be, if we did not manipulate it
+further.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>add(" and subdivision", "#a")</tt></pre>
+</div></div>
+<div class="paragraph"><p>This shows that you can add text not just to the page as a whole, but
+also to particular elements. The optional second argument to <tt>add</tt> is
+a CSS selector. The most common CSS selectors are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<tt>p</tt>, which refers to all <tt>&lt;p&gt;</tt> elements;
+</p>
+</li>
+<li>
+<p>
+<tt>h1</tt>, which refers to all <tt>&lt;h1&gt;</tt> elements;
+</p>
+</li>
+<li>
+<p>
+etc.;
+</p>
+</li>
+<li>
+<p>
+<tt>.x</tt>, which refers to all elements with <tt>class=<em>x</em></tt>;
+</p>
+</li>
+<li>
+<p>
+<tt>#a</tt>, which refers to the first element with <tt>id=<em>a</em></tt>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Note that some selectors can refer to more than one element, and in
+that case, your HTML snippet gets added to all matching elements.</p></div>
+<div class="paragraph"><p>In this case, what we are asking Willow to do is to find the first
+HTML element with <tt>id=<em>a</em></tt> and add the text " and subdivision" to the
+end of it it.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>set("labour", ".b")</tt></pre>
+</div></div>
+<div class="paragraph"><p>The <tt>set()</tt> function is just like the <tt>add()</tt> function except that
+instead of adding HTML to the end of some element, it replaces the
+entire contents of the element. In particular, <tt>set("")</tt> clears the
+entire page!</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>tweak("http://ebay.com", "href", "a")</tt></pre>
+</div></div>
+<div class="paragraph"><p>So far, we have seen the functions <tt>add</tt> and <tt>set</tt> that manipulate the
+contents of HTML elements. But HTML elements have attributes as well
+as contents. For instance, if you write <tt>&lt;a href="foo"&gt;&#8230;&lt;/a&gt;</tt>, you
+have created an <tt>&lt;a&gt;</tt> element with contents "&#8230;" and with an <tt>href</tt>
+attribute with value <tt>foo</tt>. The <tt>tweak()</tt> function serves to
+manipulate attributes. In this case, we set the <tt>href</tt> attribute of
+<strong>every single <tt>&lt;a&gt;</tt> element on the page</strong> to be <tt>http://ebay.com</tt>.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>pop("important","#a")
+push("important",".b")</tt></pre>
+</div></div>
+<div class="paragraph"><p>In HTML, a single element can have more than one class. You can write
+that as <tt>&lt;p class=<em>class1 class2</em>&gt;&#8230;&lt;/p&gt;</tt>. The <tt>pop()</tt> and <tt>push()</tt>
+functions are there to remove a class from an element and to add a
+class to an element, respectively, without changing any other classes
+that the element might have.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>add("&lt;p class='elusive'&gt;Microfoundations.&lt;/p&gt;")
+add("&lt;p class='hidden'&gt;Prices.&lt;/p&gt;")
+hide(".elusive")
+show(".hidden")</tt></pre>
+</div></div>
+<div class="paragraph"><p>The <tt>hide()</tt> and <tt>show()</tt> functions do just that: hide and show
+elements. Willow is set up so that any element with class <tt>hidden</tt> set
+is hidden by default and only shows up when you call <tt>show()</tt> on it.</p></div>
+<div class="paragraph"><p>So far, we have seen the Willow UI primitives: <tt>add</tt>, <tt>set</tt>, <tt>tweak</tt>,
+<tt>push</tt>, <tt>pop</tt>, <tt>hide</tt>, and <tt>show</tt>. In combination with HTML and CSS,
+these primitives make a very powerful UI language.</p></div>
+</div>
+<h2 id="_lesson_4_wherein_we_chatter">9. Lesson 4: Wherein we chatter</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Now that we have seen how to produce output on the client screens, you
+may be wondering how we can read input. But before we get to that, we
+will first discuss another important feature of Willow: its
+communication system.</p></div>
+<div class="paragraph"><p>Consider <tt>lesson04.py</tt>.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000080">from</span></span> willow<span style="color: #990000">.</span>willow <span style="font-weight: bold"><span style="color: #000080">import</span></span> <span style="color: #990000">*</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">session</span></span><span style="color: #990000">():</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">()</span> <span style="color: #990000">==</span> <span style="color: #993399">0</span><span style="color: #990000">:</span>
+    <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;h1&gt;Monitor&lt;/h1&gt;"</span><span style="color: #990000">)</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">while</span></span> True<span style="color: #990000">:</span>
+      _<span style="color: #990000">,</span> n <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">get</span></span><span style="color: #990000">((</span><span style="color: #FF0000">"HELLO"</span><span style="color: #990000">,</span> None<span style="color: #990000">))</span>
+      <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;p&gt;Client %d logged in"</span> <span style="color: #990000">%</span> n<span style="color: #990000">)</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">else</span></span><span style="color: #990000">:</span>
+    <span style="font-weight: bold"><span style="color: #000000">put</span></span><span style="color: #990000">((</span><span style="color: #FF0000">"HELLO"</span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">()))</span>
+    <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">())</span>
+
+<span style="font-weight: bold"><span style="color: #000000">run</span></span><span style="color: #990000">(</span>session<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>In this short program, we can see a typical use case for the important
+Willow functions <tt>put()</tt> and <tt>get()</tt>. The first client, for which
+<tt>me()==0</tt>, acts as a control panel that displays information about
+other clients coming online. In order to convey that information, each
+client other than the first puts a tuple <tt>("HELLO", me())</tt> on the
+Board. The first client retrieves these tuples and uses them to
+display information about logins.</p></div>
+<div class="paragraph"><p>After the monitor client and 3 other clients have connected, the
+monitor client display would look like this:</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="lesson04_1.png" alt="lesson04_1.png"/>
+</div>
+</div>
+<div class="paragraph"><p>To fully understand this, we must understand the Board. The Board is
+the one and only data structure that is shared between the various
+session threads in Willow.
+The board contains tuples. Tuples are immutable sequences, and they
+are built into Python. For instance, <tt>(2,3)</tt> is a two-element tuple,
+and <tt>(2,3,"a")</tt> is a three-element tuple.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/note.png" alt="Note" />
+</td>
+<td class="content">One peculiarity of Python is that a one-element tuple is written
+<tt>(2,)</tt> to distinguish it from <tt>(2)</tt>, which is just another way of
+writing <tt>2</tt>.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>To put <tt><em>my_tuple</em></tt> on the board, you call <tt>put(<em>my_tuple</em>)</tt>. For
+instance, to put <tt>(2,3)</tt> on the board, you call <tt>put( (2,3) )</tt>. Note the
+double parentheses!)</p></div>
+<div class="paragraph"><p>To retrieve <tt><em>my_tuple</em></tt> from the board, you call
+<tt>get(<em>my_tuple</em>)</tt>. In practice, though, you typically don&#8217;t know yet
+what tuple you want to retrieve. For that reason, <tt>get()</tt> allows
+wildcards, in the form of <tt>None</tt> elements in its tuple argument. For
+instance, <tt>get( (2,None) )</tt> means: retrieve from the board any tuple
+with two elements of which the first is <tt>2</tt> and the second may be
+anything at all.</p></div>
+<div class="paragraph"><p>The <tt>get()</tt> function is blocking. This means that if there is no
+matching tuple on the board, it will sit around waiting until one
+appears. This is what happens in the example code: the first thread
+(the one with <tt>me()==0</tt>) sits around waiting for tuples of the form
+<tt>("HELLO", <em>&lt;something&gt;</em>)</tt> to show up on the board. Every time one
+such tuple shows up, the <tt>get()</tt> function returns it, the loop loops,
+and the <tt>get()</tt> function is called again, blocking until the next
+tuple shows up.</p></div>
+<div class="paragraph"><p>When a tuple is gotten with <tt>get()</tt>, it is removed from the
+board. Therefore, in the above code, you do not need to worry about
+looping around retrieving the same tuple over and over again. If you
+want to retrieve a tuple and leave it available (maybe for some other
+thread), you simply put it back on with <tt>put()</tt>.</p></div>
+<div class="paragraph"><p>Another important trick in the use of <tt>get()</tt> is that you can specify
+more than one pattern. For instance, <tt>get( ("HELLO,"), ("ERROR",) )</tt>
+blocks until either the one-element tuple <tt>("HELLO",)</tt> or the
+one-element tuple <tt>("ERROR",)</tt> shows up on the board, then removes and
+returns the tuple.</p></div>
+<div class="paragraph"><p>Finally, I will mention <tt>grab()</tt>. It is like <tt>get()</tt>, except that it
+does not block. If a matching tuple is available, it will return that,
+but if there is none, it will simply return <tt>None</tt> (unlike <tt>get()</tt>,
+which will sit there twiddling its thumbs until a matching tuple shows
+up).</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/note.png" alt="Note" />
+</td>
+<td class="content">You could, conceivably, have your own shared data structures
+simply by declaring some global variables outside of <tt>session()</tt>, but
+I recommend that you don&#8217;t. In order to make sure your data structures
+remain consistent, you would have to implement rules to make sure that
+no two threads fiddle with them at the same time ("mutual exclusion"),
+which can rapidly become extremely complicated. The Board is a data
+structure known as a Tuple Space, which already has mutual exclusion
+built into it.</td>
+</tr></table>
+</div>
+</div>
+<h2 id="_lesson_5_wherein_we_deal_with_input">10. Lesson 5: Wherein we deal with input</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Now that we have seen how to manipulate what appears on a client
+screen, we will turn our attention to the issue of input.</p></div>
+<div class="paragraph"><p>There are two basic ways of giving input to a Willow client: you can
+click things, and you can fill out text fields.</p></div>
+<div class="paragraph"><p>The <tt>lesson05.py</tt> code demonstrates both.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000080">from</span></span> willow<span style="color: #990000">.</span>willow <span style="font-weight: bold"><span style="color: #000080">import</span></span> <span style="color: #990000">*</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">session</span></span><span style="color: #990000">():</span>
+  <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;p&gt;Please enter your name."</span><span style="color: #990000">)</span>
+  <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;input id='bid' type='text'&gt;"</span><span style="color: #990000">)</span>
+  <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;input id='submit' type='submit'&gt;"</span><span style="color: #990000">)</span>
+  _<span style="color: #990000">,</span> _<span style="color: #990000">,</span> _ <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">get</span></span><span style="color: #990000">((</span><span style="color: #FF0000">"click"</span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">(),</span> <span style="color: #FF0000">"submit"</span><span style="color: #990000">))</span>
+  <span style="font-weight: bold"><span style="color: #000000">peek</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"#bid"</span><span style="color: #990000">)</span>
+  _<span style="color: #990000">,</span> _<span style="color: #990000">,</span> name <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">get</span></span><span style="color: #990000">((</span><span style="color: #FF0000">"peek"</span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">(),</span> None<span style="color: #990000">))</span>
+  <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;p&gt;Hello, %s."</span> <span style="color: #990000">%</span> name<span style="color: #990000">)</span>
+
+<span style="font-weight: bold"><span style="color: #000000">run</span></span><span style="color: #990000">(</span>session<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>This should initially display a screen that looks like so:</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="lesson05_1.png" alt="lesson05_1.png"/>
+</div>
+</div>
+<div class="paragraph"><p>You can then type something in the text box and click the button
+labeled "Submit", and the screen will look like:</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="lesson05_2.png" alt="lesson05_2.png"/>
+</div>
+</div>
+<div class="paragraph"><p>What&#8217;s going on here?</p></div>
+<div class="paragraph"><p>First of all, HTML elements that look like</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>&lt;input type='submit' ...&gt;</tt></pre>
+</div></div>
+<div class="paragraph"><p>are buttons.</p></div>
+<div class="paragraph"><p>In HTML, each <tt>&lt;input&gt;</tt> element that is a button must have two
+attributes: <tt>type</tt> must be set to <tt>submit</tt>, to make sure we are
+displaying a button and not some other sort of input element, and
+<tt>value</tt> must be set to the text that is to be on the button (or, if it
+is left out, the text defaults to "Submit", or possibly something else
+if your browser is set up for a language other than English).</p></div>
+<div class="paragraph"><p>In Willow, your button must additionally have an <tt>id</tt> attribute, which
+is how we keep track of which buttons get clicked.</p></div>
+<div class="paragraph"><p>When a button gets clicked, a tuple <tt>("click", <em>n</em>, <em>id</em>)</tt> is
+automatically posted onto the board, where <tt><em>n</em></tt> is the number of the
+client that received the button click and <tt><em>id</em></tt> is the <tt>id</tt> of the
+button.</p></div>
+<div class="paragraph"><p>This is why, after we have displayed the button, we can just call
+<tt>get( ("click", me(), "submit") )</tt>, which will block until the button is
+clicked. Note that if you insist on blocking one client thread until a
+button in some <em>other</em> client thread has been clicked, you can do
+that, simply by replacing <tt>me()</tt> in the above call to <tt>get()</tt> by some
+other integer (but it is not recommended).</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/note.png" alt="Note" />
+</td>
+<td class="content">If the button is clicked multiple times, multiple tuples will be
+inserted. This may result in behavior you may not necessarily
+intend. If you want to wait for a button to get clicked that may have
+been clicked before you started waiting, you will need to clear those
+old tuples off the board, by saying e.g. <tt>grab( ("click",me(),None) )</tt>.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>The way we deal with text fields is similar to the way we deal with
+buttons, but there is no natural moment to automatically insert the
+contents of a text field into the Board, so instead we have to request
+it explicitly.</p></div>
+<div class="paragraph"><p>To show a text field, we use a piece of HTML that looks like</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><tt>&lt;input id='_name_of_text_field_' type='text'&gt;</tt></pre>
+</div></div>
+<div class="paragraph"><p>and then we call <tt>peek("#<em>name_of_text_field</em>")</tt>. This will cause a
+tuple to be posted to theboard of the form <tt>("peek", <em>n</em>, <em>text</em>)</tt>,
+where <tt><em>n</em></tt> is the number of the client and <tt><em>text</em></tt> is the text that
+the user typed in the field. In the above case, we only start looking
+for what&#8217;s in the field after the user has pressed the button.</p></div>
+</div>
+<h2 id="_lesson_6_wherein_we_poke_around_in_other_threads">11. Lesson 6: Wherein we poke around in other threads</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Many of the Willow functions, even though by default they operate on
+the client display associated with the current session thread, can
+also operate on a different client display if you pass the
+<tt>number=<em>n</em></tt> optional parameter. This is never necessary, but it may
+be more convenient than passing messages through the board to the
+other session thread so that it can then manipulate its corresponding
+client display.</p></div>
+<div class="paragraph"><p>Take for instance the code in lesson 4:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000080">from</span></span> willow<span style="color: #990000">.</span>willow <span style="font-weight: bold"><span style="color: #000080">import</span></span> <span style="color: #990000">*</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">session</span></span><span style="color: #990000">():</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">()</span> <span style="color: #990000">==</span> <span style="color: #993399">0</span><span style="color: #990000">:</span>
+    <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;h1&gt;Monitor&lt;/h1&gt;"</span><span style="color: #990000">)</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">while</span></span> True<span style="color: #990000">:</span>
+      _<span style="color: #990000">,</span> n <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">get</span></span><span style="color: #990000">((</span><span style="color: #FF0000">"HELLO"</span><span style="color: #990000">,</span> None<span style="color: #990000">))</span>
+      <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;p&gt;Client %d logged in"</span> <span style="color: #990000">%</span> n<span style="color: #990000">)</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">else</span></span><span style="color: #990000">:</span>
+    <span style="font-weight: bold"><span style="color: #000000">put</span></span><span style="color: #990000">((</span><span style="color: #FF0000">"HELLO"</span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">()))</span>
+    <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">())</span>
+
+<span style="font-weight: bold"><span style="color: #000000">run</span></span><span style="color: #990000">(</span>session<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>We could rewrite that as follows:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000080">from</span></span> willow<span style="color: #990000">.</span>willow <span style="font-weight: bold"><span style="color: #000080">import</span></span> <span style="color: #990000">*</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">session</span></span><span style="color: #990000">():</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">()</span> <span style="color: #990000">==</span> <span style="color: #993399">0</span><span style="color: #990000">:</span>
+    <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;h1&gt;Monitor&lt;/h1&gt;"</span><span style="color: #990000">)</span>
+  <span style="font-weight: bold"><span style="color: #0000FF">else</span></span><span style="color: #990000">:</span>
+    <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;p&gt;Client %d logged in"</span> <span style="color: #990000">%</span> <span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">(),</span> number<span style="color: #990000">=</span><span style="color: #993399">0</span><span style="color: #990000">)</span>
+    <span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">())</span>
+
+<span style="font-weight: bold"><span style="color: #000000">run</span></span><span style="color: #990000">(</span>session<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/note.png" alt="Note" />
+</td>
+<td class="content">Strictly speaking, the above programs are not entirely
+equivalent. If the first session thread executed very, very slowly and
+the second client connect immediately after the first, then the
+"Client 1 logged in" message could conceivably show up before the
+"Monitor" heading when running the second program, but not when
+running the first.</td>
+</tr></table>
+</div>
+</div>
+<h2 id="_lesson_7_wherein_we_wrap_up_some_loose_ends">12. Lesson 7: Wherein we wrap up some loose ends</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>We have now encountered virtually the whole set of Willow
+primitives. If you look at the API documentation, you will discover a
+few odds and ends that haven&#8217;t been mentioned so far.</p></div>
+<div class="paragraph"><div class="title">The <tt>hold()</tt> and <tt>flush()</tt> functions</div><p>These may improve performance in very high-throughput applications but
+most likely aren&#8217;t anything you need to worry about.</p></div>
+<div class="paragraph"><div class="title">The optional <tt>delay</tt> argument to <tt>put()</tt></div><p>You will also see that <tt>put()</tt> accepts a delay as an optional
+argument: calling <tt>put( ("boo",), delay=3.4 )</tt> causes the tuple
+<tt>("boo",)</tt> to be posted to the board 3.4 seconds later; the <tt>put()</tt>
+function itself returns immediately. This makes it possible, for
+instance, to do things like "wait for this button to be clicked or 7.2
+seconds to elapse, whichever comes first," like so:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #000000">add</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;input id='submit' type='submit'&gt;"</span><span style="color: #990000">)</span>
+<span style="font-weight: bold"><span style="color: #000000">put</span></span><span style="color: #990000">((</span><span style="color: #FF0000">"timeout"</span><span style="color: #990000">,),</span> delay<span style="color: #990000">=</span><span style="color: #993399">7.2</span><span style="color: #990000">)</span>
+<span style="font-weight: bold"><span style="color: #000000">get</span></span><span style="color: #990000">((</span><span style="color: #FF0000">"click"</span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">(),</span> <span style="color: #FF0000">"submit"</span><span style="color: #990000">),</span> <span style="color: #990000">(</span><span style="color: #FF0000">"timeout"</span><span style="color: #990000">,))</span></tt></pre></div></div>
+<div class="paragraph"><div class="title">The <tt>config()</tt> function</div><p>You may want to use configuration files to configure, say, different
+treatments. In order to make this possible, Willow has a function that
+reads a JSON object out of a text file.</p></div>
+<div class="paragraph"><div class="title">The <tt>log()</tt> function</div><p>This is how you cause your Willow program to produce a data file. Each
+call to <tt>log()</tt> will result in a single row in a CSV file, which is a
+simple spreadsheet format that is understood by Excel, OpenOffice,
+Stata, and other data analysis software. Each row will automatically
+get a timestamp added to the front of it, which is a large integer
+representing the number of seconds that have passed since the "Unix
+epoch" on January 1, 1970, 0:00 UTC. This may seem like an odd choice
+of timestamp format, but the advantage of this type of timestamp is
+that it makes sense to subtract them! The log file will be put in the
+<tt>log/</tt> subdirectory (folder) and it will be named automatically based
+on the time your Willow program has started. (A more human-readable
+timestamp format is used for the filenames.)</p></div>
+</div>
+<h2 id="_api_willow_willow">13. API: willow.willow</h2>
+<div class="sectionbody">
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/note.png" alt="Note" />
+</td>
+<td class="content">The <tt>selector</tt> argument can take any CSS selector. The CSS
+selector mini-language is rather rich, but the most typical cases are
+things like <tt>p</tt> (to get at all <tt>&lt;p&gt;</tt> elements), <tt>#a</tt>, (to get at the
+first element with <tt>id="a"</tt>), and <tt>.a</tt> (to get at all elements with
+<tt>class="a"</tt>). For more information, consult any book or web page on
+CSS. Whenever <tt>selector</tt> is omitted, the selector "<tt>body</tt>" is implied,
+which means you are referring to the entire body of the HTML document.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/note.png" alt="Note" />
+</td>
+<td class="content">By specifying an integer, or a sequence of integers, for
+<tt>number</tt>, you can operate directly on clients other than the one
+associated by default with the current session thread.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/note.png" alt="Note" />
+</td>
+<td class="content">Whenever <tt>argument</tt> is a file descriptor that can be read from,
+the contents of the file are automatically substituted.</td>
+</tr></table>
+</div>
+<h3 id="_tt_me_tt">13.1. <tt>me()</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>Returns the number of the current client.</p></div>
+<h3 id="_tt_url_tt">13.2. <tt>url()</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>Returns the pathname part of the URL used to first load the current
+client. For instance, if the client was loaded as
+<tt>http://localhost:8000/</tt>, this returns "<tt>/</tt>", and if the client was
+loaded as <tt>http://localhost:8000/3</tt>, this returns "<tt>/3</tt>".</p></div>
+<h3 id="_tt_set_content_selector_number_tt">13.3. <tt>set(content, [selector], [number])</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>Set the content of the HTML element(s) referred to by <tt>selector</tt> on
+to be <tt>content</tt>.</p></div>
+<h3 id="_tt_add_content_selector_number_tt">13.4. <tt>add(content, [selector], [number])</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>Add <tt>content</tt> to the content of the HTML element(s) referred to by
+<tt>selector</tt>.</p></div>
+<h3 id="_tt_tweak_value_attribute_selector_number_tt">13.5. <tt>tweak(value, attribute, [selector], [number])</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>Change the value of attribute <tt>attribute</tt> to be <tt>value</tt> in HTML
+element(s) referred to by <tt>selector</tt>.</p></div>
+<h3 id="_tt_push_style_selector_number_tt">13.6. <tt>push(style, [selector], [number])</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>Add the CSS style <tt>style</tt> to the HTML element(s) referred to by
+<tt>selector</tt>.</p></div>
+<h3 id="_tt_pop_style_selector_number_tt">13.7. <tt>pop(style, [selector], [number])</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>Remove the CSS style <tt>style</tt> from HTML element(s) referred to by
+<tt>selector</tt>.</p></div>
+<h3 id="_tt_hide_selector_number_tt">13.8. <tt>hide([selector], [number])</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>Hide the HTML element(s) referred to by <tt>selector</tt>.</p></div>
+<h3 id="_tt_show_selector_number_tt">13.9. <tt>show([selector], [number])</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>Show the HTML element(s) referred to by <tt>selector</tt>, if previously
+hidden.</p></div>
+<h3 id="_tt_peek_selector_number_tt">13.10. <tt>peek([selector], [number])</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>Request the contents of the HTML element(s) referred to by
+<tt>selector</tt> to be posted as <tt>("peek",number,contents)</tt>. Intended to
+be used with <tt>&lt;input type=<em>text</em>&gt;</tt> elements.</p></div>
+<h3 id="_tt_hold_number_tt">13.11. <tt>hold([number])</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>Stop executing subsequent <tt>set</tt>, <tt>add</tt>, <tt>push</tt>, <tt>pop</tt>, <tt>hide</tt>,
+<tt>show</tt>, and <tt>peek</tt> immediately, but instead stuff them in a buffer
+where they sit until <tt>flush()</tt> is called.</p></div>
+<h3 id="_tt_flush_number_tt">13.12. <tt>flush([number])</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>Execute all <tt>set</tt>, <tt>add</tt>, <tt>push</tt>, <tt>pop</tt>, <tt>hide</tt>, <tt>show</tt>, and <tt>peek</tt>
+actions that were held in a buffer since <tt>hold()</tt> was called, and
+from here on out resume executing such actions immediately without
+buffering.</p></div>
+<h3 id="_tt_put_tuple_delay_tt">13.13. <tt>put(tuple, [delay])</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>After an optional <tt>delay</tt> in seconds, post the tuple onto the
+communication board.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/warning.png" alt="Warning" />
+</td>
+<td class="content">In Python, the value <tt>x</tt> is the same as <tt>(x)</tt>, but it is not the
+  same as the one-element tuple containing it, which is written
+  <tt>(x,)</tt>.</td>
+</tr></table>
+</div>
+<h3 id="_tt_get_queries_tt">13.14. <tt>get(*queries)</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>Block until a tuple becomes present on the board that matches at
+least one of the queries, then return it. A tuple on the board
+matches a query whenever the tuple on the board and the query have
+the same length, and each element of the query is either <tt>None</tt> or
+identical to the corresponding element in the tuple on the board.</p></div>
+<h3 id="_tt_grab_queries_tt">13.15. <tt>grab(*queries)</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>If a tuple is present on the board that matches at least one of the
+queries return it; otherwise return <tt>None</tt>.</p></div>
+<h3 id="_tt_run_session_port_tt">13.16. <tt>run(session, [port])</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>This starts the Willow web server on the specified port (or port
+8000 if you leave the second argument out). The web server will
+create a thread for each client that connects, and each thread will
+run the <tt>session</tt> function. Within each thread, the <tt>me()</tt> function
+will return a different value, and <tt>add</tt>, <tt>set</tt>, etc. will by
+default operate on a different client. The web server will search
+for requested files in the current directory, among other places, so
+you can for instance include images in your pages.</p></div>
+<h3 id="_tt_config_filename_tt">13.17. <tt>config(filename)</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>Reads a configuration file in JSON format (<a href="http://json.org/">http://json.org/</a>) and
+returns a corresponding Python object. For instance, if you have a
+file <tt>protocol.txt</tt> containing the text <tt>{ "rounds" : 12, "subjects"
+: 4}</tt> then <tt>cfg = willow.config("protocol.txt")</tt> will set the
+variable <tt>cfg</tt> to the python dictionary <tt>{u&#8217;rounds': 12,
+u&#8217;subjects': 4}</tt>.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/warning.png" alt="Warning" />
+</td>
+<td class="content">The letter <tt>u</tt> appears in front of the strings that come out
+of <tt>config</tt> because JSON strings are Unicode, not ASCII, but you do
+not need to worry about that. To get the value of the <tt>rounds</tt>
+parameter, simply use <tt>cfg["rounds"]</tt>.</td>
+</tr></table>
+</div>
+<h3 id="_tt_log_x_y_8230_tt">13.18. <tt>log(x,y,&#8230;)</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>Write (x,y,&#8230;) to the log file as a record, with a UNIX timestamp
+prepended as the first column. A new log file is created in the <tt>log</tt>
+folder whenever the Willow library is loaded, and it bears a name
+based on the date and time when it was created. For instance, if
+Willow was invoked at 15:32:42 on February 2 of the year 2010, the
+file would be called <tt>log/2010-02-10-15-32-42.csv</tt>.  This particular
+date-and-time format is used so that the files can be sorted by
+date/time. The log files are in CSV format and can be opened with a
+text editor or a spreadsheet program.</p></div>
+<h3 id="_css_features">13.19. CSS features</h3><div style="clear:left"></div>
+<div class="paragraph"><p>Some Willow features are accessed by means of CSS classes:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<tt>hidden</tt>
+</dt>
+<dd>
+<p>
+        Any element that has class <tt>hidden</tt> turned on will start out
+        hidden. You can call <tt>show()</tt> on it to make it
+        appear. Example: <tt>&lt;p&gt;At the moment, you can&lt;span
+        class="hidden"&gt;not&lt;/span&gt; trade widgets.&lt;/p&gt;</tt>
+</p>
+</dd>
+<dt class="hdlist1">
+<tt>bait</tt>
+</dt>
+<dd>
+<p>
+        Any element that has class <tt>bait</tt> turned on will automatically
+        get the additional class <tt>mouse</tt> turned on whenever the mouse
+        pointer is positioned over that element. This can be used to
+        create "hover" effects.
+</p>
+</dd>
+</dl></div>
+</div>
+<h2 id="_api_willow_twig">14. API: willow.twig</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Twig is an extension to Willow. It is a repository of code that shows
+up over and over in experimental interface programs: code for logging
+in terminals in a certain order, for doing surveys, etc. All of Twig
+is written on top of Willow, and there is nothing in it that you
+couldn&#8217;t do yourself using Willow and some Python standard library
+functions. If a Twig functions doesn&#8217;t fit your needs, you can always
+write your own (and maybe look at the Twig source code for
+inspiration.)</p></div>
+<div class="paragraph"><p>To use Twig in your code, you have to add an additional import line to
+the beginning of your file:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>from willow.twig import *</tt></pre>
+</div></div>
+<div class="paragraph"><p>Twig internally uses tuples and HTML <tt>id</tt> values that start with <tt>__</tt>
+(two underscores). If you plan to use Twig, you should avoid using any
+tuples or HTML <tt>id</tt> values that start with two underscore, so as not
+to interfere with Twig.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/caution.png" alt="Caution" />
+</td>
+<td class="content">Twig is still under development, and as of right now, the
+interface to Twig functions is likely change from one Willow version
+to the next. (The interface to Willow functions may also change, but I
+try to avoid that, and make mention of it in the manual.)</td>
+</tr></table>
+</div>
+<h3 id="_tt_assemble_tt">14.1. <tt>assemble()</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>Willow offers only a very basic mechanism for identifying clients: the
+numbers returned by <tt>me()</tt>, which are assigned to clients in the order
+in which they first connect. If you have a program launcher in your
+lab that automatically launches clients on a number of terminals
+around the room, you can end up with these client numbers being
+distributed around the room in strange ways, based on which machines
+are the fastest to connect. In practice, you may want to have a more
+stable mapping between terminals and client identifiers. That is where
+<tt>assemble()</tt> comes in.</p></div>
+<div class="paragraph"><p>The way you typically call <tt>assemble()</tt> is at the beginning of your
+session function, like so:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">session</span></span><span style="color: #990000">():</span>
+    number<span style="color: #990000">,</span> numbers <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">assemble</span></span><span style="color: #990000">()</span>
+
+    <span style="font-style: italic"><span style="color: #9A1900"># ... your code ...</span></span>
+
+<span style="font-weight: bold"><span style="color: #000000">run</span></span><span style="color: #990000">(</span>session<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>Now, when you connect a bunch of clients, you will see a button
+labeled "0" on the first ("monitor") client, and buttons labeled "Log
+in" on all other ("subject") clients. As you click these "Log in"
+buttons on the subject clients, they will each be assigned a
+number. These numbers are independent from the numbers returned by
+<tt>me()</tt>, and they are assigned, starting with 1, in the order in which
+the "Log in" buttons are clicked.</p></div>
+<div class="paragraph"><p>When you have pressed all the "Log in" buttons, you can go back to the
+monitor client, and you will see that by now, it has a sequence of
+buttons with labels like:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+0
+</p>
+</li>
+<li>
+<p>
+0, 1
+</p>
+</li>
+<li>
+<p>
+0, 1, 2
+</p>
+</li>
+<li>
+<p>
+0, 1, 2, 3
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>These buttons allow you to decide which of the subjectclients to
+actually use. This is particularly useful when you want to set up an
+experiment that may have a different number of participants based on
+actual turnout: you can set up the lab with, say, 12 logged in
+machines, and if only 10 students turn out, you click the button
+labeled "0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10+.</p></div>
+<div class="paragraph"><p>Once one of the buttons on the monitor is clicked, the <tt>assemble()</tt>
+function returns a tuple of two elements. The first is the subject ID
+newly associated with the current thread, or, if the subject is not
+included on the button clicked on the monitor, <tt>None</tt>. The second is a
+list of all the subject IDs, including <tt>0</tt> (which refers to the
+monitor).</p></div>
+<div class="paragraph"><p>One further feature of <tt>assemble()</tt> is revealed when you use
+non-standard URLs to load the subject clients. For instance, if your
+Willow instance is running on a machine with IP address <tt>1.2.3.4</tt>, you
+would normally use <tt>http://1.2.3.4:8000/</tt> to connect, but you could
+also use <tt>http://1.2.3.4:8000/42</tt>. In that case, the subject
+identifier will be assigned not sequentially but according to the
+number at the end of the URL. This is useful if you have a centralized
+program launcher facility in your lab that is able to open different
+web pages on different terminals. In that case, you can simply
+configure the program launcher to open <tt>http://1.2.3.4:8000/1</tt> on the
+first machine, <tt>http://1.2.3.4:8000/2</tt> on the second machine, etc.,
+and you will be assured that subject IDs are assigned in a
+predetermined way.</p></div>
+<div class="paragraph"><p>Here&#8217;s an example of how to use <tt>assemble()</tt>:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">def</span></span> <span style="font-weight: bold"><span style="color: #000000">session</span></span><span style="color: #990000">():</span>
+    number<span style="color: #990000">,</span> numbers <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #000000">assemble</span></span><span style="color: #990000">()</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> number <span style="color: #990000">==</span> <span style="color: #993399">0</span><span style="color: #990000">:</span>
+       <span style="font-weight: bold"><span style="color: #000000">set</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"MONITOR&lt;p&gt;Using Subject IDs %r"</span> <span style="color: #990000">%</span> numbers<span style="color: #990000">)</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">else</span></span><span style="color: #990000">:</span>
+       <span style="font-weight: bold"><span style="color: #000000">set</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"&lt;p&gt;This client has Subject ID %d"</span> <span style="color: #990000">%</span> number<span style="color: #990000">)</span>
+
+<span style="font-weight: bold"><span style="color: #000000">run</span></span><span style="color: #990000">(</span>session<span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>You can also pass an integer argument <tt>n</tt> to <tt>assemble()</tt>. This
+indicates that you want exactly n clients besides the monitor (n+1
+total), and thus allows you to skip the whole button-clicking step.</p></div>
+<h3 id="_tt_survey_title_number_questions_selector_tt">14.2. <tt>survey(title, number, questions, [selector])</tt></h3><div style="clear:left"></div>
+<div class="paragraph"><p>This is used for surveys. A typical use would be:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>
+MYSURVEY <span style="color: #990000">=</span> <span style="color: #990000">[</span>
+  <span style="color: #990000">(</span><span style="color: #FF0000">"Do you like chocolate?"</span><span style="color: #990000">,</span> <span style="color: #990000">(</span><span style="color: #FF0000">"Yes"</span><span style="color: #990000">,</span> <span style="color: #FF0000">"No"</span><span style="color: #990000">))</span>
+<span style="color: #990000">]</span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">()</span> <span style="color: #990000">&gt;</span> <span style="color: #993399">0</span><span style="color: #990000">:</span>
+  <span style="font-weight: bold"><span style="color: #000000">survey</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"FOOD"</span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #000000">me</span></span><span style="color: #990000">(),</span> MYSURVEY<span style="color: #990000">)</span>
+</tt></pre></div></div>
+</div>
+<h2 id="_appendix_a_digression_on_your_ip_address">15. Appendix: A digression on your IP address</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>You need the IP address of your monitor computer in order for your
+client computers to connect to it. It would be convenient if Willow
+could display the right IP address for you to use, but unfortunately,
+this is easier said than done, since a computer can have multiple IP
+addresses at the same time: IP version 4 and IP version 6, on the
+wireless network, on the ethernet network, on the "loopback" network,
+and so on.</p></div>
+<h3 id="_how_to_find_your_ip_address_on_linux">15.1. How to find your IP address on Linux</h3><div style="clear:left"></div>
+<div class="paragraph"><p>On Linux on my computer, I use the <tt>ifconfig</tt> command at the command
+line. When I enter</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>$ ifconfig</tt></pre>
+</div></div>
+<div class="paragraph"><p>the computer responds</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>$ ifconfig
+eth1      Link encap:Ethernet  HWaddr 00:23:ae:1e:9e:ac
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+          Interrupt:17
+
+eth2      Link encap:Ethernet  HWaddr 00:24:2b:c6:a4:76
+          inet addr:10.143.91.80  Bcast:10.143.91.255  Mask:255.255.254.0
+          inet6 addr: fe80::224:2bff:fec6:a476/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:10076 errors:0 dropped:0 overruns:0 frame:7868
+          TX packets:10906 errors:20 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:1571308 (1.5 MB)  TX bytes:1341157 (1.3 MB)
+          Interrupt:17 Base address:0xc000
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:85540 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:85540 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:41237280 (41.2 MB)  TX bytes:41237280 (41.2 MB)
+$</tt></pre>
+</div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/tip.png" alt="Tip" />
+</td>
+<td class="content">In this and many other software manuals, <tt>$</tt> is used to indicate
+the Linux/UNIX prompt. On your computer, it may be different. <tt>%</tt> is a
+popular choice, too, for example.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>There is much information here, but we only need a little. First,
+notice that this computer has three network interfaces, called <tt>eth1</tt>,
+<tt>eth2</tt> and <tt>lo</tt>. <tt>lo</tt> is the loopback device; it does not correspond
+to any actual hardware, but it is rather a contraption that the
+operating system uses so that you can make connections to your own
+machine at address <tt>127.0.0.1</tt> even when the network is down. The
+other two network devices are actual network cards that are in the
+computer; as it happens, <tt>eth1</tt> is a wired Ethernet network, and
+<tt>eth2</tt> is a wireless 802.11g network. According to the information
+above, the computer has IP address 10.143.91.80 on <tt>eth2</tt>, and it has
+no IP address on <tt>eth1</tt>, which makes sense, because the wired
+connection was not plugged when I executed the command. In the output
+above you can also see IP v6 addresses (labeled <tt>inet6 addr</tt>), but
+those are not commonly used.</p></div>
+<h3 id="_how_to_find_your_ip_address_on_windows">15.2. How to find your IP address on Windows</h3><div style="clear:left"></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/note.png" alt="Note" />
+</td>
+<td class="content">This section has yet to be written.</td>
+</tr></table>
+</div>
+</div>
+<h2 id="_appendix_kiosk_mode_browsing">16. Appendix: Kiosk mode browsing</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In order to prevent subjects from fiddling around with the web browser
+used to display a user interface to them, you can use a "kiosk mode"
+web browser. While several web browsers have kiosk modes, I have found
+that Google Chrome is the most convenient. On Linux, you simply use
+the command line <tt>google-chrome --kiosk</tt> instead of just
+<tt>google-chrome</tt>, and you get a full-screen browser without any
+extraneous bits of user interface that subjects might accidentally
+click on.</p></div>
+</div>
+<h2 id="_appendix_architecture">17. Appendix: Architecture</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In this section, I will describe some of the nuts and bolts of
+Willow. It is not usually necessary to understand this, but it may be
+helpful for those seeking to extend Willow or satisfy their curiosity.</p></div>
+<div class="paragraph"><p>The core of willow is made up of <tt>willow/willow.py</tt> and
+<tt>willow/willow.js</tt> (which is included by <tt>willow/index.html</tt>). In
+<tt>willow.py</tt>, the function <tt>run</tt> is defined, which starts a web
+server. This web server serves GET requests in pretty much the normal
+way, but it does something special using POST requests. In particular,
+it expects POST requests to be Ajax calls ("<tt>XMLHttpRequest</tt>") from
+<tt>willow.js</tt>. In fact, each running instance of <tt>willow.js</tt> (and there
+is one per client) will always have one such request outstanding; when
+a response comes in, a new one is generated immediately. This means
+that the web server always has a way of talking to the client: it can
+respond to the outstanding POST request. In order to keep track of the
+outstanding POST requests, the web server is multithreaded; each
+request gets its own thread. The web server threads, in their turn,
+decide what to reply to a POST request by looking on a queue.</p></div>
+<div class="paragraph"><p>For each client, there is a separate queue. Each client generates, in
+JavaScript, a UUID, which it submits when it first connects, and which
+the web server can use to map a POST request to the correct queue. The
+reason that we do not use the sequential client numbers for this
+purpose is that the way the protocol works implies that the first
+contact is made by the client, and the clients have no way of doing
+the communication required to make sure their client IDs are
+sequential before they are actually talking to the server. UUIDs, on
+the other hand, which are hashes of the wall clock time and a random
+number, can be generated in a decentralized way. Once clients connect,
+they are also assigned a sequential client number, which is exposed to
+the user.</p></div>
+<div class="paragraph"><p>The web server does not busy itself with putting things on the
+queues. That is what session threads are for. One session thread is
+started each time a client connects for the first time. The session
+thread is configurable; in fact, in runs whatever <tt>session</tt> function
+is passed to <tt>run()</tt>. Each session thread is assigned a name which is
+the sequential client number, and the queues are made indexable by
+these numbers as well. (Note that this means we have two different
+tables pointing to the same queues, one indexed by UUID, and one by
+client number.)</p></div>
+<div class="paragraph"><p>It is these <tt>session</tt> functions that put things onto the queues. Each
+session function has access to each of the queues, indexed by client
+number, but it typically uses functions that automatically fill in the
+client number that the particular session thread is associated
+with. This is accomplished, of course, by looking at the thread name
+of the current thread.</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="architecture.png" alt="architecture.png"/>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2010-02-12 16:20:28 EDT
+</div>
+</div>
+</body>
+</html>
