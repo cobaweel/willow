@@ -15,7 +15,7 @@ git: clean
 	git commit -a; git push ssh://jaapweel@econwillow.git.sourceforge.net/gitroot/econwillow/econwillow
 
 web: clean
-	(cd web; scp * jaapweel,econwillow@web.sourceforge.net:/home/groups/e/ec/econwillow/htdocs/)
+	(cd web; rsync -rvz . jaapweel,econwillow@web.sourceforge.net:/home/groups/e/ec/econwillow/htdocs/)
 
 .PHONY: all clean dist push
 
