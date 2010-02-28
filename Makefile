@@ -7,6 +7,7 @@ all:
 clean:
 	-rm -f *~ \#* *.pyc 
 	-rm -f */*~ */\#* */*.pyc 
+	-rm log/*
 
 git: clean
 	git commit -a; git push
