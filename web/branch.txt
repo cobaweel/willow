@@ -1,0 +1,15 @@
+=== assemble(session, clients=[], port=8000)
+
+This function is a replacement for run(). If clients is not
+specified, it will display buttons on client 0 as clients 1, 2,
+... log on, which show subsets of the clients that have logged on so
+far. You can click one of these buttons at any time, and at that
+point, the function session() will be run once for each client IN
+THE SUBSET, with its client ID as the first number and the list of
+all client IDs IN THE SUBSET as its second argument. Clients that
+have connected but that are not in the subset will get a big X on
+their screens. The second way of using assemble() is to specify an
+explicit argument for clients=, some list of integers that indicates
+which clients you want. Once those client numbers have logged on,
+the session function is started once for every such client, and
+again any clients not in the set get a big X.

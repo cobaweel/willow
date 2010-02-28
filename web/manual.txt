@@ -26,26 +26,20 @@ could do worse than to have a look at the following textbooks:
 In order to get started with Python if you already know how to program
 in some other language, you can try
 
-* Mark Pilgrim, 'Dive into Python' 
-
- http://diveintopython.org
+* Mark Pilgrim, 'Dive into Python'  http://diveintopython.org
 
 * Guido van Rossum et al., 'The Python Tutorial'
-
- http://docs.python.org/tutorial/
+  http://docs.python.org/tutorial/
 
 If you want to learn both the craft of computer programming and the
 Python programming language at the same time, you are in luck, since
 Python is an excellent first language. Some free resources include:
 
 * Jeffrey Elkner, Allen B. Downey, and Chris Meyers, 'How to Think
-  Like a Computer Scientist'
-
- http://openbookproject.net/thinkCSpy/
+  Like a Computer Scientist' http://openbookproject.net/thinkCSpy/
 
 * Swaroop C. H., 'A Byte of Python'
-
- http://www.swaroopch.com/notes/Python
+  http://www.swaroopch.com/notes/Python
 
 Also, in order to use Willow, you need to have basic knowledge of HTML
 and CSS, the languages used to build web pages. For this I strongly
@@ -55,8 +49,13 @@ recommend
    O'Reilly.
 
 O'Reilly books are available full-text through an online service
-called Safari, which many universities subscribe to. There are also
-many free on-line sources about HTML and CSS.
+called Safari, which many universities subscribe to. In particular, if
+you are at GMU, you can get Safari at
+http://proquest.safaribooksonline.com.mutex.gmu.edu/?uicode=viva and
+you can this book at
+http://proquest.safaribooksonline.com.mutex.gmu.edu/0596527322 . If
+you are at some other institution, try your library web site listing
+of online databases.
 
 
 Why Willow?
@@ -89,6 +88,27 @@ University.
 
 image::screen1.png[]
 image::screen2.png[]
+
+Reading this manual
+-------------------
+
+In this manual, I will use +fixed-width font+ to indicate anything
+that is literally part of some HTML, CSS or Python code. For longer
+snippets of code, I will use boxes, like so:
+
+[source,python]
+----------------------------------------------------------------------
+import random
+print random.random()
+----------------------------------------------------------------------
+
+Note that there are colors in these boxes, which are merely a
+typesetting convention to make it easier to read the code. Similarly,
+you may find that many of the better programmer's text editors will
+color your code in a similar (but not identical) way. Again, the
+colors are not part of the code, and they are not actually stored in
+your code files, as you can easily verify by opening them up in a less
+fancy text editor.
 
 Preliminary 1: HTML
 -------------------
@@ -134,15 +154,15 @@ the most important points about HTML:
   which is marked with an opening tag +<p>+, and the end of which is
   marked with a closing tag +</p>+.
 
-* Elements can have contents. For example, the +b+ element in the
+* Elements can have _contents_. For example, the +b+ element in the
   above example contains the text +bold+.
 
-* Some elements, such as +br+ do not have contents, and those do not
+* Some elements, such as +br+, do not have contents, and those do not
   need a closing tag. (Sometimes, you will see these written like +<br
   />+; this is an XML thing, which you can read about elsewhere.)
 
-* Elements also can have attributes. In the above example, the +a+
-  element has an +href+ attribute, with value +http://google.com+.
+* Elements also can have _attributes_. In the above example, the +a+
+  element has an +href+ _attribute_, with _value_ +http://google.com+.
 
 * In HTML, any sequence of newline characters and/or blank characters
   is always treated as a single blank. Extra blanks, or newlines, in
@@ -151,7 +171,10 @@ the most important points about HTML:
 
 * Most HTML elements have standard meanings for the browser. The +b+
   element is rendered by typesetting its contents in bold, the +a+
-  element describes a link, etc. There are two exceptions: +div+ and
+  element describes a link, etc. Strictly speaking, many of these
+  meanings are not part of the HTML standard, but in practice, they
+  are pretty consistent across browsers. There are two exceptions to
+  the rule that each HTML element has a standard meaning: +div+ and
   +span+. These have no inherent meaning, and only become useful when
   we start using things like CSS. The difference between +div+ and
   +span+ is that a +div+ is typeset above/below whatever comes
@@ -177,6 +200,7 @@ Next, we will see a list of common HTML elements.
 
 The last three of these fit together like so:
 
+[source,html]
 ----------------------------------------------------------------------
 <table>
 <tr><td>Column 1, Row 1</td><td>Column 2, Row 1</td></tr>
@@ -191,14 +215,71 @@ Some of the more common HTML attributes:
 +<input type='submit' value='foo'>+:: A button with label +foo+
 +<input type='text'>+:: A text field.
 
-That's all for now. References on HTML abound both online and in
-print.
+You can learn more about HTML by using either Firefox with the Firebug
+plugin, or Google Chrome. Right-click anywhere on the page and select
+"Inspect element." This pulls up an HTML explorer system, which looks
+like this in Google Chrome (Firefox with the Firebug plugin is
+similar):
+
+image::html_2.png[]
+
+By playing around with this feature of your browser, you can learn a
+lot of about HTML and CSS. 
+
 
 Preliminary 2: CSS
 ------------------
 
-NOTE: Yet to be written.
+TBA
 
+
+Preliminary 3: Some Python features
+-----------------------------------
+
+You should already know Python before reading this manual, but there
+are few Python features that you may not be familiar with even if you
+do have experience with Python and that will come in useful for
+Willow.
+
+.Format strings
+
+Python has a convenient way of putting together strings with the +%+
+operator.
+
+[source,python]
+----------------------------------------------------------------------
+print "foo %s baz" % ("bar",)
+print "foo %s baz %%" % ("bar",)
+print "foo %s baz %s" % ("bar", "quux")
+print "foo %s baz %s" % ("bar", 42)
+print "foo %s baz" % "bar"
+----------------------------------------------------------------------
+
+If you run that through Python, you will see
+
+----------------------------------------------------------------------
+foo bar baz
+foo bar baz %
+foo bar baz quux
+foo bar baz 42
+foo bar baz
+----------------------------------------------------------------------
+
+As you can see, the +%+ operator takes a string, called the "format
+string", on its left hand side, and a tuple on its right hand
+side. For every "gap" in the format string, indicated by +%s+, the
+corresponding element from the tuple will be substituted.
+
+In fact, there are a number of gap markers other than +%s+ (such as
++%d+, +%r+, etc.) which are described in the "String Formatting
+Operations" section in the "Built-in Types" chapter of the Python
+library documentation. In practice, +%s+ is nearly always what you
+want. If you happen to actually want a percent sign in your string,
+you should use +%%+. 
+
+Also, if you only have one value to substitute, you don't need to put
+it in a one-element tuple; the +%+ operator is nice enough to accept
+interpret non-tuple values as though they were one-element tuples.
 
 Lesson 0: Wherein we install Willow
 -----------------------------------
@@ -215,39 +296,45 @@ move on to the next section of the manual. If things don't work,
 you'll notice soon enough, and you can go back and install Python. Do
 not use Python version 3. It will not work.
 
+While programming, you will want to run Willow from within a
+programmer's text editor (or, if you care for such things, an
+Integrated Development Environment). On Mac and Linux, you can use the
+IDLE editor that ships with Python. If you are running Windows, the
+version of IDLE that ships with Python on that platform is very buggy,
+and I recommend strongly that you get a different text editor: in
+particular, I recommend SciTE, which is a very simple drop-in
+replacement for IDLE. On Mac or Linux, you can get away with just
+using IDLE, although you may find that SciTE is a little more
+polished. Either way, SciTE can be had from
+http://www.scintilla.org/SciTE.html .
 
 Lesson 1: Wherein we meet Willow
 --------------------------------
 
 In the Willow folder, you will find a file named +lesson.01+. You need
-to run this file. On Windows and most Linux distributions, you can
-double click on it. You can also run the command +python lesson01.py+
-from the command line. Once the +lesson01.py+ program is running, fire up
-a web browser and point it to +http://localhost:8000/+. You should see
-a page that looks like so:
+to run this file: double click on it, or run the command +python
+lesson01.py+ from the command line. Once the +lesson01.py+ program is
+running, fire up a web browser and point it to
++http://localhost:8000/+. You should see a page that looks like so:
 
 image::lesson01_1.png[]
 
-In practice, while programming, you will want to run Willow from
-within IDLE, which is the integrated development environment that
-comes with Python. To do so, right-click +lesson01.py+ and select "Edit
-with IDLE". This will pop up an editor window with the +lesson01.py+ code
-in it:
+Now pull up the +lesson01.py+ file in IDLE or SciTE.
 
-[source,python]
-----------------------------------------------------------------------
-from willow.willow import *
+In IDLE, this looks like so:
 
-def session():
-  add("<h1>Hello, world.</h1>")
+image::lesson01_2.png[]
 
-run(session)        
-----------------------------------------------------------------------
+In Scite, it looks like:
+
+image::lesson01_3.png[]
 
 See here the code of a very simple but working Willow program. You can
-run it using the +Run > Run Module+ menu option or by pressing
-+F5+. Again, you now need to point a web browser to
-+http://localhost:8000+. 
+run it using the +Run > Run Module+ menu option in IDLE or the +Tools
+> Go+ menu in SciTE, or by pressing +F5+ (that shortcut key is the
+same in both SciTE and IDLE). 
+
+Again, you now need to point a web browser to +http://localhost:8000+.
 
 If you see an error message like "address already in use," you are
 probably trying to run two instances of Willow simultaneously. You
@@ -302,15 +389,7 @@ Have a look at +lesson02.py+:
 
 [source,python]
 ----------------------------------------------------------------------
-from willow.willow import *
-
-def session():
-  if me() == 0:
-      add("Hello monitor %d at URL %s" % (me(), url()))
-  else:
-      add("Hello subject %d at URL %s" % (me(), url()))
-
-run(session)        
+include::lesson02.py[tabsize=2]
 ---------------------------------------------------------------------- 
 
 NOTE: The +%+ operator in Python is very useful for constructing
@@ -320,34 +399,14 @@ Operations", of the Python 2.6.4 Standard Library reference manual.
 As you can see, there is still only one +session()+ function, and for
 each client that connects, a session thread is started that runs the
 +session()+ function. Each client runs the exact same function,
-but... inside the +session()+ function the value returned by +me()+
-will be different in each thread. In particular, each client gets a
-number, starting with 0, in the order in which the clients first
-connect, and +me()+ returns the number of the client associated with
-the current thread.
-
-The program also makes use of a second mechanism that can be used for
-distinguishing clients, and that is +url()+. As you may have noticed,
-Willow is not particularly picky about the URL you use to load it. You
-could have typed +http://localhost:8000/+ or +http://localhost:8000/3+
-or +http://localhost:8000/spamandtomatoes+ and in any of those cases,
-the same page would show and the same +session()+ function would be
-called; but inside each +session()+ function, +url()+ would return a
-different value.
-
-Try running +lesson02.py+ and then try to connect to Willow with
-various URLs. Each URL has to be of the form
-+http://<the-host-running-willow>:8000/<something>+, where
-+<the-host-running-willow>+ can be +localhost+ or your IP address or
-hostname, and +<something>+ can be anything, including the empty
-string.
-
-You should see pages looking like this:
+but... the session function takes an argument, which we call +me+, and
+for each client, it gets called with a different value for +me+: 0, 1,
+2, and so on. If you reload the page a bunch of times, it looks like
+this:
 
 image::lesson02_1.png[]
 image::lesson02_2.png[]
 image::lesson02_3.png[]
-image::lesson02_4.png[]
 
 Lesson 3: Wherein we produce output
 -----------------------------------
@@ -362,26 +421,8 @@ Have a look at +lesson03.py+.
 
 [source,python]
 ----------------------------------------------------------------------
-from willow.willow import *
-
-def session():
-    add("<style type='text/css'>.important { font-weight: bold; }</style>")
-    add("<p>The <span class='important' id='a'>division</span> of "
-        "<span class='b'>labor</span> is limited "
-        "by the extent of the "
-        "<a href='http://ebay.org'>market</a>.")
-    add(" and subdivision", "#a")
-    set("labour", ".b")
-    tweak("http://ebay.com", "href", "a")
-    pop("important","#a")
-    push("important",".b")    
-    add("<p class='elusive'>Microfoundations.</p>")
-    add("<p class='hidden'>Prices.</p>")    
-    hide(".elusive")
-    show(".hidden")
-    
-run(session)        
-----------------------------------------------------------------------
+include::lesson03.py[tabsize=2]
+---------------------------------------------------------------------- 
 
 This displays a web page like so:
 
@@ -400,7 +441,7 @@ HTML elements that have class "important" turned on.
     add("<p>The <span class='important' id='a'>division</span> of "
         "<span class='b'>labor</span> is limited "
         "by the extent of the "
-        "<a href='http://ebay.org'>market</a>.")
+        "<a href='http://ebay.ocm>market</a>.")
 
 Note that in Python string literal juxtaposition adds the string
 literals together, which makes for a convenient way of splitting long
@@ -441,13 +482,13 @@ instead of adding HTML to the end of some element, it replaces the
 entire contents of the element. In particular, +set("")+ clears the
 entire page!
 
-    tweak("http://ebay.com", "href", "a")
+    poke("href", "http://ebay.com", "a")
 
 So far, we have seen the functions +add+ and +set+ that manipulate the
 contents of HTML elements. But HTML elements have attributes as well
 as contents. For instance, if you write +<a href="foo">...</a>+, you
 have created an +<a>+ element with contents "..." and with an +href+
-attribute with value +foo+. The +tweak()+ function serves to
+attribute with value +foo+. The +poke()+ function serves to
 manipulate attributes. In this case, we set the +href+ attribute of
 *every single +<a>+ element on the page* to be +http://ebay.com+.
 
@@ -469,7 +510,7 @@ The +hide()+ and +show()+ functions do just that: hide and show
 elements. Willow is set up so that any element with class +hidden+ set
 is hidden by default and only shows up when you call +show()+ on it.
 
-So far, we have seen the Willow UI primitives: +add+, +set+, +tweak+,
+So far, we have seen the Willow UI primitives: +add+, +set+, +poke+,
 +push+, +pop+, +hide+, and +show+. In combination with HTML and CSS,
 these primitives make a very powerful UI language. 
 
@@ -485,28 +526,16 @@ Consider +lesson04.py+.
 
 [source,python]
 ----------------------------------------------------------------------
-from willow.willow import *
-
-def session():
-  if me() == 0:
-    add("<h1>Monitor</h1>")
-    while True:
-      _, n = get(("HELLO", None))
-      add("<p>Client %d logged in" % n)
-  else:
-    put(("HELLO", me()))
-    add(me())
-    
-run(session)        
-----------------------------------------------------------------------
+include::lesson04.py[tabsize=2]
+---------------------------------------------------------------------- 
 
 In this short program, we can see a typical use case for the important
-Willow functions +put()+ and +get()+. The first client, for which
-+me()==0+, acts as a control panel that displays information about
-other clients coming online. In order to convey that information, each
-client other than the first puts a tuple +("HELLO", me())+ on the
-Board. The first client retrieves these tuples and uses them to
-display information about logins.
+Willow functions +put()+ and +take()+. The first client, for which
++me==0+, acts as a control panel that displays information about other
+clients coming online. In order to convey that information, each
+client other than the first puts a dictionary +{"tag":"HELLO",
+"number":me}+ on the Board. The first client retrieves these
+dictionaries and uses them to display information about logins.
 
 After the monitor client and 3 other clients have connected, the
 monitor client display would look like this:
@@ -515,64 +544,59 @@ image::lesson04_1.png[]
 
 To fully understand this, we must understand the Board. The Board is
 the one and only data structure that is shared between the various
-session threads in Willow.
-The board contains tuples. Tuples are immutable sequences, and they
-are built into Python. For instance, +(2,3)+ is a two-element tuple,
-and +(2,3,"a")+ is a three-element tuple. 
+session threads in Willow.  
 
-NOTE: One peculiarity of Python is that a one-element tuple is written
-+(2,)+ to distinguish it from +(2)+, which is just another way of
-writing +2+.
+The board contains dictionaries. Dictionaries are sets of key-value
+pairs. To put +_my_dictionary_+ on the board, you call
++put(_my_dictionary_)+. For instance, to put the empty dictionary +{}+
+on the board, you call +put({})+, or to put the very abridged
+Dutch-to-English dictionary +{"rood":"red","nederlands":"dutch"}+ on
+the board, you call +put({"rood":"red","nederlands":"dutch"})+.
 
-To put +_my_tuple_+ on the board, you call +put(_my_tuple_)+. For
-instance, to put +(2,3)+ on the board, you call +put( (2,3) )+. Note the
-double parentheses!)
+To retrieve +_my_dictionary_+ from the board, you call
++take(_my_dictionary_)+. In practice, though, you typically don't know
+yet what dictionary you want to retrieve. For that reason, +take()+
+allows you to leave out keys you aren't sure of. In the extreme case,
+you leave out all keys and call +take({})+, which means "please
+retrieve any dictionary whatsoever from the board."
 
-To retrieve +_my_tuple_+ from the board, you call
-+get(_my_tuple_)+. In practice, though, you typically don't know yet
-what tuple you want to retrieve. For that reason, +get()+ allows
-wildcards, in the form of +None+ elements in its tuple argument. For
-instance, +get( (2,None) )+ means: retrieve from the board any tuple
-with two elements of which the first is +2+ and the second may be
-anything at all.
-
-The +get()+ function is blocking. This means that if there is no
-matching tuple on the board, it will sit around waiting until one
+The +take()+ function is blocking. This means that if there is no
+matching dictionary on the board, it will sit around waiting until one
 appears. This is what happens in the example code: the first thread
-(the one with +me()==0+) sits around waiting for tuples of the form
-+("HELLO", _<something>_)+ to show up on the board. Every time one
-such tuple shows up, the +get()+ function returns it, the loop loops,
-and the +get()+ function is called again, blocking until the next
-tuple shows up.
+(the one with +me==0+) sits around waiting for dictionaries of the
+form +{"tag":"HELLO", ...}+ to show up on the board. Every time one
+such dictionary shows up, the +take()+ function returns it, the loop
+loops, and the +take()+ function is called again, blocking until the
+next dictionary shows up.
 
-When a tuple is gotten with +get()+, it is removed from the
+When a dictionary is gotten with +take()+, it is removed from the
 board. Therefore, in the above code, you do not need to worry about
-looping around retrieving the same tuple over and over again. If you
-want to retrieve a tuple and leave it available (maybe for some other
+looping around retrieving the same dictionary over and over again. If you
+want to retrieve a dictionary and leave it available (maybe for some other
 thread), you simply put it back on with +put()+.
 
-Another important trick in the use of +get()+ is that you can specify
-more than one pattern. For instance, +get( ("HELLO,"), ("ERROR",) )+
-blocks until either the one-element tuple +("HELLO",)+ or the
-one-element tuple +("ERROR",)+ shows up on the board, then removes and
-returns the tuple.
+Another important trick in the use of +take()+ is that you can specify
+more than one pattern. For instance, +take({"tag":"HELLO"},
+{"tag":"ERROR"})+ blocks until either a dictionary with the key-value
+pair +"tag":"HELLO"+ or a dictionary with the key-value pair
++"tag":"ERROR"+ shows up. +take({"tag":"HELLO"}, {"foo":3})+ blocks
+until either a dictionary with the key-value pair +"tag":"HELLO"+ or a
+dictionary with the key-value pair +"foo":3+ shows up. And so on.
 
-Finally, I will mention +grab()+. It is like +get()+, except that it
-does not block. If a matching tuple is available, it will return that,
-but if there is none, it will simply return +None+ (unlike +get()+,
-which will sit there twiddling its thumbs until a matching tuple shows
+Finally, I will mention +grab()+. It is like +take()+, except that it
+does not block. If a matching dictionary is available, it will return that,
+but if there is none, it will simply return +None+ (unlike +take()+,
+which will sit there twiddling its thumbs until a matching dictionary shows
 up).
-
 
 NOTE: You could, conceivably, have your own shared data structures
 simply by declaring some global variables outside of +session()+, but
 I recommend that you don't. In order to make sure your data structures
 remain consistent, you would have to implement rules to make sure that
 no two threads fiddle with them at the same time ("mutual exclusion"),
-which can rapidly become extremely complicated. The Board is a data
-structure known as a Tuple Space, which already has mutual exclusion
-built into it.
-
+which can rapidly become extremely complicated. The Board is a variant
+on a data structure known as a Tuple Space, which already has mutual
+exclusion built into it.
 
 Lesson 5: Wherein we deal with input
 ------------------------------------
@@ -587,19 +611,8 @@ The +lesson05.py+ code demonstrates both.
 
 [source,python]
 ----------------------------------------------------------------------
-from willow.willow import *
-
-def session():
-  add("<p>Please enter your name.")
-  add("<input id='bid' type='text'>")
-  add("<input id='submit' type='submit'>")
-  _, _, _ = get(("click", me(), "submit"))
-  peek("#bid")
-  _, _, name = get(("peek", me(), None))
-  add("<p>Hello, %s." % name)
-
-run(session)        
-----------------------------------------------------------------------
+include::lesson05.py[tabsize=2]
+---------------------------------------------------------------------- 
 
 This should initially display a screen that looks like so:
 
@@ -629,23 +642,29 @@ if your browser is set up for a language other than English).
 In Willow, your button must additionally have an +id+ attribute, which
 is how we keep track of which buttons get clicked.
 
-When a button gets clicked, a tuple +("click", _n_, _id_)+ is
-automatically posted onto the board, where +_n_+ is the number of the
-client that received the button click and +_id_+ is the +id+ of the
-button. 
+When a button gets clicked, a dictionary 
+
+ {"tag": "click", "id":_id_, "client":_n_, "time":_t_}
+
+is automatically posted onto the board, where
+
+ * +_n_+ is the number of the client that received the button click;
+ * +_id_+ is the +id+ of the button;
+ * +_t_+ is the time in milliseconds since Jan 1, 1970 0:00 UTC,
+   as measured by the client, when the button was clicked
 
 This is why, after we have displayed the button, we can just call
-+get( ("click", me(), "submit") )+, which will block until the button is
-clicked. Note that if you insist on blocking one client thread until a
-button in some _other_ client thread has been clicked, you can do
-that, simply by replacing +me()+ in the above call to +get()+ by some
-other integer (but it is not recommended).
++take({"tag":"click", "id": "go", "client": me})+, which will block
+until the button is clicked. Note that if you insist on blocking one
+client thread until a button in some _other_ client thread has been
+clicked, you can do that, simply by replacing +me+ in the above call
+to +take()+ by some other integer (but it is not recommended).
 
-NOTE: If the button is clicked multiple times, multiple tuples will be
-inserted. This may result in behavior you may not necessarily
+NOTE: If the button is clicked multiple times, multiple dictionaries
+will be inserted. This may result in behavior you may not necessarily
 intend. If you want to wait for a button to get clicked that may have
 been clicked before you started waiting, you will need to clear those
-old tuples off the board, by saying e.g. +grab( ("click",me(),None) )+.
+old dictionaries off the board using +grab()+.
 
 The way we deal with text fields is similar to the way we deal with
 buttons, but there is no natural moment to automatically insert the
@@ -654,13 +673,27 @@ it explicitly.
 
 To show a text field, we use a piece of HTML that looks like
 
-  <input id='_name_of_text_field_' type='text'>
+  <input id='name_of_text_field' type='text'>
 
 and then we call +peek("#_name_of_text_field_")+. This will cause a
-tuple to be posted to theboard of the form +("peek", _n_, _text_)+,
-where +_n_+ is the number of the client and +_text_+ is the text that
-the user typed in the field. In the above case, we only start looking
-for what's in the field after the user has pressed the button.
+dictionary to be posted to the board of the form 
+
+ {"tag":"peek", "id":_id_, "client":_n_, "time":_t_, "value":_val_}
+
+where
+
+ * +_n_+ is the number of the client that received the button click;
+ * +_id_+ is the +id+ of the button;
+ * +_t_+ is the time in milliseconds since Jan 1, 1970 0:00 UTC,
+   as measured by the client, when the value was checked;
+ * +_val_+ is the contents of the text box
+
+You can also use +peek()+ for checkboxes, radioboxes, +<textarea>+
+elements, and most other input-type elements that you can read about
+in HTML books.
+
+In the above case, we only start looking for what's in the field after
+the user has pressed the button.
 
 Lesson 6: Wherein we poke around in other threads
 -------------------------------------------------
@@ -668,7 +701,7 @@ Lesson 6: Wherein we poke around in other threads
 Many of the Willow functions, even though by default they operate on
 the client display associated with the current session thread, can
 also operate on a different client display if you pass the
-+number=_n_+ optional parameter. This is never necessary, but it may
++client=_n_+ optional parameter. This is never necessary, but it may
 be more convenient than passing messages through the board to the
 other session thread so that it can then manipulate its corresponding
 client display.
@@ -677,36 +710,15 @@ Take for instance the code in lesson 4:
 
 [source,python]
 ----------------------------------------------------------------------
-from willow.willow import *
-
-def session():
-  if me() == 0:
-    add("<h1>Monitor</h1>")
-    while True:
-      _, n = get(("HELLO", None))
-      add("<p>Client %d logged in" % n)
-  else:
-    put(("HELLO", me()))
-    add(me())
-    
-run(session)        
-----------------------------------------------------------------------
+include::lesson04.py[tabsize=2]
+---------------------------------------------------------------------- 
 
 We could rewrite that as follows:
 
 [source,python]
 ----------------------------------------------------------------------
-from willow.willow import *
-
-def session():
-  if me() == 0:
-    add("<h1>Monitor</h1>")
-  else:
-    add("<p>Client %d logged in" % me(), number=0)
-    add(me())
-    
-run(session)        
-----------------------------------------------------------------------
+include::lesson06.py[tabsize=2]
+---------------------------------------------------------------------- 
 
 NOTE: Strictly speaking, the above programs are not entirely
 equivalent. If the first session thread executed very, very slowly and
@@ -722,56 +734,40 @@ Look at this:
 
 [source,python]
 ----------------------------------------------------------------------
-from willow.willow import *
+include::lesson07.py[tabsize=2]
+---------------------------------------------------------------------- 
 
-def session():
-  add("Hello, ")
-  put(("PING",), delay=2.3)
-  get(("PING",))
-  add("world.")
+It shows "Hello, " on the screen, and 2.3 seconds later, it adds "
+world."
 
-run(session)        
-----------------------------------------------------------------------
+That's all there is to this one. Use the +background(_f_,_dt_)+
+function to call the function +_f_+ in the background, after a delay in
+seconds of +_dt_+. Note that you can also use this (typically with
++dt=0+) for any other background tasks, like dealing with a chatbox
+while the main task deals with the rest of the experiment.
 
-It shows "Hello, " on the screen, and 2.3 seconds later, it adds " world."
-
-That's all there is to this one. +put()+ takes an optional +delay=+
-argument, and if you use it, the tuple won't actually arrive on the
-board until the delay is over. Meanwhile, you can still do other
-things; remember that the +put()+ function *always* returns
-immediately. Only the +get()+ function can block, if there are no
-matching tuples, until a matching tuple appears.
-
-Lesson 8: Wherein we finall produce data
-----------------------------------------
-
+Lesson 8: Wherein we finally produce data
+-----------------------------------------
 
 [source,python]
 ----------------------------------------------------------------------
-from willow.willow import *
-
-def session():
-  add("Hello, world.")
-  log("hello", "world")
-
-run(session)        
-----------------------------------------------------------------------
- 
+include::lesson08.py[tabsize=2]
+---------------------------------------------------------------------- 
 
 This is how you cause your Willow program to produce a data file. 
 
 In this case, a data file was produced in the +log+ subdirectory
-(i.e. folder) called + 2010-02-23-22-00-05.csv+. The name is chosen
+(i.e. folder) called +2010-02-23-22-00-05.csv+. The name is chosen
 automatically based on the date and time
 (year-month-day-hour-minute-second).
 
 The file contains:
 
 ----------------------------------------------------------------------
-1266981599,hello,world,0
-1266981599,hello,world,1
-1266981600,hello,world,2
-1266981600,hello,world,3
+1266985186.84,hello,world,0
+1266985187.28,hello,world,1
+1266985187.55,hello,world,2
+1266985187.76,hello,world,3
 ----------------------------------------------------------------------
 
 This is a CSV file, which is a simple text-file based spreadsheet
@@ -784,135 +780,165 @@ passed since the "Unix epoch" on January 1, 1970, 0:00 UTC. This may
 seem like an odd choice of timestamp format, but the advantage of this
 type of timestamp is that it makes sense to subtract them! 
 
+Lesson 9: Wherein we program our first experiment
+-------------------------------------------------
+
+.lesson09.py
+[source,python]
+----------------------------------------------------------------------
+include::lesson09.py[tabsize=2]
+---------------------------------------------------------------------- 
+
+.lesson09_0.html
+[source,python]
+----------------------------------------------------------------------
+include::lesson09_0.html[tabsize=2]
+---------------------------------------------------------------------- 
+
+.lesson09_1.html
+[source,python]
+----------------------------------------------------------------------
+include::lesson09_1.html[tabsize=2]
+---------------------------------------------------------------------- 
+
 API: willow.willow
 ------------------
 
-NOTE: The +selector+ argument can take any CSS selector. The CSS
-selector mini-language is rather rich, but the most typical cases are
-things like +p+ (to get at all +<p>+ elements), +#a+, (to get at the
-first element with +id="a"+), and +.a+ (to get at all elements with
+.The +selector+ argument on several API functions:
+
+The +selector+ argument can take any CSS selector. The CSS selector
+mini-language is rather rich, but the most typical cases are things
+like +p+ (to get at all +<p>+ elements), +#a+, (to get at the first
+element with +id="a"+), and +.a+ (to get at all elements with
 +class="a"+). For more information, consult any book or web page on
 CSS. Whenever +selector+ is omitted, the selector "+body+" is implied,
-which means you are referring to the entire body of the HTML document.
+which means you are referring to the entire body of the HTML
+document. Aside from CSS selectors, jQuery extensions are also
+allowed. The most useful is of the form +_selector_:eq(_n_)+, which
+selects the _n_-th element that matches +_selector_+.
 
-NOTE: By specifying an integer, or a sequence of integers, for
-+number+, you can operate directly on clients other than the one
+.The +clients+ argument on several API functions:
+
+By specifying an integer, or a sequence of integers, for
++clients+, you can operate directly on clients other than the one
 associated by default with the current session thread.
 
-NOTE: Whenever +argument+ is a file descriptor that can be read from,
-the contents of the file are automatically substituted.
+.The +timestamp+ argument on several API functions:
 
-+me()+
-~~~~~~
+Whenever +timestamp=True+, you are requesting a tuple to be posted
+of the form +{"tag":"timestamp","client":_n_,"time":_t_}+ that gives
+you a millisecond timestamp of when the action was executed by the
+client.
 
-Returns the number of the current client.
+.The +delay+ argument on several API functions:
 
-+url()+
-~~~~~~~
+Whenever you specify the +delay=_dt_+ option, the execution of
+that action is delayed by +_dt_+ seconds (you can specify fractions of
+seconds, too). This is done on the client side with millisecond
+accuracy. 
 
-Returns the pathname part of the URL used to first load the current
-client. For instance, if the client was loaded as
-+http://localhost:8000/+, this returns "+/+", and if the client was
-loaded as +http://localhost:8000/3+, this returns "+/3+".
+If you have lots of closely spaced delayed events, at some point the
+browser may start lagging; but in Google Chrome, I have gotten it up
+to a +set()+ event every milisecond with only a very slight lag.
 
-+set(content, [selector], [number])+
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== +set(content, [selector], [clients], [timestamp], [delay])+
 
-Set the content of the HTML element(s) referred to by +selector+ on
-to be +content+.
+Set the content of the HTML element(s) referred to by +selector+ on to
+be +content+. Whenever +content+ is a file descriptor that can be
+read from, the contents of the file are automatically substituted.
 
-+add(content, [selector], [number])+
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== +add(content, [selector], [clients], [timestamp], [delay])+
 
 Add +content+ to the content of the HTML element(s) referred to by
-+selector+.
++selector+. Whenever +content+ is a file descriptor that can be
+read from, the contents of the file are automatically substituted.
 
-+tweak(value, attribute, [selector], [number])+
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== +poke(attribute, value, [selector], [clients], [timestamp], [delay])+
 
 Change the value of attribute +attribute+ to be +value+ in HTML
 element(s) referred to by +selector+.
 
-+push(style, [selector], [number])+
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== +peek([selector], [clients], [timestamp], [delay])+
+
+Request the value of the HTML +<input>+ or +<textarea>+ element(s)
+referred to by +selector+ to be posted as
++{"tag":"peek","id":_id_,"client":_n_,"time":_t_,"value"=_value_}+
+
+=== +push(style, [selector], [clients], [timestamp], [delay])+
 
 Add the CSS style +style+ to the HTML element(s) referred to by
 +selector+.
 
-+pop(style, [selector], [number])+
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== +pop(style, [selector], [clients], [timestamp], [delay])+
 
 Remove the CSS style +style+ from HTML element(s) referred to by
 +selector+.
 
-+hide([selector], [number])+
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== +hide([selector], [clients], [timestamp], [delay])+
 
 Hide the HTML element(s) referred to by +selector+.
 
-+show([selector], [number])+
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== +show([selector], [clients], [timestamp], [delay])+
 
 Show the HTML element(s) referred to by +selector+, if previously
 hidden.
 
-+peek([selector], [number])+
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== +put(dictionary)+
 
-Request the contents of the HTML element(s) referred to by
-+selector+ to be posted as +("peek",number,contents)+. Intended to
-be used with +<input type='text'>+ elements.
+Post the dictionary onto the communication board. 
 
-+put(tuple, [delay], [copies])+
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== +take(*queries)+
 
-After an optional +delay+ in seconds, post the tuple onto the
-communication board. If +copies=N+ is specified, +N+ copies of the
-same tuple will be posted.
+Block until a dictionary becomes present on the board that matches at
+least one of the queries, then remove and return it. A dictionary
+matches a query if it contains all the key-value pairs in the query
+(plus, optionally, some others).
 
-WARNING: In Python, the value +x+ is the same as +(x)+, but it is not the
-  same as the one-element tuple containing it, which is written
-  +(x,)+.
+=== +grab(*queries)+
 
-+get(*queries)+
-~~~~~~~~~~~~~~~
+If a dictionary is present on the board that matches at least one of
+the queries remove and return it; otherwise return +None+. A
+dictionary matches a query if it contains all the key-value pairs in
+the query (plus, optionally, some others).
 
-Block until a tuple becomes present on the board that matches at least
-one of the queries, then remove and return it. A tuple on the board
-matches a query whenever the tuple on the board and the query have the
-same length, and each element of the query is either +None+ or
-identical to the corresponding element in the tuple on the board.
-
-+grab(*queries)+
-~~~~~~~~~~~~~~~~
-
-If a tuple is present on the board that matches at least one of the
-queries remove and return it; otherwise return +None+.
-
-+run(session, [port])+ 
-~~~~~~~~~~~~~~~~~~~~~~~
+=== +run(session, [port])+ 
 
 This starts the Willow web server on the specified port (or port
 8000 if you leave the second argument out). The web server will
 create a thread for each client that connects, and each thread will
-run the +session+ function. Within each thread, the +me()+ function
-will return a different value, and +add+, +set+, etc. will by
-default operate on a different client. The web server will search
-for requested files in the current directory, among other places, so
-you can for instance include images in your pages.
+run the +session+ function, passing as an argument the client ID.
+
+Client IDs will be assigned sequentially, unless the URL is of the
+form +http://_whatever-host_/_n_+, where +_n_+ is an integer, and
++_n_+ is not taken yet, in which case the client ID will be +_n_+.
+
+The web server will search for requested files in the current
+directory, among other places, so you can for instance include images
+in your pages.
+
+=== +background(fn, delay)+
+
+Run the function +fn+ in the background (as a separate thread), with
+an initial +delay+ specified in seconds. Fractions of seconds are
+allowed.
+
+=== +sleep(delay)+
+
+Wait for +delay+ seconds. Fractions of seconds are allowed.
 
 +log(x,y,...)+
 ~~~~~~~~~~~~~~
 
-Write (x,y,...) to the log file as a record, with a UNIX timestamp
-prepended as the first column. A new log file is created in the +log+
-folder whenever the Willow library is loaded, and it bears a name
-based on the date and time when it was created. For instance, if
-Willow was invoked at 15:32:42 on February 2 of the year 2010, the
-file would be called +log/2010-02-10-15-32-42.csv+.  This particular
-date-and-time format is used so that the files can be sorted by
-date/time. The log files are in CSV format and can be opened with a
-text editor or a spreadsheet program.
+Write (x,y,...) to the log file as a record, with the number of
+milliseconds since January 1, 1970 0:00 UTC prepended as the first
+column. A new log file is created in the +log+ folder whenever the
+Willow library is loaded, and it bears a name based on the date and
+time when it was created. For instance, if Willow was invoked at
+15:32:42 on February 2 of the year 2010, the file would be called
++log/2010-02-10-15-32-42.csv+.  This particular date-and-time format
+is used so that the files can be sorted by date/time. The log files
+are in CSV format and can be opened with a text editor or a
+spreadsheet program.
 
 CSS features
 ~~~~~~~~~~~~
@@ -933,140 +959,49 @@ Some Willow features are accessed by means of CSS classes:
 	pointer is positioned over that element. This can be used to
 	create "hover" effects.
 
-API: willow.twig
-----------------
-
-Twig is an extension to Willow. It is a repository of code that shows
-up over and over in experimental interface programs: code for logging
-in terminals in a certain order, for doing surveys, etc. All of Twig
-is written on top of Willow, and there is nothing in it that you
-couldn't do yourself using Willow and some Python standard library
-functions. If a Twig functions doesn't fit your needs, you can always
-write your own (and maybe look at the Twig source code for
-inspiration.)
-
-To use Twig in your code, you have to add an additional import line to
-the beginning of your file:
-
-----------------------------------------------------------------------
-from willow.twig import *
-----------------------------------------------------------------------
-
-Twig internally uses tuples and HTML +id+ values that start with +__+
-(two underscores). If you plan to use Twig, you should avoid using any
-tuples or HTML +id+ values that start with two underscore, so as not
-to interfere with Twig.
-
-CAUTION: Twig is still under development, and as of right now, the
-interface to Twig functions is likely change from one Willow version
-to the next. (The interface to Willow functions may also change, but I
-try to avoid that, and make mention of it in the manual.)
-
-+assemble()+
+Mouse clicks
 ~~~~~~~~~~~~
 
-Willow offers only a very basic mechanism for identifying clients: the
-numbers returned by +me()+, which are assigned to clients in the order
-in which they first connect. If you have a program launcher in your
-lab that automatically launches clients on a number of terminals
-around the room, you can end up with these client numbers being
-distributed around the room in strange ways, based on which machines
-are the fastest to connect. In practice, you may want to have a more
-stable mapping between terminals and client identifiers. That is where
-+assemble()+ comes in.
+When a button with (whether +<input type="submit">+ or
++<button></button>+) or any element with +class="clickable"+ is
+clicked, a dictionary like is inserted into the board automatically
+behind the scenes like so:
 
-The way you typically call +assemble()+ is at the beginning of your
-session function, like so:
+ {"tag":"click", "id":_id_, "client":_n_, "time":_t_, "value":_val_}
 
-[source,python]
-----------------------------------------------------------------------
-def session():
-    number, numbers = assemble()
-    
-    # ... your code ...
+where
 
-run(session)
-----------------------------------------------------------------------
+ * +_n_+ is the number of the client that received the button click;
+ * +_id_+ is the +id+ of the button;
+ * +_t_+ is the time in milliseconds since Jan 1, 1970 0:00 UTC,
+   as measured by the client, when the value was checked;
+ * +_val_+ is the contents of the text box
 
-Now, when you connect a bunch of clients, you will see a button
-labeled "0" on the first ("monitor") client, and buttons labeled "Log
-in" on all other ("subject") clients. As you click these "Log in"
-buttons on the subject clients, they will each be assigned a
-number. These numbers are independent from the numbers returned by
-+me()+, and they are assigned, starting with 1, in the order in which
-the "Log in" buttons are clicked.
+Key presses
+~~~~~~~~~~~
 
-When you have pressed all the "Log in" buttons, you can go back to the
-monitor client, and you will see that by now, it has a sequence of
-buttons with labels like:
+When the user presses a key, a dictionary like is inserted into the
+board automatically behind the scenes like so:
 
-* 0
-* 0, 1
-* 0, 1, 2
-* 0, 1, 2, 3
+ {"tag":"key", "client":_n_, "time":_t_, "value":_val_}
 
-These buttons allow you to decide which of the subjectclients to
-actually use. This is particularly useful when you want to set up an
-experiment that may have a different number of participants based on
-actual turnout: you can set up the lab with, say, 12 logged in
-machines, and if only 10 students turn out, you click the button
-labeled "0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10+. 
+where
 
-Once one of the buttons on the monitor is clicked, the +assemble()+
-function returns a tuple of two elements. The first is the subject ID
-newly associated with the current thread, or, if the subject is not
-included on the button clicked on the monitor, +None+. The second is a
-list of all the subject IDs, including +0+ (which refers to the
-monitor).
+ * +_n_+ is the number of the client that received the button click;
+ * +_t_+ is the time in milliseconds since Jan 1, 1970 0:00 UTC,
+   as measured by the client, when the value was checked;
+ * +_val_+ is the key pressed
 
-One further feature of +assemble()+ is revealed when you use
-non-standard URLs to load the subject clients. For instance, if your
-Willow instance is running on a machine with IP address +1.2.3.4+, you
-would normally use +http://1.2.3.4:8000/+ to connect, but you could
-also use +http://1.2.3.4:8000/42+. In that case, the subject
-identifier will be assigned not sequentially but according to the
-number at the end of the URL. This is useful if you have a centralized
-program launcher facility in your lab that is able to open different
-web pages on different terminals. In that case, you can simply
-configure the program launcher to open +http://1.2.3.4:8000/1+ on the
-first machine, +http://1.2.3.4:8000/2+ on the second machine, etc.,
-and you will be assured that subject IDs are assigned in a
-predetermined way.
+Branch
+------
 
-Here's an example of how to use +assemble()+:
+This is an extension library. It is liable to change, much faster than
+Willow itself, and not be be as well documented and tested. But I
+don't want to withhold it either. This documentation is generated
+directly from the +branch.py+ source file.
 
-[source,python]
-----------------------------------------------------------------------
-def session():
-    number, numbers = assemble()
-    if number == 0:
-       set("MONITOR<p>Using Subject IDs %r" % numbers)
-    else:
-       set("<p>This client has Subject ID %d" % number)
+include::branch.txt[tabwidth=2]
 
-run(session)
-----------------------------------------------------------------------
-
-You can also pass an integer argument +n+ to +assemble()+. This
-indicates that you want exactly n clients besides the monitor (n+1
-total), and thus allows you to skip the whole button-clicking step.
-
-+survey(title, number, questions, [selector])+
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This is used for surveys. A typical use would be:
-
-[source,python]
-----------------------------------------------------------------------
-
-MYSURVEY = [
-  ("Do you like chocolate?", ("Yes", "No"))
-]
-
-if me() > 0:
-  survey("FOOD", me(), MYSURVEY)
-
-----------------------------------------------------------------------
 
 Appendix: A digression on your IP address
 -----------------------------------------
@@ -1144,7 +1079,11 @@ those are not commonly used.
 How to find your IP address on Windows
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-NOTE: This section has yet to be written.
+Press _WINDOWS_+R (where _WINDOWS_ is the "Windows Key", the one with
+the flag) to pull up a "Run Program" dialog, then enter +cmd+ to get a
+command prompt window. Now enter +ipconfig /a+. This should give you
+all the information you need.
+
 
 Appendix: Kiosk mode browsing
 -----------------------------
@@ -1158,56 +1097,50 @@ the command line +google-chrome --kiosk+ instead of just
 extraneous bits of user interface that subjects might accidentally
 click on. 
 
-Appendix: Architecture
-----------------------
+Appendix: Internals
+-------------------
 
-In this section, I will describe some of the nuts and bolts of
-Willow. It is not usually necessary to understand this, but it may be
-helpful for those seeking to extend Willow or satisfy their curiosity.
+[verse,Blaise Pascal,Lettres Provinciales]
+______________________________________________________________________
+Je n'ai fait celle-ci plus longue que parce que je n'ai pas eu le
+loisir de la faire plus courte.
+______________________________________________________________________
 
-The core of willow is made up of +willow/willow.py+ and
-+willow/willow.js+ (which is included by +willow/index.html+). In
-+willow.py+, the function +run+ is defined, which starts a web
-server. This web server serves GET requests in pretty much the normal
-way, but it does something special using POST requests. In particular,
-it expects POST requests to be Ajax calls ("+XMLHttpRequest+") from
-+willow.js+. In fact, each running instance of +willow.js+ (and there
-is one per client) will always have one such request outstanding; when
-a response comes in, a new one is generated immediately. This means
-that the web server always has a way of talking to the client: it can
-respond to the outstanding POST request. In order to keep track of the
-outstanding POST requests, the web server is multithreaded; each
-request gets its own thread. The web server threads, in their turn,
-decide what to reply to a POST request by looking on a queue. 
-
-For each client, there is a separate queue. Each client generates, in
-JavaScript, a UUID, which it submits when it first connects, and which
-the web server can use to map a POST request to the correct queue. The
-reason that we do not use the sequential client numbers for this
-purpose is that the way the protocol works implies that the first
-contact is made by the client, and the clients have no way of doing
-the communication required to make sure their client IDs are
-sequential before they are actually talking to the server. UUIDs, on
-the other hand, which are hashes of the wall clock time and a random
-number, can be generated in a decentralized way. Once clients connect,
-they are also assigned a sequential client number, which is exposed to
-the user.
-
-The web server does not busy itself with putting things on the
-queues. That is what session threads are for. One session thread is
-started each time a client connects for the first time. The session
-thread is configurable; in fact, in runs whatever +session+ function
-is passed to +run()+. Each session thread is assigned a name which is
-the sequential client number, and the queues are made indexable by
-these numbers as well. (Note that this means we have two different
-tables pointing to the same queues, one indexed by UUID, and one by
-client number.)
-
-It is these +session+ functions that put things onto the queues. Each
-session function has access to each of the queues, indexed by client
-number, but it typically uses functions that automatically fill in the
-client number that the particular session thread is associated
-with. This is accomplished, of course, by looking at the thread name
-of the current thread.
+The first thing that should strike you when looking at these files is
+that there's not very much there. This is on purpose, and took a lot
+of work. It is my experience that the number of bugs per 100 lines of
+code is roughly constant, and that the best way of limiting the number
+of bugs is to limit the amount of code. (In the extreme case, of
+course that means that the only way to have no bugs is to write no
+code. This is not as vacuous an observation as it seems: it pays to
+think twice before deciding to turn something into a computer program
+in the first place.)
 
 image::architecture.png[]
+
+.willow.py
+[source,python]
+----------------------------------------------------------------------
+include::willow.py[tabsize=2]
+----------------------------------------------------------------------
+
+.willow.html
+[source,html]
+----------------------------------------------------------------------
+include::willow.html[tabsize=2]
+----------------------------------------------------------------------
+
+.willow.css
+[source,css]
+----------------------------------------------------------------------
+include::willow.css[tabsize=2]
+----------------------------------------------------------------------
+
+.willow.js
+[source,javascript]
+----------------------------------------------------------------------
+include::willow.js[tabsize=2]
+----------------------------------------------------------------------
+
+
+

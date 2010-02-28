@@ -1,3 +1,7 @@
+# Willow, a Python framework for experimental economics. Copyright (c)
+# 2009, George Mason University. All rights reserved. Redistribution
+# allowed under certain conditions; see file COPYING.txt
+
 # This is the code for a real experiment conducted at George Mason
 # University. The computerized part of the experiment consists of an
 # several iterated trust games, and a very long survey. This is an

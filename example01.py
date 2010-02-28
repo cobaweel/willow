@@ -1,3 +1,7 @@
+# Willow, a Python framework for experimental economics. Copyright (c)
+# 2009, George Mason University. All rights reserved. Redistribution
+# allowed under certain conditions; see file COPYING.txt
+
 AB=5
 CD=3
 ROUNDS=10
@@ -7,17 +11,16 @@ from willow.willow import *
 import random
 
 
-def session():
-  number = me()
-  add(open("rb.html"))
+def session(number):
+  add(open("example01.html"))
 
   # Set the incentive labels based on treatment variables
-  set(AB,".ab_incentive")
-  set(CD,".cd_incentive")
+  let(AB,".ab_incentive")
+  let(CD,".cd_incentive")
 
   # Show the title screen and wait for the button
   show("#title")
-  get(("click", number, None))
+  take({"tag":"click"})
 
   # Hide the title screen and show the experiment screen
   hide("#title")
@@ -25,11 +28,8 @@ def session():
 
   # Run through a number of rounds
   score = 0
-  set("0.00", "#score")
+  let("0.00", "#score")
   for _ in range(ROUNDS):
-    # Reset the screen to standard form
-    hide("#spin")
-
     # Determine how many balls in boxes a,b,c,d will be white
     d = random.choice((1,2,3,4))
     c = 10 * d + random.choice((-2,-1,0,1,2))
@@ -51,63 +51,55 @@ def session():
     time = INTERVAL
     ab = "."
     cd = "."
-    for t in range(1,6): put(("timer", number, 0), t)
-    while time > 0:
-      set("%d seconds left" % time,"#time")
-      _, _, arg = get(("click", number, None),
-                      ("timer", number, 0))
-      add(arg)
-      if arg == "A":
-        push("on", "#A")
-        pop("on", "#B")
-        ab = "A"
-      elif arg == "B":
-        push("on", "#B")
-        pop("on", "#A")
-        ab = "B"
-      elif arg == "C":
-        push("on", "#C")
-        pop("on", "#D")
-        cd = "C"
-      elif arg == "D":
-        push("on", "#D")
-        pop("on", "#C")
-        cd = "D"
+    def timeout():
+      put({"tag":"timer", "client":number})
+    background(timeout, 5)
+    for dt in range(0,5):
+      let(5-dt, "#time", delay=dt)
+    while True:
+      msg = take({"tag": "click", "client": number},
+                 {"tag": "timer", "client": number})
+      if msg["tag"] == "click":
+        arg = msg["id"]
+        if arg == "A":
+          push("on", "#A")
+          pop("on", "#B")
+          ab = "A"
+        elif arg == "B":
+          push("on", "#B")
+          pop("on", "#A")
+          ab = "B"
+        elif arg == "C":
+          push("on", "#C")
+          pop("on", "#D")
+          cd = "C"
+        elif arg == "D":
+          push("on", "#D")
+          pop("on", "#C")
+          cd = "D"
       else:
-        time -= 1
-    ab_score = -1
-    cd_score = -1
+        break;
+
+    # Compute earnings
     if ab == "A":
       if random.randint(1,100) <= a:
         score += int(AB)
-        ab_score = 1
-      else:
-        ab_score = 0
     if ab == "B":
       if random.randint(1,10) <= b:
         score += int(AB)
-        ab_score = 1
-      else:
-        ab_score = 0
     if cd == "C":
       if random.randint(1,100) <= c:
         score += int(CD)
-        cd_score = 1
-      else:
-        cd_score = 0
     if cd == "D":
       if random.randint(1,10) <= d:
         score += int(CD)
-        cd_score = 1
-      else:
-        cd_score = 0
-    log(number,a,b,c,d,ab,cd,ab_score,cd_score,score)
-    set("%.2f" % (score/100.0), "#score")
-    set("", "#time")
+
+    # Log what happened
+    log(number,a,b,c,d,ab,cd)
+
+    let("%.2f" % (score/100.0), "#score")
+    let("", "#time")
     pop("on",".on")
-    show("#spin")
-    put(("timer", number, 0), 2)
-    get(("timer", number, 0))
-
-
+    sleep(2)
+      
 run(session)

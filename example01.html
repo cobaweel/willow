@@ -1,7 +1,7 @@
 <style type="text/css">
   img { margin: 0pt; padding: 0pt; }
   body { background: #eeffee; }
-  table {text-align: center; }
+  table {text-align: center; margin: 1em auto;}
   td { border: 5px solid black; 
        padding: 1em; background:white;
        vertical-align:top;}
@@ -10,11 +10,11 @@
          border: 4px solid lightgrey; cursor:pointer;}
   .box td { height: 24px; width: 24px; border: 0px;
             padding: 0px; margin: 0px; 
-            background-image:url(rb0.png); }
-  .box td.on { background-image:url(rb1.png); }
+            background-image:url(example01_0.png); }
+  .box td.on { background-image:url(example01_1.png); }
   .mouse { border: 4px solid grey; }
   table.on { border: 4px solid red; }
-  .box { -moz-opacity : 50%; }
+  #time { font-size: 18pt;}
 </style>
 
 <div class="hidden" id="title">
@@ -54,9 +54,8 @@
       </table>
     </td>
     <td width="200">
-      <p id="time" />
-      <img id="spin" class="hidden" src="spin.gif" />
       <p>earnings: $<span id="score">0.00</span></p>
+      <p id="time"></p>
     </td>
     <td class="balls">
       <h3>
