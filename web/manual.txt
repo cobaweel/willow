@@ -783,6 +783,103 @@ include::lesson09_0.html[tabsize=2]
 include::lesson09_1.html[tabsize=2]
 ---------------------------------------------------------------------- 
 
+Lesson 10: In which we use strange input devices
+------------------------------------------------
+
+Most of the time, you are going to want input from the mouse or the
+keyboard. Web browsers know how to talk to mice and keyboards, which
+makes it easy for Willow to get the input to you. Occasionally, you
+may have a need for more exotic input devices. 
+
+For instance, at GMU we use a device called the "Lumina Response Pad
+for MRI", manufactured by a company called Cedrus, which is a set of
+two boxes with two buttons each that you can hand to a subject inside
+an MRI machine. These boxes are hooked up to something called the
+"LSC-400 controller," which in turn hooks up to a PC using a serial
+(RS232) cable.
+
+If you have an LSC-400, or any other device that talks to your PC
+using a serial cable, you may want to have a look at the file named
++willow/bb.py+. This is a little stand-alone application that will
+read from a serial port and post each byte that comes in on that
+serial port onto the board. 
+
+To get this to work, start +bb.py+ in a separate terminal, like so:
+
+----------------------------------------------------------------------
+$ python bb.py
+----------------------------------------------------------------------
+
+You can pass three optional arguments to bb.py, like so
+
+----------------------------------------------------------------------
+$ python bb.py -p 2 -h localhost:8888 -t mytag
+----------------------------------------------------------------------
+
+The first argument is the port number of the serial port (default 0),
+the second is the host and port number where willow is running
+(default "localhost:8000") and the third is the tag to use when
++bb.py+ posts things to the board... but here we're getting ahead of
+ourselves, so let's first have a look at some +bb.py+ output.
+
+Suppose we start +bb.py+ and we push a button on our input device that
+causes some input to be sent in on the serial cable and we see this:
+
+----------------------------------------------------------------------
+Reading data from port        : 0
+Posting data to host          : localhost:8000
+Using tag                     : serial
+Received                      : 3
+ERROR - no willow on          : localhost:8000
+----------------------------------------------------------------------
+
+This means that +bb.py+ accurately received a byte from the serial
+port, to wit "3", but it could not forward it to Willow, because it
+did not find an instance of Willow running on localhost:8000. Let's
+start a Willow program that knows how to take serial input, in a
+separate window:
+
+----------------------------------------------------------------------
+python lesson10.py
+----------------------------------------------------------------------
+
+The code for this is simple:
+
+.lesson10.py
+[source,python]
+----------------------------------------------------------------------
+include::lesson10.py[tabsize=2]
+---------------------------------------------------------------------- 
+
+Now, we push some more buttons, and we see in the window where +bb.py+
+is running:
+
+----------------------------------------------------------------------
+Reading data from port        : 0
+Posting data to host          : localhost:8000
+Using tag                     : serial
+Received                      : 3
+ERROR - no willow on          : localhost:8000
+Received                      : 3
+Posted                        : { "tag": "serial", "byte": "3" }
+Received                      : 3
+Posted                        : { "tag": "serial", "byte": "3" }
+Received                      : 4
+Posted                        : { "tag": "serial", "byte": "4" }
+----------------------------------------------------------------------
+
+If we load a web browser and point it to +localhost:8000+, we now see
+input coming in from the serial device!
+
+(If you happen to have an LSC-400, by the way, you'll want to set the
+"mode" to "ASCII/MEDx" and the "speed" to "9600 baud". If you have
+some other input device, you may want to play around with Hyperterm on
+Windows or Cutecom on Linux to see how it works. If you can get it to
+work with Hyperterm or Cutecom but not with +bb.py+, you should read
+the documentation for the pyserial library and use that to hack on
++bb.py+. Let me know!)
+
+
 API: willow.willow
 ------------------
 
